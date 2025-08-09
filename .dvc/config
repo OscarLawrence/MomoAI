@@ -1,2 +1,5 @@
 [core]
     no_scm = True
+    remote = dev-remote
+['remote "dev-remote"']
+    url = /tmp/momo-dev-kb
