@@ -1,0 +1,18 @@
+# DVC Parameters Configuration
+kb_config:
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  chunk_size: 512
+  overlap_size: 50
+  similarity_threshold: 0.7
+  
+# ML Pipeline Configuration  
+ml_config:
+  batch_size: 32
+  learning_rate: 0.001
+  epochs: 10
+  
+# Performance Configuration
+performance_config:
+  max_concurrent_operations: 8
+  cache_size_mb: 512
+  timeout_seconds: 300
