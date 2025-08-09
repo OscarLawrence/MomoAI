@@ -1,0 +1,11 @@
+stages:
+  process-logs:
+    cmd: uv run python scripts/process_logs.py
+    deps:
+      - momo_logger/
+      - ../../../data/raw/
+    outs:
+      - data/logs/
+      - data/analytics/
+    metrics:
+      - benchmarks/log_metrics.json

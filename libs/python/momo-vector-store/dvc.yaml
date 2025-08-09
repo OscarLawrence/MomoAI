@@ -1,0 +1,11 @@
+stages:
+  process-vectors:
+    cmd: uv run python scripts/process_vectors.py
+    deps:
+      - momo_vector_store/
+      - ../../../data/raw/
+    outs:
+      - data/vectors/
+      - data/benchmarks/
+    metrics:
+      - benchmarks/vector_metrics.json

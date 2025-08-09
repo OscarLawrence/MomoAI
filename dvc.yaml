@@ -1,0 +1,28 @@
+stages:
+  kb-ingest:
+    cmd: python scripts/kb-ingest.py
+    deps:
+      - libs/python/*/momo_*/
+      - libs/python/*/momo.md
+      - apps/*/
+    outs:
+      - data/knowledge-base/
+      - data/vectors/
+      - data/graphs/
+    params:
+      - kb_config.embedding_model
+      - kb_config.chunk_size
+    
+  docs-generate:
+    cmd: python scripts/docs-generate.py
+    deps:
+      - data/knowledge-base/
+    outs:
+      - docs/generated/
+    
+  benchmark-kb:
+    cmd: python scripts/benchmark-kb.py
+    deps:
+      - data/knowledge-base/
+    metrics:
+      - benchmarks/kb_metrics.json

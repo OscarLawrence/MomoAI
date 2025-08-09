@@ -1,0 +1,11 @@
+stages:
+  process-embeddings:
+    cmd: uv run python scripts/process_embeddings.py
+    deps:
+      - momo_kb/
+      - ../../../data/raw/
+    outs:
+      - data/embeddings/
+      - data/indices/
+    metrics:
+      - benchmarks/embedding_metrics.json

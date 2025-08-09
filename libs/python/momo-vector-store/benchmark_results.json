@@ -1,0 +1,70 @@
+{
+  "document_addition": {
+    "single_document_ms": 0.55694580078125,
+    "batch_add_mean_ms": 1.4264583587646484,
+    "batch_add_std_ms": 0,
+    "docs_per_second": 70103.69379909744
+  },
+  "similarity_search": {
+    "search_k1_mean_ms": 33.225440979003906,
+    "search_k1_min_ms": 10.87045669555664,
+    "search_k1_max_ms": 113.94906044006348,
+    "search_k1_std_ms": 45.20715029196055,
+    "search_k5_mean_ms": 10.32552719116211,
+    "search_k5_min_ms": 9.587764739990234,
+    "search_k5_max_ms": 10.696887969970703,
+    "search_k5_std_ms": 0.4896023367114665,
+    "search_k10_mean_ms": 10.239839553833008,
+    "search_k10_min_ms": 9.479284286499023,
+    "search_k10_max_ms": 11.024951934814453,
+    "search_k10_std_ms": 0.5491460512837412,
+    "search_k20_mean_ms": 11.0595703125,
+    "search_k20_min_ms": 10.839462280273438,
+    "search_k20_max_ms": 11.257648468017578,
+    "search_k20_std_ms": 0.16844195840205708
+  },
+  "filtered_search": {
+    "unfiltered_mean_ms": 10.920524597167969,
+    "filtered_category_tech_mean_ms": 3.8884480794270835,
+    "filtered_author_alice_mean_ms": 4.657983779907227,
+    "filtered_category_ai_mean_ms": 4.595756530761719
+  },
+  "concurrent_operations": {
+    "concurrent_search_1_total_ms": 17.59791374206543,
+    "concurrent_search_1_avg_ms": 17.59791374206543,
+    "concurrent_search_2_total_ms": 27.48584747314453,
+    "concurrent_search_2_avg_ms": 13.742923736572266,
+    "concurrent_search_4_total_ms": 47.24454879760742,
+    "concurrent_search_4_avg_ms": 11.811137199401855,
+    "concurrent_search_8_total_ms": 81.05945587158203,
+    "concurrent_search_8_avg_ms": 10.132431983947754
+  },
+  "memory_usage": {
+    "initial_mb": 71.02734375,
+    "after_creation_mb": 71.02734375,
+    "after_1k_docs_mb": 87.21484375,
+    "memory_per_doc_kb": 16.576
+  },
+  "scalability": {
+    "docs_100": {
+      "add_time_ms": 4.415750503540039,
+      "avg_search_ms": 1.791079839070638,
+      "docs_per_second": 22646.20700826089
+    },
+    "docs_500": {
+      "add_time_ms": 7.263898849487305,
+      "avg_search_ms": 7.119496663411458,
+      "docs_per_second": 68833.5576197197
+    },
+    "docs_1000": {
+      "add_time_ms": 11.920690536499023,
+      "avg_search_ms": 12.347062428792318,
+      "docs_per_second": 83887.75775515511
+    },
+    "docs_2000": {
+      "add_time_ms": 29.744386672973633,
+      "avg_search_ms": 50.307830174764,
+      "docs_per_second": 67239.57773912486
+    }
+  }
+}

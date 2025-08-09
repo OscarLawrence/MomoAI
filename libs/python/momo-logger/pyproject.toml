@@ -1,0 +1,77 @@
+[tool.coverage.run]
+branch = true
+source = [ "momo_logger" ]
+
+[tool.coverage.report]
+exclude_lines = ['if TYPE_CHECKING:']
+show_missing = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]  
+python_functions = ["test_*"]
+addopts = "-v --tb=short --cov=momo_logger"
+asyncio_mode = "auto"
+
+[project]
+name = "momo-logger"
+version = "0.1.0"
+description = "Structured logging for the Momo AI system"
+requires-python = ">=3.9,<3.13"
+readme = 'README.md'
+dependencies = [
+    "dvc>=3.61.0",
+    "pydantic>=2.0.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["momo_logger"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[dependency-groups]
+dev = [
+  "ruff>=0.8.2",
+  "pyright>=1.1.0",
+  "pytest>=8.3.4",
+  "pytest-asyncio>=0.21",
+  "pytest-cov>=6.0.0",
+  "pytest-html>=4.1.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+exclude = [
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  "dist",
+]
+
+line-length = 88
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+  # pycodestyle
+  "E",
+  # Pyflakes
+  "F",
+  # pyupgrade
+  "UP",
+  # flake8-bugbear
+  "B",
+  # flake8-simplify
+  "SIM",
+  # isort
+  "I",
+]
+ignore = []
+
+fixable = ["ALL"]
+unfixable = []

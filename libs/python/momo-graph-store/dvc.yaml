@@ -1,0 +1,11 @@
+stages:
+  process-graphs:
+    cmd: uv run python scripts/process_graphs.py
+    deps:
+      - momo_graph_store/
+      - ../../../data/raw/
+    outs:
+      - data/graphs/
+      - data/schemas/
+    metrics:
+      - benchmarks/graph_metrics.json

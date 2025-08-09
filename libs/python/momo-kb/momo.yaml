@@ -1,0 +1,42 @@
+# Module Configuration for momo-kb
+
+# Default backend configuration
+backends:
+  default: "inmemory"  # Options: inmemory, duckdb
+  document:
+    default: "InMemoryDocumentStore"
+    production: "DuckDBDocumentStore"
+  vector:
+    default: "InMemoryVectorStore"
+  graph:
+    default: "InMemoryGraphStore"
+
+# Embedding configuration
+embeddings:
+  default_model: "all-MiniLM-L6-v2"
+  device: "cpu"
+  normalize: true
+  models:
+    fast: "paraphrase-MiniLM-L3-v2"      # 17MB, development
+    balanced: "all-MiniLM-L6-v2"         # 22MB, production
+    quality: "all-mpnet-base-v2"         # 420MB, high-quality
+
+# Performance settings
+performance:
+  vector_search_threshold: 0.7
+  max_results_default: 10
+  batch_size: 100
+  connection_pool_size: 5
+
+# Development configuration
+development:
+  log_level: "INFO"
+  enable_benchmarks: true
+  test_data_size: 1000
+  
+# Production settings
+production:
+  log_level: "WARNING"
+  enable_benchmarks: false
+  max_document_size_mb: 10
+  connection_timeout: 30

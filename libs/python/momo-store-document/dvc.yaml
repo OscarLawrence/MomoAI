@@ -1,0 +1,11 @@
+stages:
+  process-documents:
+    cmd: uv run python scripts/process_documents.py
+    deps:
+      - momo_store_document/
+      - ../../../data/raw/
+    outs:
+      - data/documents/
+      - data/metadata/
+    metrics:
+      - benchmarks/document_metrics.json
