@@ -1,0 +1,19 @@
+{
+  "name": "cli",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "code/apps/cli/src",
+  "tags": [
+    "nodejs",
+    "cli",
+    "app"
+  ],
+  "targets": {
+    "placeholder": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'Node.js CLI placeholder - to be implemented'"
+      }
+    }
+  }
+}

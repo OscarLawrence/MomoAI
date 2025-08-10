@@ -10,16 +10,22 @@ MomoAI is a revolutionary self-extending multi-agent system with modular archite
 
 ```
 MomoAI-nx/
-├── apps/                    # User-facing applications
-│   ├── web/                # Nuxt.js frontend
-│   ├── cli/                # Node.js CLI
-│   └── core/               # Core Momo functionality
-└── libs/python/            # Python libraries (uv + Nx managed)
-    ├── momo-kb/           # Knowledge base abstraction - COMPLETE
-    ├── momo-logger/       # Structured logging system - COMPLETE
-    ├── momo-graph-store/  # Graph database abstraction - COMPLETE
-    ├── momo-vector-store/ # Vector store abstraction - COMPLETE
-    └── momo-store-document/ # Document store abstraction - COMPLETE
+├── code/                    # All source code
+│   ├── apps/               # User-facing applications
+│   │   ├── web/           # Nuxt.js frontend
+│   │   ├── cli/           # Node.js CLI
+│   │   └── core/          # Core Momo functionality
+│   └── libs/python/       # Python libraries (uv + Nx managed)
+│       ├── momo-kb/           # Knowledge base abstraction - COMPLETE
+│       ├── momo-logger/       # Structured logging system - COMPLETE
+│       ├── momo-graph-store/  # Graph database abstraction - COMPLETE
+│       ├── momo-vector-store/ # Vector store abstraction - COMPLETE
+│       └── momo-store-document/ # Document store abstraction - COMPLETE
+├── research/              # Strategic analysis and architectural research
+├── docs/                  # Documentation
+├── migrations/            # Migration guides and scripts
+├── data/                  # Data artifacts and schemas
+└── scripts/               # Automation and utility scripts
 ```
 
 ## Development Commands

@@ -1,0 +1,37 @@
+{
+  "name": "kb-playground",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "type": "library",
+  "projectType": "library",
+  "sourceRoot": "code/libs/python/kb-playground",
+  "targets": {
+    "install": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv sync",
+        "cwd": "code/libs/python/kb-playground"
+      }
+    },
+    "format": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv run ruff format .",
+        "cwd": "code/libs/python/kb-playground"
+      }
+    },
+    "lint": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv run ruff check .",
+        "cwd": "code/libs/python/kb-playground"
+      }
+    },
+    "test": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv run pytest tests/ -v",
+        "cwd": "code/libs/python/kb-playground"
+      }
+    }
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "name": "momo-vector-store",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "code/libs/python/momo-vector-store/momo_vector_store",
+  "release": {
+    "version": {
+      "generator": "@nxlv/python:release-version"
+    }
+  },
+  "tags": [
+    "python",
+    "library",
+    "vector-store",
+    "multi-agent"
+  ],
+  "implicitDependencies": [
+    "momo-logger"
+  ],
+  "targets": {
+    "lock": {
+      "executor": "@nxlv/python:lock",
+      "options": {
+        "update": false
+      }
+    },
+    "sync": {
+      "executor": "@nxlv/python:sync",
+      "options": {}
+    },
+    "add": {
+      "executor": "@nxlv/python:add",
+      "options": {}
+    },
+    "update": {
+      "executor": "@nxlv/python:update",
+      "options": {}
+    },
+    "remove": {
+      "executor": "@nxlv/python:remove",
+      "options": {}
+    },
+    "build": {
+      "executor": "@nxlv/python:build",
+      "outputs": [
+        "{projectRoot}/dist"
+      ],
+      "options": {
+        "outputPath": "{projectRoot}/dist",
+        "publish": false,
+        "lockedVersions": true,
+        "bundleLocalDependencies": true
+      },
+      "cache": true
+    },
+    "lint": {
+      "executor": "@nxlv/python:ruff-check",
+      "outputs": [],
+      "options": {
+        "lintFilePatterns": [
+          "momo_vector_store",
+          "tests"
+        ]
+      },
+      "cache": true
+    },
+    "format": {
+      "executor": "@nxlv/python:ruff-format",
+      "outputs": [],
+      "options": {
+        "filePatterns": [
+          "momo_vector_store",
+          "tests",
+          "benchmarks"
+        ]
+      },
+      "cache": true
+    },
+    "test": {
+      "executor": "@nxlv/python:run-commands",
+      "outputs": [
+        "{workspaceRoot}/reports/{projectRoot}/unittests",
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "command": "uv run python -m pytest tests/",
+        "cwd": "{projectRoot}"
+      },
+      "cache": true
+    },
+    "typecheck": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv run python -m pyright momo_vector_store",
+        "cwd": "{projectRoot}"
+      },
+      "cache": true
+    },
+    "test-fast": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv run python -m pytest tests/unit/ tests/e2e/",
+        "cwd": "{projectRoot}"
+      },
+      "cache": true
+    },
+    "test-all": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv run python -m pytest tests/ --cov=momo_vector_store --cov-report=term-missing --benchmark-skip",
+        "cwd": "{projectRoot}"
+      },
+      "cache": true
+    },
+    "benchmark": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv run python -m pytest benchmarks/ --benchmark-only --benchmark-json=../../../../benchmark_results/momo-vector-store.json",
+        "cwd": "{projectRoot}"
+      },
+      "cache": false
+    },
+    "install": {
+      "executor": "@nxlv/python:install",
+      "options": {
+        "silent": false,
+        "args": "",
+        "verbose": false,
+        "debug": false
+      }
+    },
+    "dvc-repro": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{projectRoot}",
+        "commands": [
+          "dvc repro"
+        ]
+      }
+    },
+    "dvc-pull": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{projectRoot}",
+        "commands": [
+          "dvc pull"
+        ]
+      }
+    },
+    "dvc-push": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{projectRoot}",
+        "commands": [
+          "dvc push"
+        ]
+      }
+    }
+  }
+}
