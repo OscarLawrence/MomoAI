@@ -1,7 +1,8 @@
 """
-Core data models for the Momo KnowledgeBase.
+Core data models for the Momo Graph Backend.
 
-Implements immutable nodes, edges, and diff-based operations.
+Implements immutable graph nodes, edges, and diff-based operations
+for the graph storage backend.
 """
 
 from datetime import datetime
@@ -12,15 +13,15 @@ from uuid import uuid4
 from pydantic import BaseModel, Field, model_validator
 
 
-class DiffType(str, Enum):
-    """Types of operations that can be performed on the knowledge graph."""
+class GraphDiffType(str, Enum):
+    """Types of operations that can be performed on the graph."""
     INSERT_NODE = "insert_node"
     DELETE_NODE = "delete_node"
     INSERT_EDGE = "insert_edge"
     DELETE_EDGE = "delete_edge"
 
 
-class Node(BaseModel):
+class GraphNode(BaseModel):
     """Immutable graph node with properties and metadata."""
     
     id: str = Field(default_factory=lambda: str(uuid4()))
@@ -65,7 +66,7 @@ class Node(BaseModel):
         })
 
 
-class Edge(BaseModel):
+class GraphEdge(BaseModel):
     """Immutable graph edge connecting two nodes."""
     
     id: str = Field(default_factory=lambda: str(uuid4()))
@@ -90,16 +91,16 @@ class Edge(BaseModel):
         })
 
 
-class Diff(BaseModel):
-    """Immutable record of a knowledge graph operation."""
+class GraphDiff(BaseModel):
+    """Immutable record of a graph operation."""
     
     id: str = Field(default_factory=lambda: str(uuid4()))
-    operation: DiffType
+    operation: GraphDiffType
     timestamp: datetime = Field(default_factory=datetime.utcnow)
     
     # Operation data
-    node: Optional[Node] = None
-    edge: Optional[Edge] = None
+    node: Optional[GraphNode] = None
+    edge: Optional[GraphEdge] = None
     
     # Metadata
     agent_id: Optional[str] = None
@@ -108,13 +109,13 @@ class Diff(BaseModel):
     class Config:
         frozen = True  # Immutable
         
-    def reverse(self) -> "Diff":
+    def reverse(self) -> "GraphDiff":
         """Create the reverse diff for rollback operations."""
         reverse_ops = {
-            DiffType.INSERT_NODE: DiffType.DELETE_NODE,
-            DiffType.DELETE_NODE: DiffType.INSERT_NODE,
-            DiffType.INSERT_EDGE: DiffType.DELETE_EDGE,
-            DiffType.DELETE_EDGE: DiffType.INSERT_EDGE,
+            GraphDiffType.INSERT_NODE: GraphDiffType.DELETE_NODE,
+            GraphDiffType.DELETE_NODE: GraphDiffType.INSERT_NODE,
+            GraphDiffType.INSERT_EDGE: GraphDiffType.DELETE_EDGE,
+            GraphDiffType.DELETE_EDGE: GraphDiffType.INSERT_EDGE,
         }
         
         return self.model_copy(update={
@@ -124,11 +125,11 @@ class Diff(BaseModel):
         })
 
 
-class QueryResult(BaseModel):
-    """Result from a knowledge graph query."""
+class GraphQueryResult(BaseModel):
+    """Result from a graph query."""
     
-    nodes: List[Node] = Field(default_factory=list)
-    edges: List[Edge] = Field(default_factory=list)
+    nodes: List[GraphNode] = Field(default_factory=list)
+    edges: List[GraphEdge] = Field(default_factory=list)
     metadata: Dict[str, Any] = Field(default_factory=dict)
     
     # Performance metrics
@@ -139,7 +140,7 @@ class QueryResult(BaseModel):
 class SemanticQueryResult(BaseModel):
     """Result from a semantic similarity query."""
     
-    nodes: List[Node] = Field(default_factory=list)
+    nodes: List[GraphNode] = Field(default_factory=list)
     similarity_scores: List[float] = Field(default_factory=list)
     query_embedding: Optional[List[float]] = None
     threshold: float = 0.0
@@ -155,7 +156,7 @@ class SemanticQueryResult(BaseModel):
 class HybridQueryResult(BaseModel):
     """Result from a hybrid semantic + structural query."""
     
-    nodes: List[Node] = Field(default_factory=list)
+    nodes: List[GraphNode] = Field(default_factory=list)
     semantic_scores: List[float] = Field(default_factory=list)
     structural_matches: List[bool] = Field(default_factory=list)
     combined_scores: List[float] = Field(default_factory=list)

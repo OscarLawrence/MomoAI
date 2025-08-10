@@ -4,18 +4,27 @@ Momo KnowledgeBase - High-performance, multi-agent, immutable knowledge graph.
 Core exports for the knowledge base system.
 """
 
+from .knowledge_base import KnowledgeBase
+from .unified_models import Document, Relationship, SearchResult, KnowledgeBaseStats, DocumentType
+
+# Legacy exports for backward compatibility
 from .models import Node, Edge, Diff, DiffType, QueryResult
-from .core import KnowledgeBase
-from .storage import StorageTier
 
 __all__ = [
+    # New unified interface
     "KnowledgeBase",
-    "Node", 
-    "Edge",
+    "Document",
+    "Relationship", 
+    "SearchResult",
+    "KnowledgeBaseStats",
+    "DocumentType",
+    
+    # Legacy exports (for backward compatibility)
+    "Node",
+    "Edge", 
     "Diff",
     "DiffType",
     "QueryResult",
-    "StorageTier",
 ]
 
 __version__ = "0.1.0"

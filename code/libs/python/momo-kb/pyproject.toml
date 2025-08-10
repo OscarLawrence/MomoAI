@@ -24,6 +24,10 @@ dependencies = [
     "langchain-community>=0.0.20",
     "dvc>=3.61.0",
     "psutil>=7.0.0",
+    "numpy>=2.0.2",
+    "faiss-cpu>=1.11.0.post1",
+    "openai>=1.99.6",
+    "matplotlib>=3.9.4",
 ]
 
 [tool.hatch.build.targets.wheel]
