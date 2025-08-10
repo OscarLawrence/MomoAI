@@ -13,7 +13,7 @@
     ],
     "sharedGlobals": [],
     "pythonSrc": [
-      "{projectRoot}/src/**/*.py",
+      "{projectRoot}/**/*.py",
       "{projectRoot}/pyproject.toml", 
       "{projectRoot}/uv.lock"
     ]

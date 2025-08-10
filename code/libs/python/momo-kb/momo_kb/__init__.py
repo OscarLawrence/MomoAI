@@ -5,7 +5,13 @@ Core exports for the knowledge base system.
 """
 
 from .knowledge_base import KnowledgeBase
-from .unified_models import Document, Relationship, SearchResult, KnowledgeBaseStats, DocumentType
+from .unified_models import (
+    Document,
+    Relationship,
+    SearchResult,
+    KnowledgeBaseStats,
+    DocumentType,
+)
 
 # Legacy exports for backward compatibility
 from .models import Node, Edge, Diff, DiffType, QueryResult
@@ -14,14 +20,13 @@ __all__ = [
     # New unified interface
     "KnowledgeBase",
     "Document",
-    "Relationship", 
+    "Relationship",
     "SearchResult",
     "KnowledgeBaseStats",
     "DocumentType",
-    
     # Legacy exports (for backward compatibility)
     "Node",
-    "Edge", 
+    "Edge",
     "Diff",
     "DiffType",
     "QueryResult",
