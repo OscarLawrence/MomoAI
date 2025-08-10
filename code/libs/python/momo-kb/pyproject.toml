@@ -16,19 +16,14 @@ asyncio_mode = "auto"
 [project]
 name = "momo-kb"
 version = "0.1.0"
-description = "Knowledge base system for Momo AI multi-agent architecture"
+description = "Momo KnowledgeBase - High-performance, multi-agent, immutable knowledge graph with versioning and rollback"
 requires-python = ">=3.9,<3.13"
-readme = 'README.md'
 dependencies = [
     "pydantic>=2.0.0",
-    "pandas>=2.0.0",
-    "duckdb>=0.8.0",
-    "sqlalchemy>=2.0.0",
-    "momo-logger @ file:///home/vincent/Documents/Momo/MomoAI-nx/code/libs/python/momo-logger",
-    "momo-vector-store @ file:///home/vincent/Documents/Momo/MomoAI-nx/code/libs/python/momo-vector-store",
-    "momo-graph-store @ file:///home/vincent/Documents/Momo/MomoAI-nx/code/libs/python/momo-graph-store",
-    "momo-store-document @ file:///home/vincent/Documents/Momo/MomoAI-nx/code/libs/python/momo-store-document",
+    "langchain>=0.1.0",
+    "langchain-community>=0.0.20",
     "dvc>=3.61.0",
+    "psutil>=7.0.0",
 ]
 
 [tool.hatch.build.targets.wheel]

@@ -9,12 +9,7 @@
     "kb",
     "multi-agent"
   ],
-  "implicitDependencies": [
-    "momo-logger",
-    "momo-vector-store",
-    "momo-graph-store",
-    "momo-store-document"
-  ],
+  "implicitDependencies": [],
   "targets": {
     "lock": {
       "executor": "@nxlv/python:lock",
