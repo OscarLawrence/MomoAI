@@ -3,7 +3,7 @@
 **Date:** 2025-08-11  
 **Status:** DRAFT  
 **Decision Makers:** Vincent  
-**Consulted:** [To be filled during research]
+**Consulted:** Repository analysis, existing workflow systems documentation
 
 ## Table of Contents
 
@@ -27,7 +27,7 @@
 1. **Ad-hoc task management** - agents decompose tasks differently across sessions
 2. **Inconsistent documentation** - no standard way to capture agent reasoning
 3. **Missing scientific rigor** - no metrics or benchmarking of agent effectiveness
-4. **Workflow fragmentation** - multiple disconnected systems (ADR, TodoWrite, module development)
+4. **Workflow fragmentation** - multiple disconnected systems (ADR, momo-workflow, momo-mom, module development)
 
 ## Research Summary
 
@@ -35,8 +35,7 @@
 
 **Current Workflow Ecosystem Analysis**:
 - **ADR System**: Excellent for architectural decisions with 6-phase structured approach, but heavyweight for general tasks
-- **TodoWrite Tool**: Widely adopted by agents but lacks scientific measurement and structured phases
-- **momo-workflow Module**: Scientific approach with protocol-based design, but not yet integrated with agent patterns
+- **momo-workflow Module**: Scientific approach with protocol-based design, but not yet integrated with agent task execution patterns
 - **Command Systems**: `momo-mom` provides excellent shell-first architecture, but agent workflow integration missing
 
 **Pain Points Identified**:
@@ -192,20 +191,20 @@
 ## Next Steps
 
 ### Immediate Actions (Phase 1)
-1. **TodoWrite Enhancement Design**
-   - Create detailed technical specification for TodoWrite workflow phases
-   - Design metrics collection schema and storage strategy  
-   - Plan integration points with `momo-mom` command system
+1. **momo-agent Framework Design**
+   - Create detailed technical specification for AgentTask and AgentWorkflow protocols
+   - Design metrics collection schema and storage strategy
+   - Plan integration points with momo-workflow and momo-mom systems
 
-2. **Prototype Development**
-   - Implement basic workflow phase tracking in TodoWrite
-   - Add simple time tracking and success rate metrics
-   - Create command execution integration prototype
+2. **Core Module Development**
+   - Implement momo-agent module with standard nx+uv+Python structure
+   - Build AgentCommandExecutor wrapping momo-mom functionality
+   - Create WorkflowEngine for multi-step task orchestration
 
-3. **Testing and Validation**
-   - Test enhanced TodoWrite with current agent workflow patterns
-   - Validate performance overhead and usability impact
-   - Gather feedback from different agent interaction scenarios
+3. **Integration Testing**
+   - Test framework integration with existing momo-workflow protocols
+   - Validate command execution with momo-mom fallback strategies
+   - Verify scientific measurement collection and benchmarking
 
 ### Future Work (Phase 2)
 1. **Documentation Standards Development**
