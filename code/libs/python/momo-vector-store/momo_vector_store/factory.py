@@ -31,6 +31,8 @@ def create_vectorstore(
             return _create_chroma_backend(embeddings, **config)
         elif backend_type == "weaviate":
             return _create_weaviate_backend(embeddings, **config)
+        elif backend_type == "milvus":
+            return _create_milvus_backend(embeddings, **config)
         else:
             raise BackendError(
                 f"Unsupported backend type: {backend_type}", backend=backend_type
@@ -100,6 +102,52 @@ def _create_weaviate_backend(embeddings: Embeddings, **config: Any) -> VectorSto
             k: v
             for k, v in config.items()
             if k not in ["url", "index_name", "text_key"]
+        },
+    )
+
+
+def _create_milvus_backend(embeddings: Embeddings, **config: Any) -> VectorStore:
+    """Create Milvus vector store backend."""
+    try:
+        from langchain_milvus import Milvus  # type: ignore[import-not-found]
+    except ImportError as e:
+        raise BackendError(
+            "Milvus not available. Install with: pip install langchain-milvus pymilvus",
+            backend="milvus",
+        ) from e
+
+    # Extract Milvus-specific config with sensible defaults
+    connection_args = config.get("connection_args", {"host": "localhost", "port": "19530"})
+    collection_name = config.get("collection_name", "momo_collection")
+    primary_field = config.get("primary_field", "id")
+    text_field = config.get("text_field", "content")
+    vector_field = config.get("vector_field", "vector")
+    index_params = config.get("index_params", None)
+    search_params = config.get("search_params", None)
+
+    # Create Milvus vector store with provided configuration
+    return Milvus(
+        embedding_function=embeddings,
+        connection_args=connection_args,
+        collection_name=collection_name,
+        primary_field=primary_field,
+        text_field=text_field,
+        vector_field=vector_field,
+        index_params=index_params,
+        search_params=search_params,
+        **{
+            k: v
+            for k, v in config.items()
+            if k
+            not in [
+                "connection_args",
+                "collection_name",
+                "primary_field",
+                "text_field",
+                "vector_field",
+                "index_params",
+                "search_params",
+            ]
         },
     )
 

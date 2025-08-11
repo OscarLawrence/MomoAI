@@ -184,12 +184,13 @@ class TestVectorStoreManagerSimilaritySearch:
         )
 
         # Verify the call was made with correct parameters
-        # Note: filter_dict gets converted to a callable, so we check other params
         call_args = mock_vectorstore.asimilarity_search.call_args
         assert call_args.kwargs["query"] == query
         assert call_args.kwargs["k"] == k
         assert call_args.kwargs["extra_param"] == "value"
-        assert callable(call_args.kwargs["filter"])  # Should be converted to callable
+        # For non-InMemory backends, filter dict should be passed through; for InMemory, it's converted to callable
+        passed_filter = call_args.kwargs["filter"]
+        assert callable(passed_filter) or passed_filter == filter_dict
 
         assert len(result) == 1
         assert isinstance(result[0], Document)

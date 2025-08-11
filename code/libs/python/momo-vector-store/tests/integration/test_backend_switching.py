@@ -192,6 +192,21 @@ class TestBackendConfiguration:
         assert "Weaviate not available" in str(exc_info.value)
         assert exc_info.value.backend == "weaviate"
 
+    def test_milvus_backend_config_validation(self, embeddings):
+        """Test Milvus backend configuration (without actual Milvus)."""
+        # Test that Milvus backend would be configured correctly if available
+        with pytest.raises(BackendError) as exc_info:
+            VectorStoreManager.create(
+                "milvus",
+                embeddings,
+                connection_args={"host": "localhost", "port": "19530"},
+                collection_name="momo_collection",
+            )
+
+        # Should fail because Milvus is not installed
+        assert "Milvus not available" in str(exc_info.value)
+        assert exc_info.value.backend == "milvus"
+
 
 class TestBackendErrorHandling:
     """Test error handling across different backends."""
