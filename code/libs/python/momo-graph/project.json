@@ -1,15 +1,22 @@
 {
-  "name": "momo-kb",
+  "name": "momo-graph",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
-  "sourceRoot": "code/libs/python/momo-kb/momo_kb",
+  "sourceRoot": "code/libs/python/momo-graph/momo_graph",
+  "release": {
+    "version": {
+      "generator": "@nxlv/python:release-version"
+    }
+  },
   "tags": [
     "python",
     "library",
-    "kb",
+    "graph",
+    "database",
+    "backend",
     "multi-agent"
   ],
-  "implicitDependencies": ["momo-graph"],
+  "implicitDependencies": [],
   "targets": {
     "lock": {
       "executor": "@nxlv/python:lock",
@@ -48,9 +55,10 @@
     },
     "lint": {
       "executor": "@nxlv/python:ruff-check",
+      "outputs": [],
       "options": {
         "lintFilePatterns": [
-          "momo_kb",
+          "momo_graph",
           "tests",
           "benchmarks"
         ]
@@ -59,9 +67,10 @@
     },
     "format": {
       "executor": "@nxlv/python:ruff-format",
+      "outputs": [],
       "options": {
         "filePatterns": [
-          "momo_kb",
+          "momo_graph",
           "tests",
           "benchmarks"
         ]
@@ -70,6 +79,10 @@
     },
     "test": {
       "executor": "@nxlv/python:run-commands",
+      "outputs": [
+        "{workspaceRoot}/reports/{projectRoot}/unittests",
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "command": "uv run python -m pytest tests/",
         "cwd": "{projectRoot}"
@@ -79,7 +92,7 @@
     "typecheck": {
       "executor": "@nxlv/python:run-commands",
       "options": {
-        "command": "uv run python -m pyright momo_kb",
+        "command": "uv run python -m pyright momo_graph",
         "cwd": "{projectRoot}"
       },
       "cache": true
@@ -95,7 +108,7 @@
     "test-all": {
       "executor": "@nxlv/python:run-commands",
       "options": {
-        "command": "uv run python -m pytest tests/ --cov=momo_kb --cov-report=term-missing --benchmark-skip",
+        "command": "uv run python -m pytest tests/ --cov=momo_graph --cov-report=term-missing --benchmark-skip",
         "cwd": "{projectRoot}"
       },
       "cache": true
@@ -103,7 +116,7 @@
     "benchmark": {
       "executor": "@nxlv/python:run-commands",
       "options": {
-        "command": "uv run python -m pytest benchmarks/ --benchmark-only --benchmark-json=../../../../benchmark_results/momo-kb.json",
+        "command": "uv run python -m pytest benchmarks/ --benchmark-only --benchmark-json=../../../../benchmark_results/momo-graph.json",
         "cwd": "{projectRoot}"
       },
       "cache": false
@@ -143,18 +156,6 @@
           "dvc push"
         ]
       }
-    },
-    "kb-ingest": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "dvc repro kb-ingest",
-          "dvc push"
-        ]
-      },
-      "dependsOn": [
-        "test-all"
-      ]
     }
   }
 }

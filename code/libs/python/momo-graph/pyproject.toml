@@ -1,6 +1,6 @@
 [tool.coverage.run]
 branch = true
-source = [ "momo_kb" ]
+source = [ "momo_graph" ]
 
 [tool.coverage.report]
 exclude_lines = ['if TYPE_CHECKING:']
@@ -10,29 +10,21 @@ show_missing = true
 testpaths = ["tests"]
 python_files = ["test_*.py"]  
 python_functions = ["test_*"]
-addopts = "-v --tb=short --cov=momo_kb"
+addopts = "-v --tb=short --cov=momo_graph"
 asyncio_mode = "auto"
 
 [project]
-name = "momo-kb"
+name = "momo-graph"
 version = "0.1.0"
-description = "Momo KnowledgeBase - High-performance, multi-agent, immutable knowledge graph with versioning and rollback"
+description = "Momo Graph - High-performance immutable graph database backend with 3-tier storage and rollback capabilities"
 requires-python = ">=3.9,<3.13"
 dependencies = [
     "pydantic>=2.0.0",
-    "langchain>=0.1.0",
-    "langchain-community>=0.0.20",
-    "dvc>=3.61.0",
     "psutil>=7.0.0",
-    "numpy>=2.0.2",
-    "faiss-cpu>=1.11.0.post1",
-    "openai>=1.99.6",
-    "matplotlib>=3.9.4",
-    "momo-graph @ file:///home/vincent/Documents/Momo/MomoAI-nx/code/libs/python/momo-graph",
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["momo_kb"]
+packages = ["momo_graph"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
@@ -40,7 +32,7 @@ allow-direct-references = true
 [dependency-groups]
 dev = [
   "ruff>=0.8.2",
-  "pyright>=1.1.0",
+  "pyright>=1.1.0", 
   "pytest>=8.3.4",
   "pytest-asyncio>=0.21",
   "pytest-cov>=6.0.0",
@@ -54,7 +46,7 @@ build-backend = "hatchling.build"
 [tool.ruff]
 exclude = [
   ".ruff_cache",
-  ".svn",
+  ".svn", 
   ".tox",
   ".venv",
   "dist",

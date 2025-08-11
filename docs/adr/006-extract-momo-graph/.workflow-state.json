@@ -3,7 +3,7 @@
   "title": "Extract momo-graph module from momo-kb",
   "branch_name": "adr/006-extract-momo-graph",
   "adr_folder": "006-extract-momo-graph",
-  "phase": "research",
+  "phase": "finalizing",
   "created": "2025-08-11T03:17:15.069885",
-  "updated": "2025-08-11T03:17:15.069888"
+  "updated": "2025-08-11T03:23:12.028570"
 }
