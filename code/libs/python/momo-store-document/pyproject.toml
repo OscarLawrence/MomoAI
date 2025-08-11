@@ -23,7 +23,7 @@ dependencies = [
     "pydantic>=2.0.0",
     "pandas>=2.0.0",
     "duckdb>=0.8.0",
-    "momo-logger @ file:///home/vincent/Documents/Momo/MomoAI-nx/code/libs/python/momo-logger",
+    "momo-logger @ file:../momo-logger",
     "dvc>=3.61.0",
 ]
 

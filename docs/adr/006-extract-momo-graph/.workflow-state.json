@@ -1,0 +1,9 @@
+{
+  "adr_number": "006",
+  "title": "Extract momo-graph module from momo-kb",
+  "branch_name": "adr/006-extract-momo-graph",
+  "adr_folder": "006-extract-momo-graph",
+  "phase": "research",
+  "created": "2025-08-11T03:17:15.069885",
+  "updated": "2025-08-11T03:17:15.069888"
+}
