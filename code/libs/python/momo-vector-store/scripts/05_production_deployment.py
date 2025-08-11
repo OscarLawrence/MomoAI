@@ -11,7 +11,6 @@ This script demonstrates:
 
 import asyncio
 import time
-import logging
 import json
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass, asdict
@@ -21,18 +20,17 @@ from langchain_core.embeddings import Embeddings
 from momo_vector_store import VectorStore
 from momo_vector_store.exceptions import VectorStoreError, BackendError
 
-
-# Configure logging for production
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.StreamHandler(),
-        # In production: logging.FileHandler('/var/log/vector-store.log')
-    ],
-)
-
-logger = logging.getLogger(__name__)
+# Use momo-logger as intended
+try:
+    from momo_logger import get_logger
+    logger = get_logger("momo.vector_store.production")
+except ImportError:
+    # Fallback to print statements if momo-logger not available
+    class FallbackLogger:
+        def info(self, msg): print(f"INFO: {msg}")
+        def warning(self, msg): print(f"WARNING: {msg}")
+        def error(self, msg): print(f"ERROR: {msg}")
+    logger = FallbackLogger()
 
 
 @dataclass

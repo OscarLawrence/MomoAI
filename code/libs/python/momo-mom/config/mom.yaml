@@ -1,0 +1,80 @@
+# Mom configuration file for momo project
+# This demonstrates shell-first command mapping with pluggable entry points
+
+# Command name (what you type - configurable)
+command_name: "mom"
+
+# Command mappings - all execute as shell commands
+commands:
+  create:
+    python: "nx g @nxlv/python:uv-project {name} --directory=code/libs/python/{name}"
+    fallback: "mkdir -p code/libs/python/{name} && cd code/libs/python/{name} && uv init --name {name}"
+    
+  test:
+    pattern: "nx run {target}:test"
+    fallback: "cd code/libs/python/{target} && uv run pytest"
+    
+  build:
+    pattern: "nx run {target}:build"
+    fallback: "cd code/libs/python/{target} && uv build"
+    
+  format:
+    pattern: "nx run {target}:format"
+    fallback: "cd code/libs/python/{target} && uv run ruff format ."
+    
+  lint:
+    pattern: "nx run {target}:lint"
+    fallback: "cd code/libs/python/{target} && uv run ruff check ."
+    
+  install:
+    pattern: "nx run {target}:install"
+    fallback: "cd code/libs/python/{target} && uv sync"
+
+# Script discovery paths (supports glob patterns)
+script_paths:
+  - "scripts"
+  - "code/libs/python/*/scripts"
+  - "code/apps/*/scripts"
+
+# Execution settings
+execution:
+  auto_reset_on_cache_failure: true
+  retry_count: 2
+  timeout: 300
+  shell: "/bin/bash"  # Default shell for command execution
+
+# AI-tailored output configuration
+output:
+  format: "structured"  # structured, json, markdown
+  head_lines: 10        # Lines to show at start
+  tail_lines: 10        # Lines to show at end
+  max_line_length: 200  # Truncate long lines
+  duplicate_threshold: 3 # Filter repeated lines
+
+# Recovery commands (run when primary command fails)
+recovery:
+  nx_cache_reset: "nx reset"
+  clean_node_modules: "rm -rf node_modules && pnpm install"
+
+# Language entry points (for script execution)
+# These are pluggable and can be extended
+language_entry_points:
+  python:
+    extensions: [".py"]
+    command: "python {script} {args}"
+    
+  node:
+    extensions: [".js", ".mjs"]
+    command: "node {script} {args}"
+    
+  typescript:
+    extensions: [".ts"]
+    command: "npx tsx {script} {args}"
+    
+  bash:
+    extensions: [".sh"]
+    command: "bash {script} {args}"
+    
+  executable:
+    # For files with execute permission
+    command: "{script} {args}"

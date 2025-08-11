@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="25" time="1.030" timestamp="2025-08-11T07:04:44.814901+02:00" hostname="vincent-Legion-Pro-5-16IRX9"><testcase classname="tests.e2e.test_complete_workflow.TestCompleteWorkflowScenarios" name="test_file_processing_workflow" time="0.001"><failure message="AssertionError: assert 4 == 2&#10; +  where 4 = len([PosixPath('/tmp/tmp01qf9tji/input.txt'), PosixPath('/tmp/tmp01qf9tji/config.txt'), PosixPath('/tmp/tmp01qf9tji/input.txt'), PosixPath('/tmp/tmp01qf9tji/config.txt')])&#10; +    where [PosixPath('/tmp/tmp01qf9tji/input.txt'), PosixPath('/tmp/tmp01qf9tji/config.txt'), PosixPath('/tmp/tmp01qf9tji/input.txt'), PosixPath('/tmp/tmp01qf9tji/config.txt')] = WorkflowResult(workflow_id='file_processing', definition=WorkflowDefinition(workflow_id='file_processing', name='File Processing Workflow', description='Process multiple files', version='1.0.0', author='test', steps=[&lt;test_complete_workflow.TestCompleteWorkflowScenarios.test_file_processing_workflow.&lt;locals&gt;.FileProcessingStep object at 0x7c254c17fca0&gt;, &lt;test_complete_workflow.TestCompleteWorkflowScenarios.test_file_processing_workflow.&lt;locals&gt;.FileProcessingStep object at 0x7c254c17f760&gt;], variables={}), status=&lt;WorkflowStatus.SUCCESS: 'success'&gt;, context=WorkflowContext(workflow_id=UUID('653e0f49-d0c5-4d26-8626-18aa758bbbef'), working_directory=PosixPath('/tmp/tmp01qf9tji'), variables={'process_input_lines': 3, 'process_config_lines': 2}, artifacts=[PosixPath('/tmp/tmp01qf9tji/input.txt'), PosixPath('/tmp/tmp01qf9tji/config.txt')], step_results={'process_input': StepResult(step_id='process_input', status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888684.9031239, end_time=1754888684.9031823, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[PosixPath('/tmp/tmp01qf9tji/input.txt')], error=None, rollback_data={'file_path': '/tmp/... status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888684.903202, end_time=1754888684.9032373, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[PosixPath('/tmp/tmp01qf9tji/config.txt')], error=None, rollback_data={'file_path': '/tmp/tmp01qf9tji/config.txt'})}), step_results=[StepResult(step_id='process_input', status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888684.9031239, end_time=1754888684.9031823, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[PosixPath('/tmp/tmp01qf9tji/input.txt')], error=None, rollback_data={'file_path': '/tmp/tmp01qf9tji/input.txt'}), StepResult(step_id='process_config', status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888684.903202, end_time=1754888684.9032373, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[PosixPath('/tmp/tmp01qf9tji/config.txt')], error=None, rollback_data={'file_path': '/tmp/tmp01qf9tji/config.txt'})], overall_metrics=ExecutionMetrics(start_time=1754888684.9031098, end_time=1754888684.9032464, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), rollback_points=[]).artifacts_produced">self = &lt;test_complete_workflow.TestCompleteWorkflowScenarios object at 0x7c254c9b1760&gt;
+
+    def test_file_processing_workflow(self):
+        """Test a complete file processing workflow."""
+        # Arrange
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+    
+            class FileProcessingStep(BaseWorkflowStep):
+                def __init__(self, step_id: str, filename: str, content: str):
+                    super().__init__(step_id, f"Process file: {filename}", reversible=True)
+                    self.filename = filename
+                    self.content = content
+    
+                def execute(self, context: WorkflowContext) -&gt; StepResult:
+                    start_time = time.time()
+    
+                    # Create file
+                    file_path = context.working_directory / self.filename
+                    file_path.write_text(self.content)
+    
+                    # Process content (example: count lines)
+                    line_count = len(self.content.split('\n'))
+                    context.set_variable(f"{self.step_id}_lines", line_count)
+                    context.add_artifact(file_path)
+    
+                    return StepResult(
+                        step_id=self.step_id,
+                        status=StepStatus.SUCCESS,
+                        metrics=ExecutionMetrics(start_time=start_time, end_time=time.time()),
+                        artifacts=[file_path],
+                        rollback_data={"file_path": str(file_path)}
+                    )
+    
+                def rollback(self, context: WorkflowContext, result: StepResult) -&gt; None:
+                    if result.rollback_data and "file_path" in result.rollback_data:
+                        file_path = Path(result.rollback_data["file_path"])
+                        if file_path.exists():
+                            file_path.unlink()
+    
+            engine = WorkflowEngine()
+            steps = [
+                FileProcessingStep("process_input", "input.txt", "Line 1\nLine 2\nLine 3"),
+                FileProcessingStep("process_config", "config.txt", "Setting 1\nSetting 2"),
+            ]
+    
+            workflow = WorkflowDefinition(
+                workflow_id="file_processing",
+                name="File Processing Workflow",
+                description="Process multiple files",
+                version="1.0.0",
+                author="test",
+                steps=steps
+            )
+    
+            context = WorkflowContext(working_directory=temp_path)
+    
+            # Act
+            result = engine.execute_workflow(workflow, context)
+    
+            # Assert
+            assert result.status == WorkflowStatus.SUCCESS
+            assert result.success_rate == 1.0
+&gt;           assert len(result.artifacts_produced) == 2
+E           AssertionError: assert 4 == 2
+E            +  where 4 = len([PosixPath('/tmp/tmp01qf9tji/input.txt'), PosixPath('/tmp/tmp01qf9tji/config.txt'), PosixPath('/tmp/tmp01qf9tji/input.txt'), PosixPath('/tmp/tmp01qf9tji/config.txt')])
+E            +    where [PosixPath('/tmp/tmp01qf9tji/input.txt'), PosixPath('/tmp/tmp01qf9tji/config.txt'), PosixPath('/tmp/tmp01qf9tji/input.txt'), PosixPath('/tmp/tmp01qf9tji/config.txt')] = WorkflowResult(workflow_id='file_processing', definition=WorkflowDefinition(workflow_id='file_processing', name='File Processing Workflow', description='Process multiple files', version='1.0.0', author='test', steps=[&lt;test_complete_workflow.TestCompleteWorkflowScenarios.test_file_processing_workflow.&lt;locals&gt;.FileProcessingStep object at 0x7c254c17fca0&gt;, &lt;test_complete_workflow.TestCompleteWorkflowScenarios.test_file_processing_workflow.&lt;locals&gt;.FileProcessingStep object at 0x7c254c17f760&gt;], variables={}), status=&lt;WorkflowStatus.SUCCESS: 'success'&gt;, context=WorkflowContext(workflow_id=UUID('653e0f49-d0c5-4d26-8626-18aa758bbbef'), working_directory=PosixPath('/tmp/tmp01qf9tji'), variables={'process_input_lines': 3, 'process_config_lines': 2}, artifacts=[PosixPath('/tmp/tmp01qf9tji/input.txt'), PosixPath('/tmp/tmp01qf9tji/config.txt')], step_results={'process_input': StepResult(step_id='process_input', status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888684.9031239, end_time=1754888684.9031823, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[PosixPath('/tmp/tmp01qf9tji/input.txt')], error=None, rollback_data={'file_path': '/tmp/... status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888684.903202, end_time=1754888684.9032373, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[PosixPath('/tmp/tmp01qf9tji/config.txt')], error=None, rollback_data={'file_path': '/tmp/tmp01qf9tji/config.txt'})}), step_results=[StepResult(step_id='process_input', status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888684.9031239, end_time=1754888684.9031823, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[PosixPath('/tmp/tmp01qf9tji/input.txt')], error=None, rollback_data={'file_path': '/tmp/tmp01qf9tji/input.txt'}), StepResult(step_id='process_config', status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888684.903202, end_time=1754888684.9032373, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[PosixPath('/tmp/tmp01qf9tji/config.txt')], error=None, rollback_data={'file_path': '/tmp/tmp01qf9tji/config.txt'})], overall_metrics=ExecutionMetrics(start_time=1754888684.9031098, end_time=1754888684.9032464, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), rollback_points=[]).artifacts_produced
+
+tests/e2e/test_complete_workflow.py:89: AssertionError</failure></testcase><testcase classname="tests.e2e.test_complete_workflow.TestCompleteWorkflowScenarios" name="test_command_based_workflow" time="0.001" /><testcase classname="tests.e2e.test_complete_workflow.TestCompleteWorkflowScenarios" name="test_workflow_with_failure_and_partial_rollback" time="0.304" /><testcase classname="tests.e2e.test_complete_workflow.TestCompleteWorkflowScenarios" name="test_performance_workflow" time="0.209" /><testcase classname="tests.e2e.test_complete_workflow.TestCompleteWorkflowScenarios" name="test_context_data_flow" time="0.001"><failure message="AssertionError: assert None == 10&#10; +  where None = get_variable('initial_data')&#10; +    where get_variable = WorkflowContext(workflow_id=UUID('85dd401d-b4a7-4551-a9e6-b182c5c55093'), working_directory=PosixPath('/home/vincent/Documents/Momo/MomoAI-nx/code/libs/python/momo-workflow'), variables={}, artifacts=[], step_results={'init_step': StepResult(step_id='init_step', status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888685.4461527, end_time=1754888685.4461746, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[], error=None, rollback_data=None), 'multiply_step': StepResult(step_id='multiply_step', status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888685.4462054, end_time=1754888685.4462175, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[], error=None, rollback_data=None), 'add_step': StepResult(step_id='add_step', status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888685.4462361, end_time=1754888685.4462454, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[], error=None, rollback_data=None)}).get_variable">self = &lt;test_complete_workflow.TestCompleteWorkflowScenarios object at 0x7c254c1fb9d0&gt;
+
+    def test_context_data_flow(self):
+        """Test data flow through workflow context."""
+        # Arrange
+        class DataFlowStep(BaseWorkflowStep):
+            def __init__(self, step_id: str, input_var: str = None, output_var: str = None, transform_func=None):
+                super().__init__(step_id, f"Data flow step: {step_id}")
+                self.input_var = input_var
+                self.output_var = output_var
+                self.transform_func = transform_func
+    
+            def execute(self, context: WorkflowContext) -&gt; StepResult:
+                start_time = time.time()
+    
+                if self.input_var:
+                    input_value = context.get_variable(self.input_var)
+                    if self.transform_func and input_value is not None:
+                        output_value = self.transform_func(input_value)
+                        if self.output_var:
+                            context.set_variable(self.output_var, output_value)
+    
+                return StepResult(
+                    step_id=self.step_id,
+                    status=StepStatus.SUCCESS,
+                    metrics=ExecutionMetrics(start_time=start_time, end_time=time.time())
+                )
+    
+        engine = WorkflowEngine()
+        steps = [
+            DataFlowStep("init_step", output_var="initial_data", transform_func=lambda x: 10),
+            DataFlowStep("multiply_step", "initial_data", "multiplied_data", lambda x: x * 2),
+            DataFlowStep("add_step", "multiplied_data", "final_data", lambda x: x + 5),
+        ]
+    
+        workflow = WorkflowDefinition(
+            workflow_id="data_flow",
+            name="Data Flow Workflow",
+            description="Test data flow through context",
+            version="1.0.0",
+            author="test",
+            steps=steps
+        )
+    
+        context = WorkflowContext()
+    
+        # Act
+        result = engine.execute_workflow(workflow, context)
+    
+        # Assert
+        assert result.status == WorkflowStatus.SUCCESS
+&gt;       assert context.get_variable("initial_data") == 10
+E       AssertionError: assert None == 10
+E        +  where None = get_variable('initial_data')
+E        +    where get_variable = WorkflowContext(workflow_id=UUID('85dd401d-b4a7-4551-a9e6-b182c5c55093'), working_directory=PosixPath('/home/vincent/Documents/Momo/MomoAI-nx/code/libs/python/momo-workflow'), variables={}, artifacts=[], step_results={'init_step': StepResult(step_id='init_step', status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888685.4461527, end_time=1754888685.4461746, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[], error=None, rollback_data=None), 'multiply_step': StepResult(step_id='multiply_step', status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888685.4462054, end_time=1754888685.4462175, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[], error=None, rollback_data=None), 'add_step': StepResult(step_id='add_step', status=&lt;StepStatus.SUCCESS: 'success'&gt;, metrics=ExecutionMetrics(start_time=1754888685.4462361, end_time=1754888685.4462454, cpu_time=None, memory_peak_mb=40.98046875, disk_io_mb=None), artifacts=[], error=None, rollback_data=None)}).get_variable
+
+tests/e2e/test_complete_workflow.py:270: AssertionError</failure></testcase><testcase classname="tests.test_hello" name="test_hello" time="0.000" /><testcase classname="tests.unit.test_commands.TestCommandRegistry" name="test_register_and_get_function_command" time="0.000" /><testcase classname="tests.unit.test_commands.TestCommandRegistry" name="test_command_not_found" time="0.000" /><testcase classname="tests.unit.test_commands.TestCommandRegistry" name="test_list_commands" time="0.000" /><testcase classname="tests.unit.test_commands.TestFunctionCommand" name="test_successful_execution" time="0.000" /><testcase classname="tests.unit.test_commands.TestFunctionCommand" name="test_execution_with_exception" time="0.000" /><testcase classname="tests.unit.test_commands.TestFunctionCommand" name="test_argument_validation" time="0.000" /><testcase classname="tests.unit.test_commands.TestFunctionCommand" name="test_description_fallback" time="0.000" /><testcase classname="tests.unit.test_commands.TestShellCommand" name="test_successful_shell_execution" time="0.003" /><testcase classname="tests.unit.test_commands.TestShellCommand" name="test_failed_shell_execution" time="0.002" /><testcase classname="tests.unit.test_commands.TestShellCommand" name="test_shell_command_validation" time="0.000" /><testcase classname="tests.unit.test_commands.TestShellCommand" name="test_shell_command_timeout" time="0.104" /><testcase classname="tests.unit.test_commands.TestCommandRegistration" name="test_register_command_decorator" time="0.001" /><testcase classname="tests.unit.test_commands.TestCommandRegistration" name="test_built_in_commands_available" time="0.001" /><testcase classname="tests.unit.test_workflow_engine.TestWorkflowEngine" name="test_successful_workflow_execution" time="0.001" /><testcase classname="tests.unit.test_workflow_engine.TestWorkflowEngine" name="test_workflow_failure_handling" time="0.001" /><testcase classname="tests.unit.test_workflow_engine.TestWorkflowEngine" name="test_workflow_validation" time="0.001" /><testcase classname="tests.unit.test_workflow_engine.TestWorkflowEngine" name="test_duplicate_step_ids_validation" time="0.001" /><testcase classname="tests.unit.test_workflow_engine.TestWorkflowEngine" name="test_context_variable_passing" time="0.000" /><testcase classname="tests.unit.test_workflow_engine.TestWorkflowEngine" name="test_performance_metrics_collection" time="0.000" /></testsuite></testsuites>

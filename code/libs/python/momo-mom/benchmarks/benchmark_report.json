@@ -1,0 +1,390 @@
+{
+  "summary": {
+    "total_tests": 32,
+    "successful_tests": 31,
+    "success_rate": 1.0,
+    "agent_match_rate": 0.8709677419354839,
+    "average_execution_time": 0.03624930367618799,
+    "median_execution_time": 0.00015783309936523438
+  },
+  "test_types": {
+    "agent_selection": {
+      "count": 12,
+      "success_rate": 1.0,
+      "avg_time": 3.467003504435221e-05,
+      "median_time": 2.9921531677246094e-05
+    },
+    "command_execution": {
+      "count": 5,
+      "success_rate": 0.8,
+      "avg_time": 0.08610529899597168,
+      "median_time": 0.10532879829406738
+    },
+    "specialized_agents": {
+      "count": 7,
+      "success_rate": 1.0,
+      "avg_time": 0.00034734180995396206,
+      "median_time": 0.00016427040100097656
+    },
+    "performance": {
+      "count": 1,
+      "success_rate": 1.0,
+      "avg_time": 2.460026741027832e-05,
+      "median_time": 2.460026741027832e-05
+    },
+    "error_handling": {
+      "count": 4,
+      "success_rate": 1.0,
+      "avg_time": 0.10414332151412964,
+      "median_time": 0.10459339618682861
+    },
+    "cli_integration": {
+      "count": 3,
+      "success_rate": 1.0,
+      "avg_time": 0.10333530108133952,
+      "median_time": 0.0602269172668457
+    }
+  },
+  "system_info": {
+    "total_agents": 11,
+    "agent_names": [
+      "ExecutingAgent",
+      "NpmAgent",
+      "NpmAgent",
+      "GitAgent",
+      "DockerAgent",
+      "DockerAgent",
+      "PythonAgent",
+      "PythonAgent",
+      "PythonAgent",
+      "PythonAgent",
+      "GeneralAgent"
+    ],
+    "executing_agent_available": true,
+    "specialized_agents_count": 9,
+    "general_agent_available": true
+  },
+  "detailed_results": [
+    {
+      "test_name": "agent_selection",
+      "command": "npm init my-project",
+      "expected_agent": "NpmAgent",
+      "actual_agent": "NpmAgent",
+      "execution_time": 7.605552673339844e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "agent_selection",
+      "command": "npm create react-app",
+      "expected_agent": "NpmAgent",
+      "actual_agent": "NpmAgent",
+      "execution_time": 3.814697265625e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "agent_selection",
+      "command": "yarn init",
+      "expected_agent": "NpmAgent",
+      "actual_agent": "NpmAgent",
+      "execution_time": 3.337860107421875e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "agent_selection",
+      "command": "git commit -m 'test'",
+      "expected_agent": "GitAgent",
+      "actual_agent": "GitAgent",
+      "execution_time": 3.170967102050781e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "agent_selection",
+      "command": "git config user.name",
+      "expected_agent": "GitAgent",
+      "actual_agent": "GitAgent",
+      "execution_time": 2.9802322387695312e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "agent_selection",
+      "command": "docker run ubuntu",
+      "expected_agent": "DockerAgent",
+      "actual_agent": "DockerAgent",
+      "execution_time": 2.9802322387695312e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "agent_selection",
+      "command": "docker build .",
+      "expected_agent": "DockerAgent",
+      "actual_agent": "DockerAgent",
+      "execution_time": 3.0040740966796875e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "agent_selection",
+      "command": "pip install requests",
+      "expected_agent": "PythonAgent",
+      "actual_agent": "PythonAgent",
+      "execution_time": 2.8371810913085938e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "agent_selection",
+      "command": "poetry init",
+      "expected_agent": "PythonAgent",
+      "actual_agent": "PythonAgent",
+      "execution_time": 2.9325485229492188e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "agent_selection",
+      "command": "echo hello world",
+      "expected_agent": "GeneralAgent",
+      "actual_agent": "GeneralAgent",
+      "execution_time": 3.0994415283203125e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "agent_selection",
+      "command": "ls -la",
+      "expected_agent": "GeneralAgent",
+      "actual_agent": "GeneralAgent",
+      "execution_time": 2.9802322387695312e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "agent_selection",
+      "command": "unknown command",
+      "expected_agent": "GeneralAgent",
+      "actual_agent": "GeneralAgent",
+      "execution_time": 2.86102294921875e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "command_execution",
+      "command": "echo 'Hello Benchmark'",
+      "expected_agent": "GeneralAgent",
+      "actual_agent": "GeneralAgent",
+      "execution_time": 0.10240769386291504,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "command_execution",
+      "command": "pwd",
+      "expected_agent": "GeneralAgent",
+      "actual_agent": "GeneralAgent",
+      "execution_time": 0.10532879829406738,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "command_execution",
+      "command": "date",
+      "expected_agent": "GeneralAgent",
+      "actual_agent": "GeneralAgent",
+      "execution_time": 0.010416746139526367,
+      "success": false,
+      "error_message": "",
+      "interaction_count": 1
+    },
+    {
+      "test_name": "command_execution",
+      "command": "ls /tmp",
+      "expected_agent": "GeneralAgent",
+      "actual_agent": "GeneralAgent",
+      "execution_time": 0.10620641708374023,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "command_execution",
+      "command": "whoami",
+      "expected_agent": "GeneralAgent",
+      "actual_agent": "GeneralAgent",
+      "execution_time": 0.10616683959960938,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "specialized_agents",
+      "command": "npm init -> package name:",
+      "expected_agent": "NpmAgent",
+      "actual_agent": "NpmAgent",
+      "execution_time": 0.0013229846954345703,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "specialized_agents",
+      "command": "npm init -> version:",
+      "expected_agent": "NpmAgent",
+      "actual_agent": "NpmAgent",
+      "execution_time": 0.0003192424774169922,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "specialized_agents",
+      "command": "npm init -> description:",
+      "expected_agent": "NpmAgent",
+      "actual_agent": "NpmAgent",
+      "execution_time": 0.0001728534698486328,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "specialized_agents",
+      "command": "git commit -> commit message:",
+      "expected_agent": "GitAgent",
+      "actual_agent": "GitAgent",
+      "execution_time": 0.00016427040100097656,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "specialized_agents",
+      "command": "git config -> user.name:",
+      "expected_agent": "GitAgent",
+      "actual_agent": "GitAgent",
+      "execution_time": 0.0001513957977294922,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "specialized_agents",
+      "command": "docker run -> container name:",
+      "expected_agent": "DockerAgent",
+      "actual_agent": "DockerAgent",
+      "execution_time": 0.00014972686767578125,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "specialized_agents",
+      "command": "pip install -> package name:",
+      "expected_agent": "PythonAgent",
+      "actual_agent": "PythonAgent",
+      "execution_time": 0.00015091896057128906,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "performance",
+      "command": "agent_selection_1000x",
+      "expected_agent": "N/A",
+      "actual_agent": "N/A",
+      "execution_time": 2.460026741027832e-05,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "error_handling",
+      "command": "",
+      "expected_agent": "Any",
+      "actual_agent": "GeneralAgent",
+      "execution_time": 0.10199308395385742,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "error_handling",
+      "command": "invalid; rm -rf /",
+      "expected_agent": "Any",
+      "actual_agent": "GeneralAgent",
+      "execution_time": 0.1053934097290039,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "error_handling",
+      "command": "command with unicode \ud83d\ude80",
+      "expected_agent": "Any",
+      "actual_agent": "GeneralAgent",
+      "execution_time": 0.10389304161071777,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "error_handling",
+      "command": "very very very very very very very very very very ...",
+      "expected_agent": "Any",
+      "actual_agent": "GeneralAgent",
+      "execution_time": 0.10529375076293945,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "cli_integration",
+      "command": "run echo CLI test",
+      "expected_agent": "CLI",
+      "actual_agent": "CLI",
+      "execution_time": 0.1899731159210205,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "cli_integration",
+      "command": "--help",
+      "expected_agent": "CLI",
+      "actual_agent": "CLI",
+      "execution_time": 0.0602269172668457,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    },
+    {
+      "test_name": "cli_integration",
+      "command": "config --show",
+      "expected_agent": "CLI",
+      "actual_agent": "CLI",
+      "execution_time": 0.059805870056152344,
+      "success": true,
+      "error_message": "",
+      "interaction_count": 0
+    }
+  ],
+  "timestamp": 1754886540.7510364
+}

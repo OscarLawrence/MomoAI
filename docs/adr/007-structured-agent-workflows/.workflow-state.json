@@ -1,0 +1,9 @@
+{
+  "adr_number": "007",
+  "title": "Standardize Scientific Agent Workflow Patterns",
+  "branch_name": "adr/007-structured-agent-workflows",
+  "adr_folder": "007-structured-agent-workflows",
+  "phase": "research",
+  "created": "2025-08-11T08:30:31.546802",
+  "updated": "2025-08-11T08:30:31.546810"
+}

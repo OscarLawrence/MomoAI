@@ -1,0 +1,64 @@
+{
+  "name": "momo-runner",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "code/libs/python/momo-runner/momo_runner",
+  "tags": [
+    "python",
+    "chat",
+    "ollama",
+    "cli",
+    "momo"
+  ],
+  "targets": {
+    "install": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv sync",
+        "cwd": "code/libs/python/momo-runner"
+      }
+    },
+    "format": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv run ruff format .",
+        "cwd": "code/libs/python/momo-runner"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv run ruff check .",
+        "cwd": "code/libs/python/momo-runner"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv run mypy .",
+        "cwd": "code/libs/python/momo-runner"
+      }
+    },
+    "test-fast": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv run pytest tests/unit/ -v",
+        "cwd": "code/libs/python/momo-runner"
+      }
+    },
+    "test-all": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv run pytest tests/ -v --cov=momo_runner --cov-report=term-missing",
+        "cwd": "code/libs/python/momo-runner"
+      }
+    },
+    "chat": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv run python -m momo_runner.cli",
+        "cwd": "code/libs/python/momo-runner"
+      }
+    }
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "timestamp": 1754888537.020194,
+  "benchmarks": {
+    "execution_performance": {
+      "test_name": "execution_performance",
+      "measurements": {
+        "1_steps": {
+          "sample_size": 10,
+          "mean_duration": 0.01043996810913086,
+          "median_duration": 0.010291457176208496,
+          "std_deviation": 0.0004951572477500053,
+          "min_duration": 0.010225057601928711,
+          "max_duration": 0.011842966079711914
+        },
+        "5_steps": {
+          "sample_size": 10,
+          "mean_duration": 0.05117223262786865,
+          "median_duration": 0.051163554191589355,
+          "std_deviation": 0.00018054269357229813,
+          "min_duration": 0.0508730411529541,
+          "max_duration": 0.05139803886413574
+        },
+        "10_steps": {
+          "sample_size": 10,
+          "mean_duration": 0.10260157585144043,
+          "median_duration": 0.10249459743499756,
+          "std_deviation": 0.0005769759914574346,
+          "min_duration": 0.10184144973754883,
+          "max_duration": 0.10359525680541992
+        },
+        "25_steps": {
+          "sample_size": 10,
+          "mean_duration": 0.2559265851974487,
+          "median_duration": 0.256253719329834,
+          "std_deviation": 0.0011841426890399087,
+          "min_duration": 0.2535827159881592,
+          "max_duration": 0.25759243965148926
+        },
+        "50_steps": {
+          "sample_size": 10,
+          "mean_duration": 0.5123682022094727,
+          "median_duration": 0.5126351118087769,
+          "std_deviation": 0.0011921320008115724,
+          "min_duration": 0.5100574493408203,
+          "max_duration": 0.5136318206787109
+        }
+      },
+      "analysis": {
+        "scaling_factor": 0.010244065566501852,
+        "performance_category": "NEEDS_OPTIMIZATION"
+      }
+    },
+    "scalability_analysis": {
+      "test_name": "scalability_analysis",
+      "measurements": {
+        "100_steps": {
+          "duration": 0.11313033103942871,
+          "success_rate": 1.0,
+          "steps_per_second": 883.9362448709492,
+          "memory_peak_mb": 29.43359375
+        },
+        "250_steps": {
+          "duration": 0.29189395904541016,
+          "success_rate": 1.0,
+          "steps_per_second": 856.4754159955305,
+          "memory_peak_mb": 29.43359375
+        },
+        "500_steps": {
+          "duration": 0.5806076526641846,
+          "success_rate": 1.0,
+          "steps_per_second": 861.1667409233978,
+          "memory_peak_mb": 29.43359375
+        },
+        "1000_steps": {
+          "duration": 1.1165821552276611,
+          "success_rate": 1.0,
+          "steps_per_second": 895.5901680124101,
+          "memory_peak_mb": 29.43359375
+        }
+      },
+      "analysis": {
+        "mean_throughput": 874.2921424505719,
+        "throughput_stability": 0.021258425798196784
+      }
+    },
+    "rollback_performance": {
+      "test_name": "rollback_performance",
+      "measurements": {},
+      "analysis": {}
+    },
+    "memory_efficiency": {
+      "test_name": "memory_efficiency",
+      "measurements": {
+        "small_workflow": {
+          "peak_memory_mb": 29.43359375,
+          "memory_per_step": 2.943359375,
+          "success_rate": 1.0
+        },
+        "medium_workflow": {
+          "peak_memory_mb": 29.43359375,
+          "memory_per_step": 0.588671875,
+          "success_rate": 1.0
+        },
+        "large_workflow": {
+          "peak_memory_mb": 29.43359375,
+          "memory_per_step": 0.2943359375,
+          "success_rate": 1.0
+        },
+        "artifact_heavy": {
+          "peak_memory_mb": 29.43359375,
+          "memory_per_step": 2.943359375,
+          "success_rate": 1.0
+        }
+      },
+      "analysis": {}
+    },
+    "command_overhead": {
+      "test_name": "command_overhead",
+      "measurements": {
+        "fast_command": {
+          "mean_duration": 1.0609626770019532e-06,
+          "overhead_std": 1.0814934752615524e-06,
+          "sample_size": 20
+        },
+        "slow_command": {
+          "mean_duration": 0.10021543502807617,
+          "overhead_std": 5.396144031150996e-05,
+          "sample_size": 20
+        }
+      },
+      "analysis": {}
+    }
+  },
+  "summary": {
+    "total_benchmarks": 5,
+    "successful_benchmarks": 5,
+    "failed_benchmarks": 0,
+    "performance_highlights": {
+      "execution_category": "NEEDS_OPTIMIZATION",
+      "mean_throughput_steps_per_sec": 874.2921424505719
+    }
+  }
+}
