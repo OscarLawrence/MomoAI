@@ -23,7 +23,6 @@ dependencies = [
     "pydantic>=2.0.0",
     "langchain-core>=0.3.73",
     "langchain-huggingface>=0.1.0",
-    "momo-logger @ file:../momo-logger",
     "dvc>=3.61.0",
 ]
 
