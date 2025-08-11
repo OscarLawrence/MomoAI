@@ -10,8 +10,65 @@ This example demonstrates:
 """
 
 import asyncio
-from momo_kb import Document, DocumentMetadata, SearchOptions, KnowledgeBase
-from momo_logger import get_logger
+# NOTE: This example previously imported momo_kb; this module should only demonstrate vector store usage.
+# For now, remove cross-module dependency to keep storage modules decoupled.
+from momo_vector_store.logger import get_logger
+
+# Minimal local stand-ins for demonstration without cross-dependency
+from dataclasses import dataclass, field
+from typing import Any, Dict, List, Optional
+
+@dataclass
+class DocumentMetadata:
+    source: str
+    author: str
+    type: str
+    category: str
+    tags: List[str]
+    language: str
+    custom: Dict[str, Any] = field(default_factory=dict)
+
+@dataclass
+class Document:
+    content: str
+    metadata: DocumentMetadata
+
+@dataclass
+class SearchOptions:
+    filters: Dict[str, Any] = field(default_factory=dict)
+    limit: int = 10
+    threshold: float = 0.0
+
+class KnowledgeBase:
+    """Minimal in-file mock to demonstrate search strategies without cross-module deps."""
+    def __init__(self):
+        self._docs: List[Document] = []
+
+    async def save(self, *docs: Document):
+        self._docs.extend(docs)
+
+    async def count(self) -> int:
+        return len(self._docs)
+
+    async def search(self, query: str, options: Optional[SearchOptions] = None):
+        options = options or SearchOptions()
+        # Trivial search: filter by metadata only
+        results = []
+        for doc in self._docs:
+            ok = True
+            for k, v in options.filters.items():
+                # dot-path in custom
+                if k.startswith("custom."):
+                    key = k.split(".", 1)[1]
+                    ok = doc.metadata.custom.get(key) == v
+                else:
+                    ok = getattr(doc.metadata, k) == v
+                if not ok:
+                    break
+            if ok:
+                results.append(type("R", (), {"score": 1.0, "document": doc}))
+        return results[: options.limit]
+
 
 
 async def create_knowledge_base():

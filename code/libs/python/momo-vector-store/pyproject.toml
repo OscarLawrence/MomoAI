@@ -24,8 +24,13 @@ dependencies = [
     "langchain-core>=0.3.73",
     "langchain-huggingface>=0.1.0",
     "numpy>=1.26",
+    "momo-logger>=0",
     "dvc>=3.61.0",
 ]
+
+[tool.uv.sources]
+# Use local path for momo-logger within the monorepo
+"momo-logger" = { path = "../momo-logger" }
 
 [tool.hatch.build.targets.wheel]
 packages = ["momo_vector_store"]
