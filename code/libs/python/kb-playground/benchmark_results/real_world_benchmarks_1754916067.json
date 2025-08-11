@@ -1,0 +1,369 @@
+{
+  "size_100": {
+    "dataset_size": 100,
+    "insertion": {
+      "total_time_seconds": 0.09005308151245117,
+      "docs_per_second": 1110.4561700775728,
+      "avg_time_per_doc_ms": 0.9005308151245117
+    },
+    "search": {
+      "avg_search_time_ms": 0.37550926208496094,
+      "min_search_time_ms": 0.30541419982910156,
+      "max_search_time_ms": 0.5548000335693359,
+      "queries_tested": 5
+    },
+    "memory": {
+      "total_memory_mb": 55.41796875,
+      "memory_per_doc_kb": 567.48
+    },
+    "relationships": {
+      "total_relationships": 780,
+      "relationships_per_doc": 7.8
+    },
+    "final_stats": {
+      "documents": 100,
+      "relationships": 780,
+      "dimension": 256,
+      "cache_size": 0,
+      "operations": 6,
+      "snapshots": 1,
+      "current_version": 1,
+      "is_fitted": true,
+      "caller_configs": 0,
+      "collection_configs": 0,
+      "relationship_analytics": {
+        "tracked_documents": 0,
+        "total_accesses": 0,
+        "total_co_accesses": 0,
+        "unique_co_access_pairs": 0,
+        "similarity_threshold": 0.75,
+        "co_access_threshold": 3,
+        "temporal_window_minutes": 30
+      },
+      "embedding_stats": {
+        "fitted": true,
+        "vocabulary_size": 62,
+        "dimension": 256,
+        "max_features": 10000,
+        "stopwords_count": 57,
+        "uses_svd": true
+      }
+    }
+  },
+  "size_500": {
+    "dataset_size": 500,
+    "insertion": {
+      "total_time_seconds": 3.3643383979797363,
+      "docs_per_second": 148.61763023013583,
+      "avg_time_per_doc_ms": 6.728676795959473
+    },
+    "search": {
+      "avg_search_time_ms": 190.7824993133545,
+      "min_search_time_ms": 44.02875900268555,
+      "max_search_time_ms": 771.9476222991943,
+      "queries_tested": 5
+    },
+    "memory": {
+      "total_memory_mb": 80.59375,
+      "memory_per_doc_kb": 165.056
+    },
+    "relationships": {
+      "total_relationships": 2193,
+      "relationships_per_doc": 4.386
+    },
+    "final_stats": {
+      "documents": 500,
+      "relationships": 2193,
+      "dimension": 256,
+      "cache_size": 0,
+      "operations": 6,
+      "snapshots": 1,
+      "current_version": 1,
+      "is_fitted": true,
+      "caller_configs": 0,
+      "collection_configs": 0,
+      "relationship_analytics": {
+        "tracked_documents": 20,
+        "total_accesses": 50,
+        "total_co_accesses": 0,
+        "unique_co_access_pairs": 0,
+        "similarity_threshold": 0.75,
+        "co_access_threshold": 3,
+        "temporal_window_minutes": 30
+      },
+      "embedding_stats": {
+        "fitted": true,
+        "vocabulary_size": 462,
+        "dimension": 256,
+        "max_features": 10000,
+        "stopwords_count": 57,
+        "uses_svd": true
+      }
+    }
+  },
+  "size_1000": {
+    "dataset_size": 1000,
+    "insertion": {
+      "total_time_seconds": 7.346002101898193,
+      "docs_per_second": 136.12846635881058,
+      "avg_time_per_doc_ms": 7.346002101898193
+    },
+    "search": {
+      "avg_search_time_ms": 744.7951316833496,
+      "min_search_time_ms": 52.07943916320801,
+      "max_search_time_ms": 3484.25555229187,
+      "queries_tested": 5
+    },
+    "memory": {
+      "total_memory_mb": 141.85546875,
+      "memory_per_doc_kb": 145.26
+    },
+    "relationships": {
+      "total_relationships": 5421,
+      "relationships_per_doc": 5.421
+    },
+    "final_stats": {
+      "documents": 1000,
+      "relationships": 5421,
+      "dimension": 256,
+      "cache_size": 0,
+      "operations": 6,
+      "snapshots": 1,
+      "current_version": 1,
+      "is_fitted": true,
+      "caller_configs": 0,
+      "collection_configs": 0,
+      "relationship_analytics": {
+        "tracked_documents": 20,
+        "total_accesses": 50,
+        "total_co_accesses": 0,
+        "unique_co_access_pairs": 0,
+        "similarity_threshold": 0.75,
+        "co_access_threshold": 3,
+        "temporal_window_minutes": 30
+      },
+      "embedding_stats": {
+        "fitted": true,
+        "vocabulary_size": 962,
+        "dimension": 256,
+        "max_features": 10000,
+        "stopwords_count": 57,
+        "uses_svd": true
+      }
+    }
+  },
+  "size_2000": {
+    "dataset_size": 2000,
+    "insertion": {
+      "total_time_seconds": 62.553115367889404,
+      "docs_per_second": 31.97282802363296,
+      "avg_time_per_doc_ms": 31.276557683944702
+    },
+    "search": {
+      "avg_search_time_ms": 7374.333143234253,
+      "min_search_time_ms": 93.31560134887695,
+      "max_search_time_ms": 19993.444681167603,
+      "queries_tested": 5
+    },
+    "memory": {
+      "total_memory_mb": 205.5625,
+      "memory_per_doc_kb": 105.248
+    },
+    "relationships": {
+      "total_relationships": 17140,
+      "relationships_per_doc": 8.57
+    },
+    "final_stats": {
+      "documents": 2000,
+      "relationships": 17140,
+      "dimension": 256,
+      "cache_size": 0,
+      "operations": 6,
+      "snapshots": 1,
+      "current_version": 1,
+      "is_fitted": true,
+      "caller_configs": 0,
+      "collection_configs": 0,
+      "relationship_analytics": {
+        "tracked_documents": 20,
+        "total_accesses": 50,
+        "total_co_accesses": 0,
+        "unique_co_access_pairs": 0,
+        "similarity_threshold": 0.75,
+        "co_access_threshold": 3,
+        "temporal_window_minutes": 30
+      },
+      "embedding_stats": {
+        "fitted": true,
+        "vocabulary_size": 1962,
+        "dimension": 256,
+        "max_features": 10000,
+        "stopwords_count": 57,
+        "uses_svd": true
+      }
+    }
+  },
+  "scalability": {
+    "raw_results": {
+      "size_50": {
+        "size": 50,
+        "insertion_time_seconds": 0.020422935485839844,
+        "docs_per_second": 2448.2278776558487,
+        "search_time_ms": 0.4482269287109375,
+        "time_per_doc_ms": 0.4084587097167969
+      },
+      "size_100": {
+        "size": 100,
+        "insertion_time_seconds": 0.04784727096557617,
+        "docs_per_second": 2089.983357085198,
+        "search_time_ms": 0.5595684051513672,
+        "time_per_doc_ms": 0.4784727096557617
+      },
+      "size_250": {
+        "size": 250,
+        "insertion_time_seconds": 0.9791324138641357,
+        "docs_per_second": 255.3280807172726,
+        "search_time_ms": 0.9946823120117188,
+        "time_per_doc_ms": 3.9165296554565434
+      },
+      "size_500": {
+        "size": 500,
+        "insertion_time_seconds": 2.409092426300049,
+        "docs_per_second": 207.54703910132412,
+        "search_time_ms": 2.4933815002441406,
+        "time_per_doc_ms": 4.818184852600098
+      },
+      "size_1000": {
+        "size": 1000,
+        "insertion_time_seconds": 10.101561307907104,
+        "docs_per_second": 98.9945979159914,
+        "search_time_ms": 4.840612411499023,
+        "time_per_doc_ms": 10.101561307907104
+      }
+    },
+    "scaling_analysis": {
+      "size_100": {
+        "size_factor": 2.0,
+        "time_scaling_factor": 2.342820452953537,
+        "search_scaling_factor": 1.248404255319149,
+        "efficiency": 0.8536719053645995
+      },
+      "size_250": {
+        "size_factor": 5.0,
+        "time_scaling_factor": 47.94278543077282,
+        "search_scaling_factor": 2.2191489361702126,
+        "efficiency": 0.10429097840424333
+      },
+      "size_500": {
+        "size_factor": 10.0,
+        "time_scaling_factor": 117.96014475834696,
+        "search_scaling_factor": 5.562765957446809,
+        "efficiency": 0.08477439579686843
+      },
+      "size_1000": {
+        "size_factor": 20.0,
+        "time_scaling_factor": 494.618480037357,
+        "search_scaling_factor": 10.799468085106383,
+        "efficiency": 0.04043520573369895
+      }
+    }
+  },
+  "query_quality": {
+    "python programming language": {
+      "expected_topics": [
+        "python",
+        "programming",
+        "software"
+      ],
+      "basic_search": {
+        "results_count": 1,
+        "avg_score": 0.7323064988972866,
+        "relevance_score": 1.0,
+        "search_time_ms": 0.2307891845703125
+      },
+      "enhanced_search": {
+        "results_count": 1,
+        "avg_score": 0.7323064988972866,
+        "relevance_score": 1.0,
+        "search_time_ms": 0.20003318786621094,
+        "relationships_found": 0
+      },
+      "improvement": {
+        "relevance_improvement": 0.0,
+        "time_overhead_ms": -0.030755996704101562
+      }
+    },
+    "machine learning neural networks": {
+      "expected_topics": [
+        "machine_learning",
+        "ai",
+        "neural"
+      ],
+      "basic_search": {
+        "results_count": 0,
+        "avg_score": 0,
+        "relevance_score": 0.0,
+        "search_time_ms": 0.15997886657714844
+      },
+      "enhanced_search": {
+        "results_count": 0,
+        "avg_score": 0,
+        "relevance_score": 0.0,
+        "search_time_ms": 0.18334388732910156,
+        "relationships_found": 0
+      },
+      "improvement": {
+        "relevance_improvement": 0.0,
+        "time_overhead_ms": 0.023365020751953125
+      }
+    },
+    "database management systems": {
+      "expected_topics": [
+        "database",
+        "sql",
+        "data"
+      ],
+      "basic_search": {
+        "results_count": 0,
+        "avg_score": 0,
+        "relevance_score": 0.0,
+        "search_time_ms": 0.152587890625
+      },
+      "enhanced_search": {
+        "results_count": 0,
+        "avg_score": 0,
+        "relevance_score": 0.0,
+        "search_time_ms": 0.16832351684570312,
+        "relationships_found": 0
+      },
+      "improvement": {
+        "relevance_improvement": 0.0,
+        "time_overhead_ms": 0.015735626220703125
+      }
+    },
+    "web development frameworks": {
+      "expected_topics": [
+        "web",
+        "frontend",
+        "backend"
+      ],
+      "basic_search": {
+        "results_count": 0,
+        "avg_score": 0,
+        "relevance_score": 0.0,
+        "search_time_ms": 0.14925003051757812
+      },
+      "enhanced_search": {
+        "results_count": 0,
+        "avg_score": 0,
+        "relevance_score": 0.0,
+        "search_time_ms": 0.1766681671142578,
+        "relationships_found": 0
+      },
+      "improvement": {
+        "relevance_improvement": 0.0,
+        "time_overhead_ms": 0.027418136596679688
+      }
+    }
+  }
+}

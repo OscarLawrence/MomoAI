@@ -1,0 +1,46 @@
+{
+  "adr_id": "008",
+  "title": "Standardize Logging Architecture Across MomoAI Codebase",
+  "status": "DRAFT",
+  "problem_statement": {
+    "challenge": "Inconsistent logging approaches across MomoAI modules prevent effective debugging, monitoring, and agent workflow analysis",
+    "core_issues": [
+      "Fragmented logging implementations using different approaches (momo-logger, standard logging, print statements)",
+      "Missing agent context and trace correlation in multi-agent workflows",
+      "No standardized approach for AI-optimized logging levels and structured metadata",
+      "Inconsistent error handling and user-facing message patterns"
+    ],
+    "impact": "Reduced observability, difficult debugging, missed optimization opportunities"
+  },
+  "research_summary": {
+    "current_state_analysis": {},
+    "gap_analysis": {},
+    "momo_logger_capabilities": [
+      "Protocol-based async architecture",
+      "AI-optimized logging levels (AI_SYSTEM, AI_USER, AI_AGENT)",
+      "Rich structured metadata with agent context",
+      "High-performance implementation with caching",
+      "Comprehensive test coverage and benchmarking"
+    ]
+  },
+  "decision": {
+    "decision": "Standardize all MomoAI modules to use momo-logger with consistent agent-aware patterns",
+    "rationale": [
+      "Leverage existing high-quality momo-logger infrastructure",
+      "Enable comprehensive agent workflow observability",
+      "Provide consistent debugging and monitoring capabilities",
+      "Support AI-optimized logging for better agent interaction analysis"
+    ]
+  },
+  "implementation_strategy": {
+    "phase_1": "Core modules integration",
+    "phase_2": "Print statement replacement",
+    "phase_3": "Advanced observability features"
+  },
+  "success_metrics": [
+    "Complete logging standardization",
+    "Agent workflow observability",
+    "Performance optimization"
+  ],
+  "created": 1754904010.916799
+}

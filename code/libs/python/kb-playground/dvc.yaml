@@ -1,0 +1,11 @@
+stages:
+  kb-playground-snapshots:
+    cmd: uv run python scripts/manage_snapshots.py
+    deps:
+      - kb_playground/
+      - data/snapshots/
+    outs:
+      - data/kb_snapshots/
+      - data/operation_logs/
+    metrics:
+      - benchmarks/kb_playground_metrics.json

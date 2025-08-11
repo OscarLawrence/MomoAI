@@ -23,9 +23,13 @@ requires-python = ">=3.9,<4"
 readme = 'README.md'
 dependencies = [
     "pyyaml>=6.0",
-    "click>=8.0.0",
+    "click>=8.0.0", 
     "pytest-cov>=6.2.1",
+    "momo-logger",
 ]
+
+[tool.uv.sources]
+momo-logger = { path = "../momo-logger", editable = true }
 
 [project.scripts]
 mom = "momo_mom.cli:main"

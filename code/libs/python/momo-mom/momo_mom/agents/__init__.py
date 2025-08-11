@@ -10,7 +10,7 @@ from .general import GeneralAgent
 
 __all__ = [
     "InteractiveAgent",
-    "ExecutionContext", 
+    "ExecutionContext",
     "CommandResult",
     "AgentCallback",
     "AgentRegistry",

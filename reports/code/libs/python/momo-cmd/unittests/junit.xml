@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="8" skipped="0" tests="46" time="2.130" timestamp="2025-08-11T12:42:20.686893+02:00" hostname="vincent-Legion-Pro-5-16IRX9"><testcase classname="tests.unit.test_context.TestWorkspaceContext" name="test_workspace_root_detection_with_nx_json" time="0.006" /><testcase classname="tests.unit.test_context.TestWorkspaceContext" name="test_current_module_detection_python_libs" time="0.032" /><testcase classname="tests.unit.test_context.TestWorkspaceContext" name="test_current_module_detection_root_level" time="0.003" /><testcase classname="tests.unit.test_context.TestWorkspaceContext" name="test_no_module_detection_outside_modules" time="0.002" /><testcase classname="tests.unit.test_context.TestWorkspaceContext" name="test_is_module_directory" time="0.003" /><testcase classname="tests.unit.test_context.TestWorkspaceContext" name="test_get_module_info_caching" time="0.004" /><testcase classname="tests.unit.test_context.TestModuleInfo" name="test_module_info_basic_properties" time="0.004"><failure message="assert False is True&#10; +  where False = &lt;momo_cmd.context.ModuleInfo object at 0x798b6418acd0&gt;.has_uv">self = &lt;test_context.TestModuleInfo object at 0x798b64125e50&gt;
+
+    def test_module_info_basic_properties(self):
+        """Test basic module info properties."""
+        module_path = Path("/project/momo-agent")
+    
+        with patch.object(Path, "exists") as mock_exists:
+            # Mock pyproject.toml exists, project.json doesn't
+            mock_exists.side_effect = lambda: str(self).endswith("pyproject.toml")
+    
+            info = ModuleInfo("momo-agent", module_path)
+    
+            assert info.name == "momo-agent"
+            assert info.path == module_path
+&gt;           assert info.has_uv is True
+E           assert False is True
+E            +  where False = &lt;momo_cmd.context.ModuleInfo object at 0x798b6418acd0&gt;.has_uv
+
+tests/unit/test_context.py:108: AssertionError</failure></testcase><testcase classname="tests.unit.test_context.TestModuleInfo" name="test_command_discovery_from_nx_project_json" time="0.007"><failure message="AssertionError: assert [] == ['build', 'fo..., 'test-fast']&#10;  &#10;  Right contains 3 more items, first extra item: 'build'&#10;  &#10;  Full diff:&#10;  + []&#10;  - [&#10;  -     'build',...&#10;  &#10;  ...Full output truncated (3 lines hidden), use '-vv' to show">self = &lt;test_context.TestModuleInfo object at 0x798b641252b0&gt;
+
+    def test_command_discovery_from_nx_project_json(self):
+        """Test command discovery from nx project.json."""
+        module_path = Path("/project/momo-agent")
+    
+        project_data = {
+            "targets": {
+                "test-fast": {"command": "pytest tests/unit"},
+                "format": {"command": "ruff format ."},
+                "build": {"command": "python -m build"},
+            }
+        }
+    
+        mock_open = MagicMock()
+        mock_open.return_value.__enter__.return_value.read.return_value = "json_data"
+    
+        with patch.object(Path, "exists") as mock_exists:
+            mock_exists.side_effect = lambda: str(self).endswith("project.json")
+            with patch("builtins.open", mock_open):
+                with patch("json.load", return_value=project_data):
+                    info = ModuleInfo("momo-agent", module_path)
+    
+                    expected_commands = ["build", "format", "test-fast"]
+&gt;                   assert sorted(info.available_commands) == expected_commands
+E                   AssertionError: assert [] == ['build', 'fo..., 'test-fast']
+E                     
+E                     Right contains 3 more items, first extra item: 'build'
+E                     
+E                     Full diff:
+E                     + []
+E                     - [
+E                     -     'build',...
+E                     
+E                     ...Full output truncated (3 lines hidden), use '-vv' to show
+
+tests/unit/test_context.py:133: AssertionError</failure></testcase><testcase classname="tests.unit.test_context.TestModuleInfo" name="test_command_discovery_with_uv_common_commands" time="0.003"><failure message="AssertionError: assert 'test-fast' in []&#10; +  where [] = &lt;momo_cmd.context.ModuleInfo object at 0x798b6408e1c0&gt;.available_commands">self = &lt;test_context.TestModuleInfo object at 0x798b64125100&gt;
+
+    def test_command_discovery_with_uv_common_commands(self):
+        """Test that common uv commands are included."""
+        module_path = Path("/project/momo-agent")
+    
+        with patch.object(Path, "exists") as mock_exists:
+            mock_exists.side_effect = lambda: str(self).endswith("pyproject.toml")
+    
+            info = ModuleInfo("momo-agent", module_path)
+    
+            # Should include common uv commands
+            common_commands = [
+                "test-fast",
+                "test-all",
+                "format",
+                "lint",
+                "typecheck",
+                "install",
+                "benchmark",
+            ]
+            for cmd in common_commands:
+&gt;               assert cmd in info.available_commands
+E               AssertionError: assert 'test-fast' in []
+E                +  where [] = &lt;momo_cmd.context.ModuleInfo object at 0x798b6408e1c0&gt;.available_commands
+
+tests/unit/test_context.py:155: AssertionError</failure></testcase><testcase classname="tests.unit.test_context.TestModuleInfo" name="test_command_discovery_npm_scripts" time="0.006"><failure message="AssertionError: assert 'start' in []&#10; +  where [] = &lt;momo_cmd.context.ModuleInfo object at 0x798b6413e460&gt;.available_commands">self = &lt;test_context.TestModuleInfo object at 0x798b64125970&gt;
+
+    def test_command_discovery_npm_scripts(self):
+        """Test command discovery from npm package.json scripts."""
+        module_path = Path("/project/web-app")
+    
+        package_data = {
+            "scripts": {"start": "npm run dev", "build": "nuxt build", "test": "vitest"}
+        }
+    
+        mock_open = MagicMock()
+        mock_open.return_value.__enter__.return_value.read.return_value = "json_data"
+    
+        with patch.object(Path, "exists") as mock_exists:
+            mock_exists.side_effect = lambda: str(self).endswith("package.json")
+            with patch("builtins.open", mock_open):
+                with patch("json.load", return_value=package_data):
+                    info = ModuleInfo("web-app", module_path)
+    
+&gt;                   assert "start" in info.available_commands
+E                   AssertionError: assert 'start' in []
+E                    +  where [] = &lt;momo_cmd.context.ModuleInfo object at 0x798b6413e460&gt;.available_commands
+
+tests/unit/test_context.py:174: AssertionError</failure></testcase><testcase classname="tests.unit.test_router.TestContextAwareCommandRouter" name="test_command_classification_file_execution" time="0.004" /><testcase classname="tests.unit.test_router.TestContextAwareCommandRouter" name="test_command_classification_module_command" time="0.003" /><testcase classname="tests.unit.test_router.TestContextAwareCommandRouter" name="test_command_classification_passthrough" time="0.007" /><testcase classname="tests.unit.test_router.TestContextAwareCommandRouter" name="test_route_and_execute_success" time="0.005" /><testcase classname="tests.unit.test_router.TestContextAwareCommandRouter" name="test_route_and_execute_failure" time="0.004" /><testcase classname="tests.unit.test_router.TestContextAwareCommandRouter" name="test_route_and_execute_dry_run" time="0.007" /><testcase classname="tests.unit.test_router.TestContextAwareCommandRouter" name="test_verbose_mode" time="0.005" /><testcase classname="tests.unit.test_router.TestContextAwareCommandRouter" name="test_show_help_empty_args" time="0.004" /><testcase classname="tests.unit.test_router.TestContextAwareCommandRouter" name="test_handle_execution_error" time="0.005" /><testcase classname="tests.unit.test_router.TestCommandRouterIntegration" name="test_file_execution_integration" time="0.005" /><testcase classname="tests.unit.test_router.TestCommandRouterIntegration" name="test_module_command_integration" time="0.003" /><testcase classname="tests.unit.test_strategies.TestContextAwareFileStrategy" name="test_resolve_file_path_relative" time="0.003" /><testcase classname="tests.unit.test_strategies.TestContextAwareFileStrategy" name="test_resolve_file_path_absolute" time="0.004" /><testcase classname="tests.unit.test_strategies.TestContextAwareFileStrategy" name="test_determine_target_module_from_path" time="0.003"><failure message="AttributeError: 'PosixPath' object attribute 'relative_to' is read-only">self = &lt;unittest.mock._patch object at 0x798b6404a190&gt;
+
+    def __enter__(self):
+        """Perform the patch."""
+        new, spec, spec_set = self.new, self.spec, self.spec_set
+        autospec, kwargs = self.autospec, self.kwargs
+        new_callable = self.new_callable
+        self.target = self.getter()
+    
+        # normalise False to None
+        if spec is False:
+            spec = None
+        if spec_set is False:
+            spec_set = None
+        if autospec is False:
+            autospec = None
+    
+        if spec is not None and autospec is not None:
+            raise TypeError("Can't specify spec and autospec")
+        if ((spec is not None or autospec is not None) and
+            spec_set not in (True, None)):
+            raise TypeError("Can't provide explicit spec_set *and* spec or autospec")
+    
+        original, local = self.get_original()
+    
+        if new is DEFAULT and autospec is None:
+            inherit = False
+            if spec is True:
+                # set spec to the object we are replacing
+                spec = original
+                if spec_set is True:
+                    spec_set = original
+                    spec = None
+            elif spec is not None:
+                if spec_set is True:
+                    spec_set = spec
+                    spec = None
+            elif spec_set is True:
+                spec_set = original
+    
+            if spec is not None or spec_set is not None:
+                if original is DEFAULT:
+                    raise TypeError("Can't use 'spec' with create=True")
+                if isinstance(original, type):
+                    # If we're patching out a class and there is a spec
+                    inherit = True
+            if spec is None and _is_async_obj(original):
+                Klass = AsyncMock
+            else:
+                Klass = MagicMock
+            _kwargs = {}
+            if new_callable is not None:
+                Klass = new_callable
+            elif spec is not None or spec_set is not None:
+                this_spec = spec
+                if spec_set is not None:
+                    this_spec = spec_set
+                if _is_list(this_spec):
+                    not_callable = '__call__' not in this_spec
+                else:
+                    not_callable = not callable(this_spec)
+                if _is_async_obj(this_spec):
+                    Klass = AsyncMock
+                elif not_callable:
+                    Klass = NonCallableMagicMock
+    
+            if spec is not None:
+                _kwargs['spec'] = spec
+            if spec_set is not None:
+                _kwargs['spec_set'] = spec_set
+    
+            # add a name to mocks
+            if (isinstance(Klass, type) and
+                issubclass(Klass, NonCallableMock) and self.attribute):
+                _kwargs['name'] = self.attribute
+    
+            _kwargs.update(kwargs)
+            new = Klass(**_kwargs)
+    
+            if inherit and _is_instance_mock(new):
+                # we can only tell if the instance should be callable if the
+                # spec is not a list
+                this_spec = spec
+                if spec_set is not None:
+                    this_spec = spec_set
+                if (not _is_list(this_spec) and not
+                    _instance_callable(this_spec)):
+                    Klass = NonCallableMagicMock
+    
+                _kwargs.pop('name')
+                new.return_value = Klass(_new_parent=new, _new_name='()',
+                                         **_kwargs)
+        elif autospec is not None:
+            # spec is ignored, new *must* be default, spec_set is treated
+            # as a boolean. Should we check spec is not None and that spec_set
+            # is a bool?
+            if new is not DEFAULT:
+                raise TypeError(
+                    "autospec creates the mock for you. Can't specify "
+                    "autospec and new."
+                )
+            if original is DEFAULT:
+                raise TypeError("Can't use 'autospec' with create=True")
+            spec_set = bool(spec_set)
+            if autospec is True:
+                autospec = original
+    
+            new = create_autospec(autospec, spec_set=spec_set,
+                                  _name=self.attribute, **kwargs)
+        elif kwargs:
+            # can't set keyword args when we aren't creating the mock
+            # XXXX If new is a Mock we could call new.configure_mock(**kwargs)
+            raise TypeError("Can't pass kwargs to a mock we aren't creating")
+    
+        new_attr = new
+    
+        self.temp_original = original
+        self.is_local = local
+        self._exit_stack = contextlib.ExitStack()
+        try:
+&gt;           setattr(self.target, self.attribute, new_attr)
+E           AttributeError: 'PosixPath' object attribute 'relative_to' is read-only
+
+/home/vincent/.local/share/uv/python/cpython-3.9.5-linux-x86_64-gnu/lib/python3.9/unittest/mock.py:1502: AttributeError
+
+During handling of the above exception, another exception occurred:
+
+self = &lt;test_strategies.TestContextAwareFileStrategy object at 0x798b6415e5b0&gt;
+mock_context = &lt;MagicMock spec='WorkspaceContext' id='133639585103536'&gt;
+
+    def test_determine_target_module_from_path(self, mock_context):
+        """Test module detection from file path."""
+        strategy = ContextAwareFileStrategy("test.py", [], mock_context)
+    
+        # File in module directory
+        file_path = Path("/project/code/libs/python/momo-agent/test.py")
+    
+&gt;       with patch.object(
+            file_path,
+            "relative_to",
+            return_value=Path("code/libs/python/momo-agent/test.py"),
+        ):
+
+tests/unit/test_strategies.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/vincent/.local/share/uv/python/cpython-3.9.5-linux-x86_64-gnu/lib/python3.9/unittest/mock.py:1515: in __enter__
+    if not self.__exit__(*sys.exc_info()):
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;unittest.mock._patch object at 0x798b6404a190&gt;
+exc_info = (&lt;class 'AttributeError'&gt;, AttributeError("'PosixPath' object attribute 'relative_to' is read-only"), &lt;traceback object at 0x798b642976c0&gt;)
+
+    def __exit__(self, *exc_info):
+        """Undo the patch."""
+        if self.is_local and self.temp_original is not DEFAULT:
+            setattr(self.target, self.attribute, self.temp_original)
+        else:
+&gt;           delattr(self.target, self.attribute)
+E           AttributeError: 'PosixPath' object attribute 'relative_to' is read-only
+
+/home/vincent/.local/share/uv/python/cpython-3.9.5-linux-x86_64-gnu/lib/python3.9/unittest/mock.py:1523: AttributeError</failure></testcase><testcase classname="tests.unit.test_strategies.TestContextAwareFileStrategy" name="test_determine_target_module_fallback_to_context" time="0.003"><failure message="AttributeError: 'PosixPath' object attribute 'relative_to' is read-only">self = &lt;unittest.mock._patch object at 0x798b6407f280&gt;
+
+    def __enter__(self):
+        """Perform the patch."""
+        new, spec, spec_set = self.new, self.spec, self.spec_set
+        autospec, kwargs = self.autospec, self.kwargs
+        new_callable = self.new_callable
+        self.target = self.getter()
+    
+        # normalise False to None
+        if spec is False:
+            spec = None
+        if spec_set is False:
+            spec_set = None
+        if autospec is False:
+            autospec = None
+    
+        if spec is not None and autospec is not None:
+            raise TypeError("Can't specify spec and autospec")
+        if ((spec is not None or autospec is not None) and
+            spec_set not in (True, None)):
+            raise TypeError("Can't provide explicit spec_set *and* spec or autospec")
+    
+        original, local = self.get_original()
+    
+        if new is DEFAULT and autospec is None:
+            inherit = False
+            if spec is True:
+                # set spec to the object we are replacing
+                spec = original
+                if spec_set is True:
+                    spec_set = original
+                    spec = None
+            elif spec is not None:
+                if spec_set is True:
+                    spec_set = spec
+                    spec = None
+            elif spec_set is True:
+                spec_set = original
+    
+            if spec is not None or spec_set is not None:
+                if original is DEFAULT:
+                    raise TypeError("Can't use 'spec' with create=True")
+                if isinstance(original, type):
+                    # If we're patching out a class and there is a spec
+                    inherit = True
+            if spec is None and _is_async_obj(original):
+                Klass = AsyncMock
+            else:
+                Klass = MagicMock
+            _kwargs = {}
+            if new_callable is not None:
+                Klass = new_callable
+            elif spec is not None or spec_set is not None:
+                this_spec = spec
+                if spec_set is not None:
+                    this_spec = spec_set
+                if _is_list(this_spec):
+                    not_callable = '__call__' not in this_spec
+                else:
+                    not_callable = not callable(this_spec)
+                if _is_async_obj(this_spec):
+                    Klass = AsyncMock
+                elif not_callable:
+                    Klass = NonCallableMagicMock
+    
+            if spec is not None:
+                _kwargs['spec'] = spec
+            if spec_set is not None:
+                _kwargs['spec_set'] = spec_set
+    
+            # add a name to mocks
+            if (isinstance(Klass, type) and
+                issubclass(Klass, NonCallableMock) and self.attribute):
+                _kwargs['name'] = self.attribute
+    
+            _kwargs.update(kwargs)
+            new = Klass(**_kwargs)
+    
+            if inherit and _is_instance_mock(new):
+                # we can only tell if the instance should be callable if the
+                # spec is not a list
+                this_spec = spec
+                if spec_set is not None:
+                    this_spec = spec_set
+                if (not _is_list(this_spec) and not
+                    _instance_callable(this_spec)):
+                    Klass = NonCallableMagicMock
+    
+                _kwargs.pop('name')
+                new.return_value = Klass(_new_parent=new, _new_name='()',
+                                         **_kwargs)
+        elif autospec is not None:
+            # spec is ignored, new *must* be default, spec_set is treated
+            # as a boolean. Should we check spec is not None and that spec_set
+            # is a bool?
+            if new is not DEFAULT:
+                raise TypeError(
+                    "autospec creates the mock for you. Can't specify "
+                    "autospec and new."
+                )
+            if original is DEFAULT:
+                raise TypeError("Can't use 'autospec' with create=True")
+            spec_set = bool(spec_set)
+            if autospec is True:
+                autospec = original
+    
+            new = create_autospec(autospec, spec_set=spec_set,
+                                  _name=self.attribute, **kwargs)
+        elif kwargs:
+            # can't set keyword args when we aren't creating the mock
+            # XXXX If new is a Mock we could call new.configure_mock(**kwargs)
+            raise TypeError("Can't pass kwargs to a mock we aren't creating")
+    
+        new_attr = new
+    
+        self.temp_original = original
+        self.is_local = local
+        self._exit_stack = contextlib.ExitStack()
+        try:
+&gt;           setattr(self.target, self.attribute, new_attr)
+E           AttributeError: 'PosixPath' object attribute 'relative_to' is read-only
+
+/home/vincent/.local/share/uv/python/cpython-3.9.5-linux-x86_64-gnu/lib/python3.9/unittest/mock.py:1502: AttributeError
+
+During handling of the above exception, another exception occurred:
+
+self = &lt;test_strategies.TestContextAwareFileStrategy object at 0x798b6415e310&gt;
+mock_context = &lt;MagicMock spec='WorkspaceContext' id='133639585397728'&gt;
+
+    def test_determine_target_module_fallback_to_context(self, mock_context):
+        """Test fallback to current module context."""
+        mock_context.current_module = "momo-workflow"
+        strategy = ContextAwareFileStrategy("test.py", [], mock_context)
+    
+        # Relative file path outside module structure
+        file_path = Path("/project/scripts/test.py")
+    
+&gt;       with patch.object(file_path, "relative_to", side_effect=ValueError):
+
+tests/unit/test_strategies.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/vincent/.local/share/uv/python/cpython-3.9.5-linux-x86_64-gnu/lib/python3.9/unittest/mock.py:1515: in __enter__
+    if not self.__exit__(*sys.exc_info()):
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;unittest.mock._patch object at 0x798b6407f280&gt;
+exc_info = (&lt;class 'AttributeError'&gt;, AttributeError("'PosixPath' object attribute 'relative_to' is read-only"), &lt;traceback object at 0x798b643490c0&gt;)
+
+    def __exit__(self, *exc_info):
+        """Undo the patch."""
+        if self.is_local and self.temp_original is not DEFAULT:
+            setattr(self.target, self.attribute, self.temp_original)
+        else:
+&gt;           delattr(self.target, self.attribute)
+E           AttributeError: 'PosixPath' object attribute 'relative_to' is read-only
+
+/home/vincent/.local/share/uv/python/cpython-3.9.5-linux-x86_64-gnu/lib/python3.9/unittest/mock.py:1523: AttributeError</failure></testcase><testcase classname="tests.unit.test_strategies.TestContextAwareFileStrategy" name="test_execute_file_not_found" time="0.006"><failure message="AssertionError: expected call not found.&#10;Expected: print('❌ File not found: nonexistent.py')&#10;Actual: print('❌ File not found: /project/current/nonexistent.py')">self = &lt;test_strategies.TestContextAwareFileStrategy object at 0x798b64140eb0&gt;
+mock_context = &lt;MagicMock spec='WorkspaceContext' id='133639586751392'&gt;
+
+    def test_execute_file_not_found(self, mock_context):
+        """Test execution when file doesn't exist."""
+        strategy = ContextAwareFileStrategy("nonexistent.py", [], mock_context)
+    
+        with patch.object(Path, "exists", return_value=False):
+            with patch.object(strategy, "_suggest_similar_files"):
+                with patch("builtins.print") as mock_print:
+                    result = strategy.execute()
+    
+                    assert result is False
+&gt;                   mock_print.assert_called_with("❌ File not found: nonexistent.py")
+
+tests/unit/test_strategies.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;MagicMock name='print' id='133639585648704'&gt;
+args = ('❌ File not found: nonexistent.py',), kwargs = {}
+expected = call('❌ File not found: nonexistent.py')
+actual = call('❌ File not found: /project/current/nonexistent.py')
+_error_message = &lt;function NonCallableMock.assert_called_with.&lt;locals&gt;._error_message at 0x798b63fe2b80&gt;
+cause = None
+
+    def assert_called_with(self, /, *args, **kwargs):
+        """assert that the last call was made with the specified arguments.
+    
+        Raises an AssertionError if the args and keyword args passed in are
+        different to the last call to the mock."""
+        if self.call_args is None:
+            expected = self._format_mock_call_signature(args, kwargs)
+            actual = 'not called.'
+            error_message = ('expected call not found.\nExpected: %s\nActual: %s'
+                    % (expected, actual))
+            raise AssertionError(error_message)
+    
+        def _error_message():
+            msg = self._format_mock_failure_message(args, kwargs)
+            return msg
+        expected = self._call_matcher(_Call((args, kwargs), two=True))
+        actual = self._call_matcher(self.call_args)
+        if actual != expected:
+            cause = expected if isinstance(expected, Exception) else None
+&gt;           raise AssertionError(_error_message()) from cause
+E           AssertionError: expected call not found.
+E           Expected: print('❌ File not found: nonexistent.py')
+E           Actual: print('❌ File not found: /project/current/nonexistent.py')
+
+/home/vincent/.local/share/uv/python/cpython-3.9.5-linux-x86_64-gnu/lib/python3.9/unittest/mock.py:907: AssertionError</failure></testcase><testcase classname="tests.unit.test_strategies.TestContextAwareFileStrategy" name="test_execute_in_module_environment_python" time="0.008" /><testcase classname="tests.unit.test_strategies.TestContextAwareFileStrategy" name="test_execute_standard_execution" time="0.006" /><testcase classname="tests.unit.test_strategies.TestContextAwareFileStrategy" name="test_get_file_executor_python" time="0.003" /><testcase classname="tests.unit.test_strategies.TestContextAwareFileStrategy" name="test_get_file_executor_typescript" time="0.003" /><testcase classname="tests.unit.test_strategies.TestContextAwareModuleStrategy" name="test_determine_target_module_explicit" time="0.004" /><testcase classname="tests.unit.test_strategies.TestContextAwareModuleStrategy" name="test_determine_target_module_context_aware" time="0.003" /><testcase classname="tests.unit.test_strategies.TestContextAwareModuleStrategy" name="test_determine_target_module_none" time="0.003" /><testcase classname="tests.unit.test_strategies.TestContextAwareModuleStrategy" name="test_try_nx_command_success" time="0.005" /><testcase classname="tests.unit.test_strategies.TestContextAwareModuleStrategy" name="test_try_nx_command_not_available" time="0.004" /><testcase classname="tests.unit.test_strategies.TestContextAwareModuleStrategy" name="test_try_uv_command_success" time="0.006" /><testcase classname="tests.unit.test_strategies.TestContextAwareModuleStrategy" name="test_try_uv_command_no_uv" time="0.004" /><testcase classname="tests.unit.test_strategies.TestContextAwareModuleStrategy" name="test_try_common_patterns_test_fast" time="0.006" /><testcase classname="tests.unit.test_strategies.TestContextAwareModuleStrategy" name="test_show_context_help" time="0.006"><failure message="IndexError: tuple index out of range">self = &lt;test_strategies.TestContextAwareModuleStrategy object at 0x798b64142610&gt;
+mock_context = &lt;MagicMock spec='WorkspaceContext' id='133639585749936'&gt;
+
+    def test_show_context_help(self, mock_context):
+        """Test context help display."""
+        strategy = ContextAwareModuleStrategy("test-fast", [], mock_context)
+    
+        with patch.object(
+            strategy,
+            "_get_available_modules",
+            return_value=["momo-agent", "momo-workflow"],
+        ):
+            with patch("builtins.print") as mock_print:
+                result = strategy._show_context_help()
+    
+                assert result is False
+    
+                # Should print helpful information
+&gt;               print_calls = [call.args[0] for call in mock_print.call_args_list]
+
+tests/unit/test_strategies.py:303: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+.0 = &lt;list_iterator object at 0x798b64082340&gt;
+
+&gt;   print_calls = [call.args[0] for call in mock_print.call_args_list]
+E   IndexError: tuple index out of range
+
+tests/unit/test_strategies.py:303: IndexError</failure></testcase><testcase classname="tests.unit.test_strategies.TestPassthroughCommandStrategy" name="test_execute_basic_command" time="0.004" /><testcase classname="tests.unit.test_strategies.TestPassthroughCommandStrategy" name="test_enhance_git_status" time="0.003" /><testcase classname="tests.unit.test_strategies.TestPassthroughCommandStrategy" name="test_enhance_git_diff" time="0.003" /><testcase classname="tests.unit.test_strategies.TestPassthroughCommandStrategy" name="test_enhance_ls_command" time="0.002" /><testcase classname="tests.unit.test_strategies.TestPassthroughCommandStrategy" name="test_enhance_find_python_files" time="0.002" /><testcase classname="tests.unit.test_strategies.TestPassthroughCommandStrategy" name="test_no_enhancement_for_unknown_commands" time="0.002" /><testcase classname="tests.unit.test_strategies.TestPassthroughCommandStrategy" name="test_get_execution_preview" time="0.002" /></testsuite></testsuites>

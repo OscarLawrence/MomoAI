@@ -111,7 +111,7 @@ __all__ = [
     # Agent workflows
     "AgentGuardedWorkflow",
     "ResearchGuardStep",
-    "PlanningGuardStep", 
+    "PlanningGuardStep",
     "TDDGuardStep",
     "ValidationGuardStep",
 ]

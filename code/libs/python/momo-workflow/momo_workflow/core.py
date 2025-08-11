@@ -5,11 +5,20 @@ This module implements the core workflow execution engine following scientific
 computing principles: reproducibility, measurability, and failure recovery.
 """
 
-import logging
 import resource
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+try:
+    from momo_logger import get_logger
+    from momo_logger.types import LogLevel
+
+    MOMO_LOGGER_AVAILABLE = True
+except ImportError:
+    import logging
+
+    MOMO_LOGGER_AVAILABLE = False
 
 from .types import (
     ExecutionMetrics,
@@ -26,9 +35,15 @@ from .types import (
 class WorkflowEngine:
     """Scientific workflow execution engine with rollback capabilities."""
 
-    def __init__(self, logger: Optional[logging.Logger] = None):
+    def __init__(self, logger=None):
         """Initialize workflow engine."""
-        self.logger = logger or logging.getLogger(__name__)
+        if MOMO_LOGGER_AVAILABLE and logger is None:
+            self.logger = get_logger("momo-workflow.engine", level=LogLevel.AI_SYSTEM)
+        else:
+            self.logger = logger or (
+                logging.getLogger(__name__) if not MOMO_LOGGER_AVAILABLE else None
+            )
+
         self._execution_stack: List[StepResult] = []
 
     def execute_workflow(
@@ -60,9 +75,43 @@ class WorkflowEngine:
         overall_start = time.time()
         overall_metrics = ExecutionMetrics(start_time=overall_start)
 
-        self.logger.info(
-            f"Starting workflow: {definition.name} ({definition.workflow_id})"
-        )
+        if MOMO_LOGGER_AVAILABLE:
+            if hasattr(self.logger, "info"):
+                # Use async logging if available, otherwise use sync fallback
+                try:
+                    # This would work in an async context
+                    import asyncio
+
+                    if asyncio.iscoroutinefunction(self.logger.info):
+                        # We're not in an async context, so we need to handle this differently
+                        # For now, use sync equivalent or skip detailed logging
+                        pass
+                    else:
+                        # Sync logging method available
+                        self.logger.info(
+                            f"Starting workflow: {definition.name}",
+                            context={
+                                "workflow_id": definition.workflow_id,
+                                "workflow_name": definition.name,
+                                "total_steps": len(definition.steps),
+                                "variables": definition.variables,
+                            },
+                            agent="workflow-engine",
+                            agent_role="orchestrator",
+                        )
+                except Exception:
+                    # Fallback to basic logging
+                    pass
+            # Always provide sync fallback
+            if hasattr(self.logger, "_sync_log"):
+                self.logger._sync_log(
+                    LogLevel.AI_SYSTEM,
+                    f"Starting workflow: {definition.name} ({definition.workflow_id})",
+                )
+        else:
+            self.logger.info(
+                f"Starting workflow: {definition.name} ({definition.workflow_id})"
+            )
 
         # Execute steps
         step_results = []
@@ -71,16 +120,28 @@ class WorkflowEngine:
 
         try:
             for i, step in enumerate(definition.steps):
-                self.logger.info(
-                    f"Executing step {i + 1}/{len(definition.steps)}: {step.step_id}"
-                )
+                if MOMO_LOGGER_AVAILABLE and hasattr(self.logger, "_sync_log"):
+                    self.logger._sync_log(
+                        LogLevel.AI_SYSTEM,
+                        f"Executing step {i + 1}/{len(definition.steps)}: {step.step_id}",
+                    )
+                elif not MOMO_LOGGER_AVAILABLE:
+                    self.logger.info(
+                        f"Executing step {i + 1}/{len(definition.steps)}: {step.step_id}"
+                    )
 
                 # Execute step with rollback tracking
                 result = self._execute_step_with_tracking(step, context)
                 step_results.append(result)
 
                 if not result.success:
-                    self.logger.error(f"Step {step.step_id} failed: {result.error}")
+                    if MOMO_LOGGER_AVAILABLE and hasattr(self.logger, "_sync_log"):
+                        self.logger._sync_log(
+                            LogLevel.ERROR,
+                            f"Step {step.step_id} failed: {result.error}",
+                        )
+                    elif not MOMO_LOGGER_AVAILABLE:
+                        self.logger.error(f"Step {step.step_id} failed: {result.error}")
                     status = WorkflowStatus.FAILED
 
                     if rollback_on_failure:
@@ -99,10 +160,23 @@ class WorkflowEngine:
             else:
                 # All steps completed successfully
                 status = WorkflowStatus.SUCCESS
-                self.logger.info(f"Workflow completed successfully: {definition.name}")
+                if MOMO_LOGGER_AVAILABLE and hasattr(self.logger, "_sync_log"):
+                    self.logger._sync_log(
+                        LogLevel.AI_SYSTEM,
+                        f"Workflow completed successfully: {definition.name}",
+                    )
+                elif not MOMO_LOGGER_AVAILABLE:
+                    self.logger.info(
+                        f"Workflow completed successfully: {definition.name}"
+                    )
 
         except Exception as e:
-            self.logger.exception(f"Workflow execution failed with exception: {e}")
+            if MOMO_LOGGER_AVAILABLE and hasattr(self.logger, "_sync_log"):
+                self.logger._sync_log(
+                    LogLevel.ERROR, f"Workflow execution failed with exception: {e}"
+                )
+            elif not MOMO_LOGGER_AVAILABLE:
+                self.logger.exception(f"Workflow execution failed with exception: {e}")
             status = WorkflowStatus.FAILED
 
             if rollback_on_failure and self._execution_stack:
@@ -162,15 +236,27 @@ class WorkflowEngine:
             # Store result in context
             context.step_results[step.step_id] = result
 
-            self.logger.info(
-                f"Step {step.step_id} completed in {result.metrics.duration_seconds:.2f}s"
-            )
+            if MOMO_LOGGER_AVAILABLE and hasattr(self.logger, '_sync_log'):
+                self.logger._sync_log(
+                    LogLevel.AI_SYSTEM,
+                    f"Step {step.step_id} completed in {result.metrics.duration_seconds:.2f}s"
+                )
+            elif not MOMO_LOGGER_AVAILABLE:
+                self.logger.info(
+                    f"Step {step.step_id} completed in {result.metrics.duration_seconds:.2f}s"
+                )
 
             return result
 
         except Exception as e:
             end_time = time.time()
-            self.logger.exception(f"Step {step.step_id} failed with exception: {e}")
+            if MOMO_LOGGER_AVAILABLE and hasattr(self.logger, '_sync_log'):
+                self.logger._sync_log(
+                    LogLevel.ERROR,
+                    f"Step {step.step_id} failed with exception: {e}"
+                )
+            elif not MOMO_LOGGER_AVAILABLE:
+                self.logger.exception(f"Step {step.step_id} failed with exception: {e}")
 
             return StepResult(
                 step_id=step.step_id,
@@ -192,7 +278,13 @@ class WorkflowEngine:
                     # Find step definition to execute rollback
                     step_def = self._find_step_by_id(result.step_id, context)
                     if step_def and step_def.is_reversible:
-                        self.logger.info(f"Rolling back step: {result.step_id}")
+                        if MOMO_LOGGER_AVAILABLE and hasattr(self.logger, '_sync_log'):
+                            self.logger._sync_log(
+                                LogLevel.AI_SYSTEM,
+                                f"Rolling back step: {result.step_id}"
+                            )
+                        elif not MOMO_LOGGER_AVAILABLE:
+                            self.logger.info(f"Rolling back step: {result.step_id}")
                         step_def.rollback(context, result)
                         rollback_points.append(len(step_results) - i - 1)
 
@@ -200,7 +292,13 @@ class WorkflowEngine:
                         result.status = StepStatus.ROLLED_BACK
 
                 except Exception as e:
-                    self.logger.error(f"Failed to rollback step {result.step_id}: {e}")
+                    if MOMO_LOGGER_AVAILABLE and hasattr(self.logger, '_sync_log'):
+                        self.logger._sync_log(
+                            LogLevel.ERROR,
+                            f"Failed to rollback step {result.step_id}: {e}"
+                        )
+                    elif not MOMO_LOGGER_AVAILABLE:
+                        self.logger.error(f"Failed to rollback step {result.step_id}: {e}")
 
         return rollback_points
 

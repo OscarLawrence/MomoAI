@@ -21,7 +21,11 @@ requires-python = ">=3.9,<3.13"
 dependencies = [
     "pydantic>=2.0.0",
     "psutil>=7.0.0",
+    "momo-logger",
 ]
+
+[tool.uv.sources]
+momo-logger = { path = "../momo-logger", editable = true }
 
 [tool.hatch.build.targets.wheel]
 packages = ["momo_graph"]

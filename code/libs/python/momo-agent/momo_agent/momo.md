@@ -1,0 +1,1 @@
+AI agent framework integrating momo-workflow scientific rigor with momo-mom command execution. Provides protocols for multi-step task orchestration, rollback capabilities, and comprehensive performance measurement. Designed for local AI model testing and validation.

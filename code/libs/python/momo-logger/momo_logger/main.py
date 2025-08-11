@@ -90,3 +90,44 @@ def get_buffer_logger(
 # Re-export important types
 from .types import LogLevel, LogRecord
 from .base import LogBackend, LogFormatter
+
+# Trace correlation support
+import uuid
+import contextvars
+from typing import Optional
+
+# Context variable for trace ID
+_trace_context: contextvars.ContextVar[str] = contextvars.ContextVar(
+    "trace_id", default=None
+)
+
+
+def generate_trace_id() -> str:
+    """Generate a new trace ID."""
+    return str(uuid.uuid4())
+
+
+def set_trace_id(trace_id: str) -> None:
+    """Set the trace ID for current context."""
+    _trace_context.set(trace_id)
+
+
+def get_trace_id() -> Optional[str]:
+    """Get the current trace ID."""
+    return _trace_context.get()
+
+
+def with_trace_id(trace_id: Optional[str] = None):
+    """Context manager for setting trace ID scope."""
+    if trace_id is None:
+        trace_id = generate_trace_id()
+
+    class TraceContext:
+        def __enter__(self):
+            set_trace_id(trace_id)
+            return trace_id
+
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            _trace_context.set(None)
+
+    return TraceContext()
