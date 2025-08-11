@@ -14,136 +14,140 @@ Comprehensive analysis of existing repository workflow patterns:
 
 ### Current State
 
-**Multi-Agent Architecture** with **heterogeneous workflow patterns**:
-- **ADR Workflow System**: Structured 6-phase lifecycle (research → draft → planning → implementation → finalizing → complete)
-- **Module Development**: Standardized nx+uv+Python pattern with MANDATORY workflow (format → lint → typecheck → test-fast)
-- **Command Execution**: `momo-mom` universal command mapping with shell-first architecture and fallback strategies
-- **Agent Task Management**: **Missing structured approach** - agents work ad-hoc without standardized task decomposition
+**Multi-Agent Architecture** with **loosely integrated workflow components**:
+- **ADR Workflow System** (`scripts/adr-workflow.py`): Well-structured 6-phase lifecycle for architectural decisions
+- **momo-workflow Module**: Scientific workflow abstraction with protocols, reversible operations, and benchmarking
+- **momo-mom Command System**: Universal command mapping with shell-first architecture and fallback strategies  
+- **Module Development Pattern**: Standardized nx+uv+Python with mandatory workflow (format → lint → typecheck → test-fast)
+
+**Gap**: No unified framework connecting these systems for **general AI agent task completion**
 
 ### Pain Points
 
-**1. Inconsistent Agent Task Documentation**
-- No standardized way to capture agent decision-making process
-- Task decomposition varies between agents and sessions  
-- Difficult to reproduce agent workflows or learn from past decisions
-- TodoWrite tool usage is inconsistent across different agent types
+**1. Disconnected Workflow Systems**
+- ADR system excellent for architectural decisions but heavyweight for general tasks
+- momo-workflow has scientific rigor but lacks integration with command execution
+- momo-mom provides command abstraction but no structured task management
+- No bridge between these systems for AI agents to follow
 
-**2. Command Complexity vs Scientific Rigor**
-- Complex nx command syntax (`nx g @nxlv/python:uv-project`) vs simple commands (`mom create python`)
-- Cache corruption issues requiring manual recovery (`nx reset`)
-- Inconsistent command patterns causing workflow disruption
+**2. Missing AI Agent Framework**
+- No standardized way for AI agents to decompose and execute arbitrary tasks
+- Limited guidance for AI agents on when to use which workflow system
+- No structured approach for multi-step task completion with validation
+- Insufficient error recovery and rollback mechanisms for AI agent workflows
 
-**3. Missing Scientific Workflow Standards**
-- No standardized metrics for agent task performance
-- Limited reproducibility of agent decision chains
-- Insufficient validation of agent workflow effectiveness
-- Lack of benchmarking for different workflow approaches
+**3. Incomplete Scientific Measurement**  
+- momo-workflow has benchmarking but not integrated with actual agent task execution
+- No metrics collection for real AI agent performance across different task types
+- Limited reproducibility of AI agent decision chains
+- Missing validation framework for AI agent workflow effectiveness
 
-**4. Documentation Fragmentation**
-- Agent context scattered across multiple file types (CLAUDE.md, momo.md, research/, ADRs)
-- No systematic way to track agent learning or improvement over time
-- Missing integration between different workflow systems
+**4. Command Integration Gaps**
+- momo-mom command system exists but not integrated with workflow management
+- Complex nx command syntax still exposed despite abstraction layer
+- No automatic command recovery integrated with workflow rollback
+- Limited fallback strategies for AI agent command execution failures
 
 ### Requirements
 
 **Functional Requirements:**
-- **F1**: Structured agent task decomposition with phase tracking
-- **F2**: Standardized agent decision documentation 
-- **F3**: Reproducible agent workflows with rollback capability
-- **F4**: Performance metrics and benchmarking for agent tasks
-- **F5**: Integration with existing ADR and module development workflows
+- **F1**: Unified AI Agent Framework connecting momo-workflow, momo-mom, and ADR systems
+- **F2**: Multi-step task decomposition with automatic validation and rollback  
+- **F3**: Command execution integration with fallback strategies and error recovery
+- **F4**: Scientific measurement of AI agent performance across task types
+- **F5**: Local model testing capability for framework validation
 
 **Non-functional Requirements:**
-- **NF1**: Scientific rigor - all agent decisions backed by measurable criteria
-- **NF2**: Long-term maintainability - workflows must evolve with codebase
-- **NF3**: Efficiency - minimal overhead for agent task management
-- **NF4**: Consistency - standardized patterns across all agent types
+- **NF1**: Scientific rigor - all workflows benchmarked and measurable
+- **NF2**: AI-agnostic design - works with any AI model (local or API)
+- **NF3**: Minimal overhead - lightweight integration with existing systems
+- **NF4**: Reproducibility - identical tasks produce consistent results across different AI agents
 
 ## Solution Research
 
-### Option 1: Extend Existing ADR Workflow System
+### Option 1: Unified Agent Framework (momo-agent)
 
-**Description:** Enhance the current 6-phase ADR workflow to support agent task management
-
-**Pros:**
-- Leverages proven 6-phase structured approach
-- Already integrated with git branching and PR creation
-- Has state tracking via `.workflow-state.json`
-- Template-based documentation generation
-
-**Cons:**
-- ADR system designed for architectural decisions, not general tasks
-- Heavy overhead for simple agent tasks
-- Requires branching for every task (workflow disruption)
-- Limited integration with TodoWrite tool usage patterns
-
-**Implementation Effort:** Medium
-
-### Option 2: Standalone Agent Workflow System
-
-**Description:** Create dedicated agent workflow system based on momo-workflow module with scientific measurement
+**Description:** Create new `momo-agent` module that integrates momo-workflow protocols with momo-mom command execution
 
 **Pros:**
-- Purpose-built for agent task management
-- Scientific approach with metrics collection and benchmarking
-- Protocol-based design allows extensibility
-- Reversible operations with rollback capability
-- Integrates with existing TodoWrite patterns
+- Leverages existing momo-workflow scientific rigor and protocol design
+- Integrates momo-mom command abstraction with structured task management
+- Can connect to ADR system for complex architectural tasks
+- Purpose-built for AI agent multi-step task completion
+- Supports both local and API-based AI models
 
 **Cons:**
-- Additional system complexity
-- Requires learning new workflow patterns
-- May fragment documentation across multiple systems
-- Initial implementation overhead
+- New module creation overhead
+- Requires integration testing across multiple existing systems
+- Learning curve for understanding the unified framework
 
 **Implementation Effort:** High
 
-### Option 3: Enhanced TodoWrite Integration
+### Option 2: Extend momo-workflow with Agent Integration
 
-**Description:** Extend TodoWrite tool with structured workflow phases and scientific measurement
+**Description:** Enhance existing momo-workflow module with AI agent task patterns and command integration
 
 **Pros:**
-- Builds on existing tool agents already use
-- Minimal learning curve and adoption friction
-- Can add metrics without changing core workflow
-- Easy integration with existing command patterns
+- Builds on proven scientific workflow foundation
+- Already has reversible operations and benchmarking
+- Protocol-based design supports AI agent extensions
+- Existing test suite and performance measurement
 
 **Cons:**
-- TodoWrite may not be suited for complex workflow management
-- Limited rollback and state management capabilities
-- May not scale to advanced workflow requirements
-- Missing integration with documentation generation
+- momo-workflow may not be designed for interactive AI agent usage
+- Limited command execution integration currently
+- May require significant changes to existing module architecture
 
-**Implementation Effort:** Low
+**Implementation Effort:** Medium
+
+### Option 3: Enhance momo-mom with Workflow Patterns
+
+**Description:** Extend momo-mom command system with structured workflow management capabilities
+
+**Pros:**
+- Builds on existing command abstraction and fallback strategies
+- AI agents already interact with command systems naturally  
+- Shell-first architecture aligns with AI agent execution patterns
+- Minimal disruption to existing command usage
+
+**Cons:**
+- momo-mom focused on command mapping, not workflow management
+- Missing scientific measurement and benchmarking capabilities
+- Limited rollback and state management features
+- May dilute the focused purpose of momo-mom
+
+**Implementation Effort:** Medium
 
 ## Comparative Analysis
 
-| Criteria | ADR Extension | Standalone System | TodoWrite Enhancement |
-|----------|--------------|-------------------|----------------------|
-| **Scientific Rigor** | High | Very High | Medium |
-| **Implementation Cost** | Medium | High | Low |
-| **Integration Complexity** | Low | High | Very Low |
-| **Scalability** | Medium | High | Low |
-| **Agent Adoption** | Medium | Low | High |
-| **Long-term Maintainability** | High | Very High | Medium |
+| Criteria | Unified Framework | Extend momo-workflow | Enhance momo-mom |
+|----------|------------------|---------------------|------------------|
+| **Scientific Rigor** | Very High | Very High | Medium |
+| **AI Agent Suitability** | Very High | Medium | High |
+| **Implementation Cost** | High | Medium | Medium |
+| **Integration Complexity** | High | Medium | Low |
+| **Command Execution** | Very High | Low | Very High |
+| **Workflow Management** | Very High | Very High | Low |
+| **Local Model Testing** | Very High | High | Medium |
 
 ## Recommendation
 
-**Hybrid Approach: Enhanced TodoWrite + Workflow Documentation Standards**
+**Option 1: Unified Agent Framework (momo-agent)**
 
-**Phase 1**: Enhance TodoWrite with structured workflow patterns
-- Add workflow phase tracking (research, planning, execution, validation)
-- Implement scientific metrics collection (time tracking, success rates)
-- Create standardized task decomposition templates
-- Add integration with existing command systems (mom, nx)
+**Rationale**: 
+- **Comprehensive Solution**: Addresses all requirements by combining the best of existing systems
+- **AI Agent Focused**: Purpose-built for multi-step AI agent task completion
+- **Scientific Foundation**: Leverages momo-workflow's proven protocols and measurement
+- **Command Integration**: Incorporates momo-mom's command abstraction and fallback strategies
+- **Testable Framework**: Designed for validation with local models and benchmarking
 
-**Phase 2**: Develop workflow documentation standards
-- Standardized agent decision documentation
-- Integration with existing CLAUDE.md and momo.md patterns
-- Automatic workflow result capture and analysis
-- Performance benchmarking across different agent types
-
-This approach maximizes agent adoption while maintaining scientific rigor and long-term scalability.
+**Implementation Strategy**:
+Create `momo-agent` module that serves as orchestration layer:
+- **Task Decomposition**: Uses momo-workflow protocols for structured, reversible task management
+- **Command Execution**: Integrates momo-mom for reliable command execution with fallbacks  
+- **Decision Documentation**: Connects to ADR system for architectural decisions
+- **Performance Measurement**: Built-in benchmarking and scientific measurement
+- **Local Model Support**: Framework designed for testing with any AI model (local or API)
 
 ## References
 

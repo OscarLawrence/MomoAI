@@ -61,96 +61,125 @@
 
 ## Decision
 
-**DECISION: Implement Hybrid Agent Workflow System**
+**DECISION: Create Unified AI Agent Framework (momo-agent)**
 
-**Adopt Enhanced TodoWrite Integration with Scientific Workflow Standards**
+**Build momo-agent module integrating momo-workflow + momo-mom + ADR systems**
 
-**Core Decision**: Extend the existing TodoWrite tool with structured workflow patterns while developing complementary workflow documentation standards. This preserves agent adoption momentum while introducing scientific rigor incrementally.
+**Core Decision**: Create a new `momo-agent` module that serves as the orchestration layer for AI agent task completion. This framework will connect existing proven systems (momo-workflow's scientific protocols, momo-mom's command abstraction, ADR's structured decision-making) into a cohesive, testable system for any AI model.
 
 ## Implementation Strategy
 
-**Two-Phase Implementation Approach**
+**Three-Phase Framework Development**
 
-### Phase 1: Enhanced TodoWrite Core (Immediate)
-1. **Structured Task Decomposition**
-   - Add workflow phases to TodoWrite: `research` → `planning` → `execution` → `validation` → `completed`
-   - Implement task templates for common agent patterns (module creation, debugging, testing)
-   - Add task complexity estimation and deadline tracking
+### Phase 1: Core momo-agent Framework
+1. **Create momo-agent Module**
+   - Standard nx+uv+Python module following repository conventions
+   - Core AgentTask and AgentWorkflow protocols based on momo-workflow patterns
+   - Integration layer for momo-mom command execution
+   - Basic task decomposition with validation and rollback
 
-2. **Scientific Measurement Integration**  
-   - Add time tracking for task phases and overall completion
-   - Implement success rate metrics (% of tasks completed successfully)
-   - Add command execution tracking and failure analysis
-   - Create simple performance benchmarking for agent workflows
+2. **Command Integration**
+   - AgentCommandExecutor wrapping momo-mom functionality
+   - Automatic fallback strategies and error recovery
+   - Command success/failure tracking with workflow state updates
+   - Integration with existing nx command patterns
 
-3. **Command System Integration**
-   - Integrate TodoWrite with `momo-mom` command execution
-   - Add automatic task status updates when commands succeed/fail
-   - Implement command fallback tracking and recovery metrics
+3. **Workflow Protocols**
+   - TaskStep protocol with execute() and rollback() methods
+   - WorkflowEngine for multi-step task orchestration
+   - Scientific measurement collection (timing, success rates, resource usage)
+   - State management and persistence
 
-### Phase 2: Workflow Documentation Standards (Follow-up)
-1. **Agent Decision Documentation**
-   - Standardized workflow result templates
-   - Integration with existing CLAUDE.md and momo.md patterns
-   - Automatic capture of key decisions and reasoning
+### Phase 2: AI Model Integration & Testing
+1. **Local Model Support**
+   - Abstract AI interface supporting multiple model types (local, API)
+   - Task completion validation and quality assessment
+   - Prompt engineering for structured workflow execution
+   - Error handling and retry mechanisms
 
-2. **Learning and Improvement System**
-   - Workflow pattern analysis across different agent sessions
-   - Best practice identification and recommendation
-   - Performance comparison between different approach strategies
+2. **Benchmarking Framework**
+   - Standard test tasks for AI agent performance measurement
+   - Comparative analysis between different AI models
+   - Workflow effectiveness metrics and optimization
+   - Reproducibility testing across model types
 
-3. **Advanced Features**
-   - Workflow rollback and state management
-   - Cross-agent workflow coordination
-   - Integration with existing ADR system for major decisions
+3. **Integration Testing**
+   - End-to-end workflow validation with local models
+   - Performance benchmarking against manual task completion
+   - Error recovery and rollback testing
+   - Command execution reliability validation
+
+### Phase 3: Advanced Features & Documentation
+1. **ADR System Integration**
+   - Automatic promotion of complex tasks to ADR workflow
+   - Decision documentation and architectural impact analysis
+   - Integration with existing ADR branch management
+
+2. **Learning and Optimization**
+   - Workflow pattern analysis and recommendation
+   - Performance optimization based on measurement data
+   - Best practice identification across different task types
+
+3. **Documentation and Examples**
+   - Comprehensive usage examples and patterns
+   - Integration with existing CLAUDE.md and momo.md systems
+   - Tutorial for setting up local model testing
 
 ## Success Metrics
 
 ### Quantitative Metrics
-- **Agent Adoption Rate**: >80% of agent sessions use structured TodoWrite within 30 days
-- **Task Completion Efficiency**: 20% reduction in average task completion time
-- **Workflow Reproducibility**: 90% of documented workflows can be reproduced by different agents
-- **Command Success Rate**: <5% cache corruption or command failure incidents
+- **Framework Adoption**: momo-agent successfully integrated and tested with ≥3 different AI models
+- **Task Success Rate**: >90% success rate for standard repository tasks (module creation, testing, code changes)
+- **Performance Improvement**: 25% reduction in task completion time vs manual execution
+- **Reproducibility**: Identical tasks produce consistent results across different AI models >95% of the time
+- **Command Reliability**: <2% command execution failures after fallback strategies
 
 ### Qualitative Metrics  
-- **Consistency**: Standardized task decomposition patterns across all agent types
-- **Scientific Rigor**: All agent decisions backed by measurable criteria and documentation
-- **Learning Capability**: Clear evidence of workflow improvement over time
-- **Integration**: Seamless workflow between TodoWrite, command systems, and documentation
+- **Local Model Compatibility**: Framework successfully tested with local models (e.g., Ollama, local OpenAI)
+- **Scientific Rigor**: All workflows benchmarked with measurable performance criteria
+- **Integration Quality**: Seamless connection between momo-workflow, momo-mom, and ADR systems
+- **Developer Experience**: Clear, documented patterns for extending framework with new AI models
+
+### Validation Tests
+- **Standard Task Battery**: Module creation, testing, debugging, code refactoring
+- **Error Recovery**: Workflow rollback and recovery from command failures
+- **Cross-Model Consistency**: Same task executed identically across different AI models
+- **Performance Benchmarking**: Scientific measurement of workflow effectiveness
 
 ## Risks and Mitigations
 
-### Risk 1: Agent Adoption Resistance
-**Probability**: Medium **Impact**: High  
-**Mitigation**: Start with minimal changes to existing TodoWrite patterns. Make enhancements optional initially. Focus on adding value without changing core workflow.
+### Risk 1: Integration Complexity
+**Probability**: High **Impact**: High  
+**Mitigation**: Start with minimal viable framework focusing on core protocols. Thorough integration testing with existing systems. Incremental rollout with fallback to manual processes.
 
-### Risk 2: Performance Overhead  
-**Probability**: Low **Impact**: Medium
-**Mitigation**: Implement measurements asynchronously. Use sampling for performance metrics. Provide opt-out for resource-constrained environments.
-
-### Risk 3: Complexity Creep
-**Probability**: High **Impact**: Medium
-**Mitigation**: Strict adherence to "simplicity first" principle. Regular review of feature additions. User feedback prioritization over feature completeness.
-
-### Risk 4: Integration Conflicts
+### Risk 2: Local Model Performance
 **Probability**: Medium **Impact**: Medium
-**Mitigation**: Thorough testing with existing workflow systems. Gradual rollout with fallback options. Clear version compatibility management.
+**Mitigation**: Design framework to be AI-agnostic with performance adaptation. Include fallback to simpler models or manual execution. Comprehensive benchmarking to identify optimal model requirements.
+
+### Risk 3: Framework Adoption Barriers
+**Probability**: Medium **Impact**: High
+**Mitigation**: Extensive documentation and examples. Gradual migration path from existing patterns. Focus on demonstrable value through benchmarking and efficiency gains.
+
+### Risk 4: Maintenance Overhead
+**Probability**: Medium **Impact**: Medium  
+**Mitigation**: Leverage existing proven systems rather than rebuilding. Design for modularity and loose coupling. Comprehensive test coverage and automated validation.
 
 ## Trade-offs Accepted
 
 ### What We Gain
-- **Standardized Agent Workflows**: Consistent, reproducible task management across all agents
-- **Scientific Rigor**: Measurable agent performance with continuous improvement
-- **Simplified Command Execution**: Integration with `momo-mom` reduces command complexity
-- **Learning Capability**: Systematic capture and reuse of successful workflow patterns
+- **Unified AI Agent Framework**: Single system connecting all workflow components
+- **Local Model Testing**: Ability to validate framework with any AI model type
+- **Scientific Measurement**: Comprehensive benchmarking and performance optimization
+- **Reproducible Workflows**: Consistent task execution across different AI agents
+- **Command Reliability**: Robust execution with fallback strategies and error recovery
 
 ### What We Give Up  
-- **Absolute Simplicity**: TodoWrite becomes slightly more complex with additional features
-- **Complete Flexibility**: Some standardization limits agent workflow creativity
-- **Immediate Perfection**: Incremental approach means some features delivered later
-- **Universal Coverage**: Focus on TodoWrite may not address all workflow management needs
+- **Implementation Simplicity**: New module creation requires significant development effort
+- **Immediate Availability**: Framework requires development before benefits realized
+- **System Simplicity**: Additional integration complexity across multiple existing systems
+- **Flexibility**: Standardized patterns may limit some creative workflow approaches
 
-**Rationale**: The benefits of structured, measurable agent workflows significantly outweigh the costs of modest complexity increase. The incremental approach minimizes risk while delivering immediate value.
+**Rationale**: The long-term benefits of a unified, testable AI agent framework justify the upfront development investment. The framework enables scientific validation and optimization that's impossible with current ad-hoc approaches.
 
 ## Implementation Results
 
