@@ -14,9 +14,7 @@
     "vector-store",
     "multi-agent"
   ],
-  "implicitDependencies": [
-    "momo-logger"
-  ],
+  "implicitDependencies": [],
   "targets": {
     "lock": {
       "executor": "@nxlv/python:lock",

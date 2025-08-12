@@ -100,6 +100,11 @@ src/momo_vector_store/
 └── __init__.py         # Public API exports
 ```
 
+## Logging
+
+- Preferred: momo-logger for structured, async-friendly logging across the codebase
+- In this module: we use momo_logger when available; otherwise, a thin stdlib adapter at `momo_vector_store/logger.py` provides compatible methods (ai_user, ai_system, info, warning, error)
+
 ## Development Standards
 
 ### Code Quality

@@ -1,0 +1,31 @@
+#!/bin/bash
+# Mom shell wrapper script
+# This provides the shell entry point for the mom command
+
+# Find the Python executable and mom module
+if command -v python3 &> /dev/null; then
+    PYTHON_CMD="python3"
+elif command -v python &> /dev/null; then
+    PYTHON_CMD="python"
+else
+    echo "Error: Python not found in PATH" >&2
+    exit 1
+fi
+
+# Try to run mom module
+if $PYTHON_CMD -m momo_mom.cli "$@" 2>/dev/null; then
+    exit 0
+fi
+
+# Fallback: try to find and run mom from installed packages
+if $PYTHON_CMD -c "import momo_mom.cli; momo_mom.cli.main()" --help &> /dev/null; then
+    exec $PYTHON_CMD -c "import momo_mom.cli; momo_mom.cli.main()" "$@"
+fi
+
+# Final fallback: try pip installed version
+if command -v mom &> /dev/null; then
+    exec mom "$@"
+fi
+
+echo "Error: Mom command not found. Please install momo-mom package." >&2
+exit 1

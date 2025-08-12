@@ -89,6 +89,17 @@ class Logger:
         if "context" in log_kwargs:
             context.update(log_kwargs.pop("context"))
 
+        # Add trace ID if available
+        trace_id = log_kwargs.get("trace_id")
+        if not trace_id:
+            # Try to get from context
+            try:
+                from .main import get_trace_id
+
+                trace_id = get_trace_id()
+            except ImportError:
+                pass
+
         # Create log record
         record = LogRecord(
             timestamp=self._get_timestamp(),
@@ -97,12 +108,29 @@ class Logger:
             module=self.module,
             context=context,
             metadata=metadata,
+            trace_id=trace_id,
             **log_kwargs,
         )
 
         # Write to backend
         backend = await self._get_backend()
         await backend.write(record)
+
+    def _sync_log(self, level: LogLevel, message: str, **kwargs: Any) -> None:
+        """Synchronous logging fallback for non-async contexts."""
+        # Check if we should log based on level hierarchy
+        if not should_log(self.level, level):
+            return
+
+        # Create simple log record for sync logging
+        timestamp = self._get_timestamp()
+
+        # Simple text output for sync logging
+        level_str = level.value.upper()
+        log_message = f"[{timestamp.strftime('%Y-%m-%d %H:%M:%S')}] {level_str} [{self.module}] {message}"
+
+        # Print to console for sync fallback (could be enhanced to use other backends)
+        print(log_message)
 
     def _get_timestamp(self) -> datetime:
         """Get current timestamp."""

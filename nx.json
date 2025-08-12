@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "defaultBase": "main",
+  "defaultBase": "master",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
@@ -14,7 +14,7 @@
     "sharedGlobals": [],
     "pythonSrc": [
       "{projectRoot}/**/*.py",
-      "{projectRoot}/pyproject.toml", 
+      "{projectRoot}/pyproject.toml",
       "{projectRoot}/uv.lock"
     ]
   },
@@ -34,7 +34,7 @@
       "dependsOn": ["^test-fast", "typecheck"]
     },
     "test-all": {
-      "cache": true, 
+      "cache": true,
       "inputs": ["pythonSrc"],
       "dependsOn": ["^test-all", "typecheck"]
     },

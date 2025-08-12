@@ -1,0 +1,55 @@
+#!/bin/bash
+# Momo AI Chat Interface - Shell Wrapper Script
+# This provides the terminal entry point for chatting with Momo
+
+# Find the Python executable
+if command -v python3 &> /dev/null; then
+    PYTHON_CMD="python3"
+elif command -v python &> /dev/null; then
+    PYTHON_CMD="python"
+else
+    echo "❌ Error: Python not found in PATH" >&2
+    echo "Please install Python 3.13+ to chat with Momo" >&2
+    exit 1
+fi
+
+# Get the directory of this script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MODULE_DIR="$(dirname "$SCRIPT_DIR")"
+
+# Try to run momo-runner module from local development with uv
+if [ -f "$MODULE_DIR/momo_runner/cli.py" ]; then
+    cd "$MODULE_DIR"
+    # Try with uv first (preferred for development)
+    if command -v uv &> /dev/null; then
+        if uv run python -m momo_runner.cli "$@" 2>/dev/null; then
+            exit 0
+        fi
+    fi
+    # Fallback to direct python
+    if $PYTHON_CMD -m momo_runner.cli "$@" 2>/dev/null; then
+        exit 0
+    fi
+fi
+
+# Try to run from installed package
+if $PYTHON_CMD -c "import momo_runner.cli; momo_runner.cli.main()" --help &> /dev/null; then
+    exec $PYTHON_CMD -c "import momo_runner.cli; momo_runner.cli.main()" "$@"
+fi
+
+# Try pip/uv installed version
+if command -v momo &> /dev/null && [ "$(command -v momo)" != "${BASH_SOURCE[0]}" ]; then
+    exec momo "$@"
+fi
+
+# Final fallback with helpful error message
+echo "❌ Momo chat interface not found!" >&2
+echo "" >&2
+echo "To set up Momo:" >&2
+echo "1. Install dependencies: cd code/libs/python/momo-runner && uv sync" >&2
+echo "2. Install Ollama: https://ollama.ai" >&2
+echo "3. Pull a model: ollama pull llama3.2" >&2
+echo "4. Try again: ./scripts/momo" >&2
+echo "" >&2
+echo "Or install globally: uv pip install -e ." >&2
+exit 1

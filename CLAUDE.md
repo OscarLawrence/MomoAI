@@ -12,15 +12,15 @@ MomoAI is a revolutionary self-extending multi-agent system with modular archite
 MomoAI-nx/
 ├── code/                    # All source code
 │   ├── apps/               # User-facing applications
-│   │   ├── web/           # Nuxt.js frontend
-│   │   ├── cli/           # Node.js CLI
-│   │   └── core/          # Core Momo functionality
+│   │   ├── web/           # Nuxt.js frontend (planned)
+│   │   ├── cli/           # Node.js CLI (planned)
+│   │   └── core/          # Core Momo functionality (in development)
 │   └── libs/python/       # Python libraries (uv + Nx managed)
-│       ├── momo-kb/           # Knowledge base abstraction - COMPLETE
-│       ├── momo-logger/       # Structured logging system - COMPLETE
-│       ├── momo-graph-store/  # Graph database abstraction - COMPLETE
-│       ├── momo-vector-store/ # Vector store abstraction - COMPLETE
-│       └── momo-store-document/ # Document store abstraction - COMPLETE
+│       ├── momo-kb/           # Knowledge base abstraction - IN DEVELOPMENT
+│       ├── momo-logger/       # Structured logging system - IN DEVELOPMENT  
+│       ├── momo-graph-store/  # Graph database abstraction - IN DEVELOPMENT
+│       ├── momo-vector-store/ # Vector store abstraction - IN DEVELOPMENT
+│       └── momo-store-document/ # Document store abstraction - IN DEVELOPMENT
 ├── research/              # Strategic analysis and architectural research
 ├── docs/                  # Documentation
 ├── migrations/            # Migration guides and scripts
@@ -53,17 +53,33 @@ nx run-many -t format            # Format all Python modules
 nx affected -t test-fast         # Test only affected modules
 ```
 
-### Web/CLI Applications (Node.js)
+### Universal mo Command (Available Globally)
 
 ```bash
-# Web app (Nuxt.js)
-nx run web:serve   # Starts on port 3000
+# Idea Workflow System
+mo create idea "implement OAuth authentication"  # Create structured idea
+mo investigate idea-001                          # Agent research phase  
+mo decide idea-001                              # Create decision
+mo implement idea-001                           # Implement with ADR
 
-# CLI app 
-nx run cli:build
+# Simple Module Operations  
+mo test module-name                             # Test module
+mo format module-name                           # Format code
+mo validate system                              # Full system validation
+mo status                                       # Show current context
 
-# Core app
-nx run core:build
+# Setup (run once)
+ln -sf $(pwd)/.venv/bin/mo ~/.local/bin/mo     # Add to PATH
+```
+
+### Web/CLI Applications (Node.js - Planned)
+
+```bash
+# Web app (planned)
+nx run web:serve   # Not yet implemented
+
+# CLI app (planned)
+nx run cli:build   # Not yet implemented
 ```
 
 ## Key Principles
@@ -128,13 +144,14 @@ benchmarks/        # Performance benchmarks (10s+)
 - **research/ folder**: Strategic analysis and architectural research findings
 
 ### Module Status
-- **momo-kb**: Knowledge base abstraction - COMPLETE
-- **momo-logger**: Structured logging system - COMPLETE  
-- **momo-graph-store**: Graph database abstraction - COMPLETE
-- **momo-vector-store**: Vector store abstraction - COMPLETE
-- **momo-store-document**: Document store abstraction - COMPLETE
-- **core**: Core Momo functionality - IN DEVELOPMENT
-- **momo-docs**: Revolutionary documentation system - IN DEVELOPMENT
+- **momo-kb**: Knowledge base abstraction - IN DEVELOPMENT (type errors)
+- **momo-logger**: Structured logging system - IN DEVELOPMENT (type errors)
+- **momo-graph-store**: Graph database abstraction - IN DEVELOPMENT (build issues)
+- **momo-vector-store**: Vector store abstraction - IN DEVELOPMENT
+- **momo-store-document**: Document store abstraction - IN DEVELOPMENT
+- **core**: Core Momo functionality - PLANNED
+- **web**: Nuxt.js web interface - PLANNED
+- **cli**: Node.js CLI interface - PLANNED
 
 ## Standardized Module Structure
 

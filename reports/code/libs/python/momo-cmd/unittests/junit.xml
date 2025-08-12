@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="0.581" timestamp="2025-08-11T22:07:15.792154+02:00" hostname="vincent-Legion-Pro-5-16IRX9"><testcase classname="tests.unit.test_nx_routing_fix.TestNxCommandRoutingFix" name="test_nx_command_should_be_tried_first" time="0.014"><failure message="TypeError: the JSON object must be str, bytes or bytearray, not MagicMock">self = &lt;test_nx_routing_fix.TestNxCommandRoutingFix object at 0x7f78229d1730&gt;
+mock_context_with_nx = &lt;MagicMock id='140153953522640'&gt;
+
+    def test_nx_command_should_be_tried_first(self, mock_context_with_nx):
+        """FAILING TEST: nx commands should be tried before uv commands."""
+        strategy = ContextAwareModuleStrategy("test", ["momo-cmd"], mock_context_with_nx)
+    
+        with patch("subprocess.run") as mock_run:
+            # Mock successful nx show command (project exists)
+            mock_run.side_effect = [
+                MagicMock(returncode=0),  # nx show project check succeeds
+                MagicMock(returncode=0)   # nx run command succeeds
+            ]
+    
+            with patch("builtins.print") as mock_print:
+&gt;               result = strategy.execute()
+
+tests/unit/test_nx_routing_fix.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+momo_cmd/strategies/module.py:31: in execute
+    return self._execute_module_command(target_module, extra_args)
+momo_cmd/strategies/module.py:67: in _execute_module_command
+    if self._try_nx_command(module, extra_args):
+momo_cmd/strategies/module.py:97: in _try_nx_command
+    project_info = json.loads(check_result.stdout)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+s = &lt;MagicMock name='mock.stdout' id='140153953197744'&gt;, cls = None
+object_hook = None, parse_float = None, parse_int = None, parse_constant = None
+object_pairs_hook = None, kw = {}
+
+    def loads(s, *, cls=None, object_hook=None, parse_float=None,
+            parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
+        """Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance
+        containing a JSON document) to a Python object.
+    
+        ``object_hook`` is an optional function that will be called with the
+        result of any object literal decode (a ``dict``). The return value of
+        ``object_hook`` will be used instead of the ``dict``. This feature
+        can be used to implement custom decoders (e.g. JSON-RPC class hinting).
+    
+        ``object_pairs_hook`` is an optional function that will be called with the
+        result of any object literal decoded with an ordered list of pairs.  The
+        return value of ``object_pairs_hook`` will be used instead of the ``dict``.
+        This feature can be used to implement custom decoders.  If ``object_hook``
+        is also defined, the ``object_pairs_hook`` takes priority.
+    
+        ``parse_float``, if specified, will be called with the string
+        of every JSON float to be decoded. By default this is equivalent to
+        float(num_str). This can be used to use another datatype or parser
+        for JSON floats (e.g. decimal.Decimal).
+    
+        ``parse_int``, if specified, will be called with the string
+        of every JSON int to be decoded. By default this is equivalent to
+        int(num_str). This can be used to use another datatype or parser
+        for JSON integers (e.g. float).
+    
+        ``parse_constant``, if specified, will be called with one of the
+        following strings: -Infinity, Infinity, NaN.
+        This can be used to raise an exception if invalid JSON numbers
+        are encountered.
+    
+        To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
+        kwarg; otherwise ``JSONDecoder`` is used.
+        """
+        if isinstance(s, str):
+            if s.startswith('\ufeff'):
+                raise JSONDecodeError("Unexpected UTF-8 BOM (decode using utf-8-sig)",
+                                      s, 0)
+        else:
+            if not isinstance(s, (bytes, bytearray)):
+&gt;               raise TypeError(f'the JSON object must be str, bytes or bytearray, '
+                                f'not {s.__class__.__name__}')
+E               TypeError: the JSON object must be str, bytes or bytearray, not MagicMock
+
+/home/vincent/.local/share/uv/python/cpython-3.9.5-linux-x86_64-gnu/lib/python3.9/json/__init__.py:339: TypeError</failure></testcase><testcase classname="tests.unit.test_nx_routing_fix.TestNxCommandRoutingFix" name="test_nx_command_detection_uses_correct_syntax" time="0.004" /><testcase classname="tests.unit.test_nx_routing_fix.TestNxCommandRoutingFix" name="test_fallback_to_uv_when_nx_fails" time="0.005" /></testsuite></testsuites>

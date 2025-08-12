@@ -28,6 +28,7 @@ dependencies = [
     "faiss-cpu>=1.11.0.post1",
     "openai>=1.99.6",
     "matplotlib>=3.9.4",
+    "momo-graph @ file:///home/vincent/Documents/Momo/MomoAI-nx/code/libs/python/momo-graph",
 ]
 
 [tool.hatch.build.targets.wheel]

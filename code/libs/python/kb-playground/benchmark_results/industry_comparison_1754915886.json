@@ -1,0 +1,507 @@
+{
+  "20newsgroups": {
+    "dataset_info": {
+      "name": "20newsgroups",
+      "size": 957,
+      "domain": "general_text",
+      "description": "20 Newsgroups text classification dataset"
+    },
+    "insertion": {
+      "total_time_seconds": 43.96743893623352,
+      "docs_per_second": 21.76610744573838,
+      "avg_time_per_doc_ms": 45.942987394183405
+    },
+    "search": {
+      "queries_tested": 7,
+      "avg_search_time_ms": 11.529718126569476,
+      "min_search_time_ms": 8.865833282470703,
+      "max_search_time_ms": 13.546228408813477,
+      "avg_results_returned": 1.5714285714285714,
+      "avg_relevance_score": 0.6500899594897174,
+      "search_times_ms": [
+        12.741804122924805,
+        13.546228408813477,
+        11.046886444091797,
+        12.627601623535156,
+        8.865833282470703,
+        10.701656341552734,
+        11.178016662597656
+      ]
+    },
+    "memory": {
+      "total_memory_mb": 276.4765625,
+      "memory_per_doc_kb": 295.83281086729363,
+      "virtual_memory_mb": 2573.828125
+    },
+    "relationships": {
+      "total_relationships": 193,
+      "documents": 957,
+      "relationships_per_document": 0.20167189132706373,
+      "tracked_documents": 11,
+      "total_accesses": 11,
+      "total_co_accesses": 0,
+      "unique_co_access_pairs": 0,
+      "similarity_threshold": 0.75,
+      "co_access_threshold": 3,
+      "temporal_window_minutes": 30
+    },
+    "final_stats": {
+      "documents": 957,
+      "relationships": 193,
+      "dimension": 256,
+      "cache_size": 0,
+      "operations": 8,
+      "snapshots": 1,
+      "current_version": 1,
+      "is_fitted": true,
+      "caller_configs": 0,
+      "collection_configs": 0,
+      "relationship_analytics": {
+        "tracked_documents": 11,
+        "total_accesses": 11,
+        "total_co_accesses": 0,
+        "unique_co_access_pairs": 0,
+        "similarity_threshold": 0.75,
+        "co_access_threshold": 3,
+        "temporal_window_minutes": 30
+      },
+      "embedding_stats": {
+        "fitted": true,
+        "vocabulary_size": 10000,
+        "dimension": 256,
+        "max_features": 10000,
+        "stopwords_count": 57,
+        "uses_svd": true
+      }
+    }
+  },
+  "reuters": {
+    "dataset_info": {
+      "name": "reuters",
+      "size": 500,
+      "domain": "financial_news",
+      "description": "Reuters-style financial news dataset"
+    },
+    "insertion": {
+      "total_time_seconds": 1.122044563293457,
+      "docs_per_second": 445.61509975360144,
+      "avg_time_per_doc_ms": 2.244089126586914
+    },
+    "search": {
+      "queries_tested": 6,
+      "avg_search_time_ms": 386.90988222757977,
+      "min_search_time_ms": 380.3701400756836,
+      "max_search_time_ms": 400.5732536315918,
+      "avg_results_returned": 10.0,
+      "avg_relevance_score": 1.0,
+      "search_times_ms": [
+        381.072998046875,
+        380.3701400756836,
+        383.18586349487305,
+        400.5732536315918,
+        388.01002502441406,
+        388.247013092041
+      ]
+    },
+    "memory": {
+      "total_memory_mb": 236.171875,
+      "memory_per_doc_kb": 483.68,
+      "virtual_memory_mb": 2533.5703125
+    },
+    "relationships": {
+      "total_relationships": 4340,
+      "documents": 500,
+      "relationships_per_document": 8.68,
+      "tracked_documents": 60,
+      "total_accesses": 60,
+      "total_co_accesses": 0,
+      "unique_co_access_pairs": 0,
+      "similarity_threshold": 0.75,
+      "co_access_threshold": 3,
+      "temporal_window_minutes": 30
+    },
+    "final_stats": {
+      "documents": 500,
+      "relationships": 4340,
+      "dimension": 256,
+      "cache_size": 0,
+      "operations": 7,
+      "snapshots": 1,
+      "current_version": 1,
+      "is_fitted": true,
+      "caller_configs": 0,
+      "collection_configs": 0,
+      "relationship_analytics": {
+        "tracked_documents": 60,
+        "total_accesses": 60,
+        "total_co_accesses": 0,
+        "unique_co_access_pairs": 0,
+        "similarity_threshold": 0.75,
+        "co_access_threshold": 3,
+        "temporal_window_minutes": 30
+      },
+      "embedding_stats": {
+        "fitted": true,
+        "vocabulary_size": 42,
+        "dimension": 256,
+        "max_features": 10000,
+        "stopwords_count": 57,
+        "uses_svd": true
+      }
+    }
+  },
+  "wikipedia": {
+    "dataset_info": {
+      "name": "wikipedia",
+      "size": 300,
+      "domain": "encyclopedia",
+      "description": "Wikipedia-style encyclopedia articles"
+    },
+    "insertion": {
+      "total_time_seconds": 0.4645063877105713,
+      "docs_per_second": 645.8468773241642,
+      "avg_time_per_doc_ms": 1.5483546257019043
+    },
+    "search": {
+      "queries_tested": 6,
+      "avg_search_time_ms": 78.16970348358154,
+      "min_search_time_ms": 1.0275840759277344,
+      "max_search_time_ms": 96.48323059082031,
+      "avg_results_returned": 8.333333333333334,
+      "avg_relevance_score": 0.8333333333333334,
+      "search_times_ms": [
+        94.56610679626465,
+        90.46530723571777,
+        96.48323059082031,
+        92.49019622802734,
+        1.0275840759277344,
+        93.98579597473145
+      ]
+    },
+    "memory": {
+      "total_memory_mb": 228.07421875,
+      "memory_per_doc_kb": 778.4933333333333,
+      "virtual_memory_mb": 2525.0703125
+    },
+    "relationships": {
+      "total_relationships": 2175,
+      "documents": 300,
+      "relationships_per_document": 7.25,
+      "tracked_documents": 50,
+      "total_accesses": 50,
+      "total_co_accesses": 0,
+      "unique_co_access_pairs": 0,
+      "similarity_threshold": 0.75,
+      "co_access_threshold": 3,
+      "temporal_window_minutes": 30
+    },
+    "final_stats": {
+      "documents": 300,
+      "relationships": 2175,
+      "dimension": 256,
+      "cache_size": 0,
+      "operations": 7,
+      "snapshots": 1,
+      "current_version": 1,
+      "is_fitted": true,
+      "caller_configs": 0,
+      "collection_configs": 0,
+      "relationship_analytics": {
+        "tracked_documents": 50,
+        "total_accesses": 50,
+        "total_co_accesses": 0,
+        "unique_co_access_pairs": 0,
+        "similarity_threshold": 0.75,
+        "co_access_threshold": 3,
+        "temporal_window_minutes": 30
+      },
+      "embedding_stats": {
+        "fitted": true,
+        "vocabulary_size": 50,
+        "dimension": 256,
+        "max_features": 10000,
+        "stopwords_count": 57,
+        "uses_svd": true
+      }
+    }
+  },
+  "arxiv": {
+    "dataset_info": {
+      "name": "arxiv",
+      "size": 225,
+      "domain": "scientific_papers",
+      "description": "ArXiv-style scientific paper abstracts"
+    },
+    "insertion": {
+      "total_time_seconds": 0.2737617492675781,
+      "docs_per_second": 821.8825332683062,
+      "avg_time_per_doc_ms": 1.2167188856336806
+    },
+    "search": {
+      "queries_tested": 6,
+      "avg_search_time_ms": 38.82273038228353,
+      "min_search_time_ms": 0.8876323699951172,
+      "max_search_time_ms": 47.635793685913086,
+      "avg_results_returned": 8.333333333333334,
+      "avg_relevance_score": 0.8333333333333334,
+      "search_times_ms": [
+        45.25136947631836,
+        45.39847373962402,
+        46.29015922546387,
+        47.47295379638672,
+        47.635793685913086,
+        0.8876323699951172
+      ]
+    },
+    "memory": {
+      "total_memory_mb": 224.8828125,
+      "memory_per_doc_kb": 1023.4666666666667,
+      "virtual_memory_mb": 2521.8203125
+    },
+    "relationships": {
+      "total_relationships": 1425,
+      "documents": 225,
+      "relationships_per_document": 6.333333333333333,
+      "tracked_documents": 40,
+      "total_accesses": 50,
+      "total_co_accesses": 0,
+      "unique_co_access_pairs": 0,
+      "similarity_threshold": 0.75,
+      "co_access_threshold": 3,
+      "temporal_window_minutes": 30
+    },
+    "final_stats": {
+      "documents": 225,
+      "relationships": 1425,
+      "dimension": 256,
+      "cache_size": 0,
+      "operations": 7,
+      "snapshots": 1,
+      "current_version": 1,
+      "is_fitted": true,
+      "caller_configs": 0,
+      "collection_configs": 0,
+      "relationship_analytics": {
+        "tracked_documents": 40,
+        "total_accesses": 50,
+        "total_co_accesses": 0,
+        "unique_co_access_pairs": 0,
+        "similarity_threshold": 0.75,
+        "co_access_threshold": 3,
+        "temporal_window_minutes": 30
+      },
+      "embedding_stats": {
+        "fitted": true,
+        "vocabulary_size": 71,
+        "dimension": 256,
+        "max_features": 10000,
+        "stopwords_count": 57,
+        "uses_svd": true
+      }
+    }
+  },
+  "stackoverflow": {
+    "dataset_info": {
+      "name": "stackoverflow",
+      "size": 300,
+      "domain": "programming_qa",
+      "description": "Stack Overflow-style Q&A dataset"
+    },
+    "insertion": {
+      "total_time_seconds": 0.4360928535461426,
+      "docs_per_second": 687.9268888735809,
+      "avg_time_per_doc_ms": 1.4536428451538086
+    },
+    "search": {
+      "queries_tested": 6,
+      "avg_search_time_ms": 49.20033613840739,
+      "min_search_time_ms": 0.8399486541748047,
+      "max_search_time_ms": 101.95207595825195,
+      "avg_results_returned": 5.0,
+      "avg_relevance_score": 0.5,
+      "search_times_ms": [
+        1.1250972747802734,
+        0.9047985076904297,
+        0.8399486541748047,
+        95.23820877075195,
+        95.14188766479492,
+        101.95207595825195
+      ]
+    },
+    "memory": {
+      "total_memory_mb": 228.13671875,
+      "memory_per_doc_kb": 778.7066666666667,
+      "virtual_memory_mb": 2525.0703125
+    },
+    "relationships": {
+      "total_relationships": 2230,
+      "documents": 300,
+      "relationships_per_document": 7.433333333333334,
+      "tracked_documents": 30,
+      "total_accesses": 30,
+      "total_co_accesses": 0,
+      "unique_co_access_pairs": 0,
+      "similarity_threshold": 0.75,
+      "co_access_threshold": 3,
+      "temporal_window_minutes": 30
+    },
+    "final_stats": {
+      "documents": 300,
+      "relationships": 2230,
+      "dimension": 256,
+      "cache_size": 0,
+      "operations": 7,
+      "snapshots": 1,
+      "current_version": 1,
+      "is_fitted": true,
+      "caller_configs": 0,
+      "collection_configs": 0,
+      "relationship_analytics": {
+        "tracked_documents": 30,
+        "total_accesses": 30,
+        "total_co_accesses": 0,
+        "unique_co_access_pairs": 0,
+        "similarity_threshold": 0.75,
+        "co_access_threshold": 3,
+        "temporal_window_minutes": 30
+      },
+      "embedding_stats": {
+        "fitted": true,
+        "vocabulary_size": 85,
+        "dimension": 256,
+        "max_features": 10000,
+        "stopwords_count": 57,
+        "uses_svd": true
+      }
+    }
+  },
+  "industry_comparison": {
+    "our_performance": {
+      "avg_insertion_docs_per_sec": 524.6075013330783,
+      "avg_search_latency_ms": 112.92647407168434,
+      "avg_memory_per_doc_kb": 672.035895506792,
+      "datasets_tested": 5
+    },
+    "industry_baselines": {
+      "elasticsearch": {
+        "insertion_docs_per_sec": 5000,
+        "search_latency_ms": 50,
+        "memory_per_doc_kb": 2.5,
+        "notes": "Full-text search engine"
+      },
+      "neo4j": {
+        "insertion_docs_per_sec": 1000,
+        "search_latency_ms": 100,
+        "memory_per_doc_kb": 3.0,
+        "notes": "Graph database"
+      },
+      "weaviate": {
+        "insertion_docs_per_sec": 2000,
+        "search_latency_ms": 20,
+        "memory_per_doc_kb": 4.0,
+        "notes": "Vector database"
+      },
+      "pinecone": {
+        "insertion_docs_per_sec": 3000,
+        "search_latency_ms": 15,
+        "memory_per_doc_kb": 3.5,
+        "notes": "Managed vector database"
+      }
+    },
+    "comparisons": {
+      "elasticsearch": {
+        "system": "elasticsearch",
+        "baseline": {
+          "insertion_docs_per_sec": 5000,
+          "search_latency_ms": 50,
+          "memory_per_doc_kb": 2.5,
+          "notes": "Full-text search engine"
+        },
+        "our_performance": {
+          "avg_insertion_docs_per_sec": 524.6075013330783,
+          "avg_search_latency_ms": 112.92647407168434,
+          "avg_memory_per_doc_kb": 672.035895506792,
+          "datasets_tested": 5
+        },
+        "comparison": {
+          "insertion_speedup": 0.10492150026661566,
+          "search_speedup": 0.4427659714962907,
+          "memory_efficiency": 0.003720039385864521
+        }
+      },
+      "neo4j": {
+        "system": "neo4j",
+        "baseline": {
+          "insertion_docs_per_sec": 1000,
+          "search_latency_ms": 100,
+          "memory_per_doc_kb": 3.0,
+          "notes": "Graph database"
+        },
+        "our_performance": {
+          "avg_insertion_docs_per_sec": 524.6075013330783,
+          "avg_search_latency_ms": 112.92647407168434,
+          "avg_memory_per_doc_kb": 672.035895506792,
+          "datasets_tested": 5
+        },
+        "comparison": {
+          "insertion_speedup": 0.5246075013330783,
+          "search_speedup": 0.8855319429925814,
+          "memory_efficiency": 0.004464047263037425
+        }
+      },
+      "weaviate": {
+        "system": "weaviate",
+        "baseline": {
+          "insertion_docs_per_sec": 2000,
+          "search_latency_ms": 20,
+          "memory_per_doc_kb": 4.0,
+          "notes": "Vector database"
+        },
+        "our_performance": {
+          "avg_insertion_docs_per_sec": 524.6075013330783,
+          "avg_search_latency_ms": 112.92647407168434,
+          "avg_memory_per_doc_kb": 672.035895506792,
+          "datasets_tested": 5
+        },
+        "comparison": {
+          "insertion_speedup": 0.26230375066653916,
+          "search_speedup": 0.1771063885985163,
+          "memory_efficiency": 0.005952063017383233
+        }
+      },
+      "pinecone": {
+        "system": "pinecone",
+        "baseline": {
+          "insertion_docs_per_sec": 3000,
+          "search_latency_ms": 15,
+          "memory_per_doc_kb": 3.5,
+          "notes": "Managed vector database"
+        },
+        "our_performance": {
+          "avg_insertion_docs_per_sec": 524.6075013330783,
+          "avg_search_latency_ms": 112.92647407168434,
+          "avg_memory_per_doc_kb": 672.035895506792,
+          "datasets_tested": 5
+        },
+        "comparison": {
+          "insertion_speedup": 0.1748691671110261,
+          "search_speedup": 0.1328297914488872,
+          "memory_efficiency": 0.005208055140210329
+        }
+      }
+    }
+  },
+  "metadata": {
+    "timestamp": 1754915886,
+    "benchmark_version": "1.0",
+    "kb_playground_version": "0.1.0",
+    "python_version": "3.9.5 (default, May  6 2021, 19:23:49) \n[Clang 12.0.0 ]",
+    "datasets_tested": [
+      "20newsgroups",
+      "reuters",
+      "wikipedia",
+      "arxiv",
+      "stackoverflow"
+    ]
+  }
+}

@@ -9,7 +9,7 @@
     "kb",
     "multi-agent"
   ],
-  "implicitDependencies": [],
+  "implicitDependencies": ["momo-graph"],
   "targets": {
     "lock": {
       "executor": "@nxlv/python:lock",
