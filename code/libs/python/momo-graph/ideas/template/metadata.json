@@ -1,0 +1,8 @@
+{
+  "id": "{{IDEA_ID}}",
+  "topic": "{{TOPIC}}",
+  "created_at": "{{DATE}}",
+  "author": "{{AUTHOR}}",
+  "stage": "idea",
+  "status": "active"
+}

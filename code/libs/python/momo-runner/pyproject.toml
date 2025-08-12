@@ -63,6 +63,7 @@ select = [
     "UP", # pyupgrade
 ]
 
+
 [tool.mypy]
 python_version = "3.13"
 strict = true

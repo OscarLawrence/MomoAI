@@ -1940,12 +1940,14 @@ name = "momo-graph"
 version = "0.1.0"
 source = { directory = "../momo-graph" }
 dependencies = [
+    { name = "momo-logger" },
     { name = "psutil" },
     { name = "pydantic" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "momo-logger", editable = "../momo-logger" },
     { name = "psutil", specifier = ">=7.0.0" },
     { name = "pydantic", specifier = ">=2.0.0" },
 ]
@@ -2001,6 +2003,31 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.0.2" },
     { name = "openai", specifier = ">=1.99.6" },
     { name = "psutil", specifier = ">=7.0.0" },
+    { name = "pydantic", specifier = ">=2.0.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pyright", specifier = ">=1.1.0" },
+    { name = "pytest", specifier = ">=8.3.4" },
+    { name = "pytest-asyncio", specifier = ">=0.21" },
+    { name = "pytest-cov", specifier = ">=6.0.0" },
+    { name = "pytest-html", specifier = ">=4.1.1" },
+    { name = "ruff", specifier = ">=0.8.2" },
+]
+
+[[package]]
+name = "momo-logger"
+version = "0.1.0"
+source = { editable = "../momo-logger" }
+dependencies = [
+    { name = "dvc" },
+    { name = "pydantic" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "dvc", specifier = ">=3.61.0" },
     { name = "pydantic", specifier = ">=2.0.0" },
 ]
 
