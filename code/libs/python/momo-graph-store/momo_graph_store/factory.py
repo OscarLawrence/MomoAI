@@ -8,6 +8,7 @@ from typing import Any, Dict
 
 from .backends.base import BaseGraphBackend
 from .backends.memory import InMemoryGraphBackend
+from .backends.momo_backend import MomoGraphBackend
 from .exceptions import BackendError
 
 
@@ -27,6 +28,7 @@ def create_graph_backend(backend_type: str, **config: Any) -> BaseGraphBackend:
     """
     backend_registry: Dict[str, type] = {
         "memory": InMemoryGraphBackend,
+        "momo": MomoGraphBackend,
     }
 
     if backend_type not in backend_registry:

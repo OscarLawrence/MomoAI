@@ -75,7 +75,7 @@ results = await backend.query("MATCH (n) RETURN n")
 - **Standard Data Models**: Uses LangChain's `GraphDocument`, `Node`, `Relationship` structures
 - **InMemory Backend**: Fast development backend with full graph operations
 - **Async-first**: Complete async/await support throughout
-- **Type Safety**: Python 3.13+ with complete typing
+- **Type Safety**: Python 3.12+ with complete typing
 - **Factory Pattern**: Extensible backend creation system
 - **Query Interface**: Support for graph query languages (basic pattern matching for InMemory)
 
@@ -283,7 +283,7 @@ backend = create_graph_backend(
 
 1. **Start with tests**: Write failing tests first (TDD approach)
 2. **Follow LangChain patterns**: Use GraphStore protocols and GraphDocument types
-3. **Use type hints**: Full type safety with Python 3.13+ features
+3. **Use type hints**: Full type safety with Python 3.12+ features
 4. **Apply development flow**: Edit → Format → Typecheck → Test
 5. **Validate performance**: Run benchmarks for new implementations
 

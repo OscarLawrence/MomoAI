@@ -78,7 +78,7 @@ results = await vectorstore.asimilarity_search("query", k=5)
 - **Dual API**: Simple VectorStore class for ease-of-use, factory pattern for advanced control
 - **Backend Support**: InMemory (development), extensible to Chroma, Weaviate, etc.
 - **Async-first**: Full async support throughout
-- **Type Safety**: Python 3.13+ with complete typing
+- **Type Safety**: Python 3.12+ with complete typing
 - **Standard Documents**: Uses LangChain Document instead of custom types
 - **Local Embeddings**: No external dependencies with LocalEmbeddings by default
 
@@ -204,7 +204,7 @@ vectorstore = create_vectorstore(
 
 1. **Start with tests**: Write failing tests first (TDD approach)
 2. **Follow LangChain patterns**: Use VectorStore protocols and Document types
-3. **Use type hints**: Full type safety with Python 3.13+ features
+3. **Use type hints**: Full type safety with Python 3.12+ features
 4. **Apply development flow**: Edit → Format → Typecheck → Test
 5. **Validate performance**: Run benchmarks for new implementations
 

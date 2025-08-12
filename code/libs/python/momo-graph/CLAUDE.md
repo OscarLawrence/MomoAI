@@ -58,7 +58,7 @@ pnpm nx run momo-graph:test-all       # Complete test suite with coverage
 
 ### Code Quality Standards
 - **100% async operations**: All I/O uses async/await
-- **Full type safety**: Python 3.13+ type hints with Protocol definitions
+- **Full type safety**: Python 3.12+ type hints with Protocol definitions
 - **Immutable operations**: All graph modifications create new objects
 - **Performance first**: All implementations must maintain benchmark targets
 - **Memory efficiency**: ~1.1KB per node target

@@ -55,7 +55,7 @@ pnpm nx run momo-logger:lint           # Code style validation
 
 ### Code Quality Standards
 - **100% async operations**: All I/O uses async/await
-- **Full type safety**: Python 3.13+ type hints with Protocol definitions
+- **Full type safety**: Python 3.12+ type hints with Protocol definitions
 - **Structured data**: All logs are structured using Pydantic models
 - **Protocol-first**: Define interfaces before implementations
 - **Performance awareness**: All implementations must be benchmarked
@@ -156,7 +156,7 @@ src/momo_logger/
 
 ### Core Dependencies
 - `pydantic`: Data validation and serialization
-- `typing`: Type hints for Python 3.13+
+- `typing`: Type hints for Python 3.12+
 
 ### Development Dependencies  
 - `pytest`: Testing framework with async support

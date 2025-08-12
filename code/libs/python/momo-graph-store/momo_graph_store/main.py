@@ -22,7 +22,7 @@ class GraphStore:
     while still allowing full customization.
 
     Default configuration:
-    - Backend: InMemory ('memory')
+    - Backend: Momo Graph ('momo')
     - All operations are async-first
 
     Example:
@@ -33,21 +33,21 @@ class GraphStore:
 
         # Customized usage
         store = GraphStore(
-            backend_type="memory",
+            backend_type="momo",
             **config
         )
     """
 
     def __init__(
         self,
-        backend_type: str = "memory",
+        backend_type: str = "momo",
         **config: Any,
     ):
         """
         Initialize GraphStore with sensible defaults.
 
         Args:
-            backend_type: Graph backend type (default: "memory")
+            backend_type: Graph backend type (default: "momo")
             **config: Backend-specific configuration options
         """
         # Initialize the underlying backend
@@ -57,14 +57,14 @@ class GraphStore:
     @classmethod
     async def acreate(
         cls,
-        backend_type: str = "memory",
+        backend_type: str = "momo",
         **config: Any,
     ) -> "GraphStore":
         """
         Async factory method to create GraphStore.
 
         Args:
-            backend_type: Graph backend type (default: "memory")
+            backend_type: Graph backend type (default: "momo")
             **config: Backend-specific configuration options
 
         Returns:

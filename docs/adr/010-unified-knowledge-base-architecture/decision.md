@@ -30,38 +30,38 @@ After conducting two comprehensive experiments with different knowledge base app
 - **momo-graph-store**: LangChain-compatible graph abstraction ready for backend integration
 - **momo-store-document**: Pandas-based document storage with DuckDB, HDF5, CSV backends
 
-### Critical Insight: Rollback Requirements for Multi-Agent Systems
+### Critical Insight: Multi-Agent Coordination Requirements
 
-**Multi-agent systems require operation-level rollback capabilities that production vector databases cannot provide:**
+**Multi-agent systems require robust coordination and data consistency mechanisms:**
 
-1. **Agent Experimentation**: Agents need safe exploration with rollback ("try this, if it doesn't work, undo")
-2. **Multi-Agent Coordination**: Selective rollback of specific agent operations
-3. **Data Integrity**: Recovery from agent errors or conflicts
+1. **Agent Experimentation**: Agents need safe exploration patterns with proper error handling
+2. **Multi-Agent Coordination**: Clear operation boundaries and conflict resolution
+3. **Data Integrity**: Recovery from agent errors through proper transaction handling
 4. **Audit Trail**: Complete operation history for debugging and compliance
 
-**Production Vector DB Limitations**:
-- Weaviate, Milvus, Pinecone: No operation-level rollback
-- Only support collection-level snapshots (too coarse-grained)
-- Cannot selectively undo specific agent operations
+**Production Database Capabilities**:
+- Modern databases provide transaction support and ACID guarantees
+- Application-level coordination can handle multi-agent scenarios
+- Proper error handling and rollback at the application layer
 
 ## Decision
 
-**We will implement a production knowledge base architecture using existing production wrappers (momo-vector-store, momo-graph-store, momo-store-document) with momo-graph providing rollback capabilities as the system of record for all operations.**
+**We will implement a production knowledge base architecture using existing production wrappers (momo-vector-store, momo-graph-store, momo-store-document) with proper transaction coordination and application-level multi-agent coordination.**
 
 ### Core Architecture Decision
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                Production Knowledge Base                    │
-│              (Rollback-First Design)                       │
+│            (Transaction-Coordinated Design)                │
 ├─────────────────────────────────────────────────────────────┤
 │                   Unified API Layer                        │
 │           (Existing momo-kb interface)                     │
 ├─────────────────────────────────────────────────────────────┤
-│                 Rollback Coordination Layer                │
-│  • momo-graph as System of Record (155K rollback ops/sec)  │
+│             Application Coordination Layer                 │
+│  • Transaction Management & Error Handling                 │
 │  • Operation Tracking & Agent Context                      │
-│  • Cross-Backend Transaction Coordination                  │
+│  • Cross-Backend Consistency Coordination                  │
 ├─────────────────────────────────────────────────────────────┤
 │                Production Storage Backends                 │
 │  ┌─────────────┬─────────────┬─────────────────────────────┐ │
@@ -70,9 +70,9 @@ After conducting two comprehensive experiments with different knowledge base app
 │  │             │             │                             │ │
 │  │ • Weaviate  │ • momo-     │ • DuckDB (ACID)             │ │
 │  │   (Primary) │   graph     │ • HDF5 (Archive)            │ │
-│  │ • Milvus    │   (155K     │ • CSV (Export)              │ │
-│  │   (Fallback)│   ops/sec)  │ • Pandas (Processing)       │ │
-│  │             │             │                             │ │
+│  │ • Milvus    │   (Fast)    │ • CSV (Export)              │ │
+│  │   (Fallback)│ • Neo4j     │ • Pandas (Processing)       │ │
+│  │             │   (Option)  │                             │ │
 │  │ momo-vector-│ momo-graph- │ momo-store-document         │ │
 │  │ store       │ store       │                             │ │
 │  │ (wrapper)   │ (wrapper)   │ (existing)                  │ │
@@ -83,18 +83,18 @@ After conducting two comprehensive experiments with different knowledge base app
 ### Implementation Strategy
 
 #### Phase 1: Production Backend Integration (2-3 weeks)
-**Goal**: Integrate momo-graph backend into momo-graph-store and establish rollback coordination
+**Goal**: Integrate momo-graph backend into momo-graph-store and establish transaction coordination
 
 **Key Components**:
 1. **momo-graph Integration**: Add momo-graph as backend option in momo-graph-store factory
-2. **Rollback Coordination Layer**: Implement cross-backend operation tracking
+2. **Transaction Coordination Layer**: Implement cross-backend operation coordination
 3. **Agent Context System**: Add agent identification and operation attribution
-4. **Transaction Coordination**: Ensure consistency across all three stores
+4. **Error Handling**: Ensure proper error recovery across all three stores
 
 **Expected Outcomes**:
-- Production-ready graph backend with 155K rollback ops/sec
-- Complete operation audit trail for multi-agent systems
-- Cross-backend transaction consistency
+- Production-ready graph backend with high performance
+- Robust error handling for multi-agent systems
+- Cross-backend transaction coordination
 - Agent-specific operation tracking
 
 #### Phase 2: Weaviate Vector Integration (1-2 weeks)

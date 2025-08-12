@@ -97,7 +97,7 @@ import contextvars
 from typing import Optional
 
 # Context variable for trace ID
-_trace_context: contextvars.ContextVar[str] = contextvars.ContextVar(
+_trace_context: contextvars.ContextVar[Optional[str]] = contextvars.ContextVar(
     "trace_id", default=None
 )
 
