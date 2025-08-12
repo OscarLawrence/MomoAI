@@ -108,8 +108,8 @@ class TestGraphBackend:
         await graph.rollback(steps=1)
         assert await graph.count_nodes() == 1
 
-        # Rollback all operations
-        await graph.rollback(steps=2)  # One more rollback operation was added
+        # Rollback all remaining operations to get back to 0
+        await graph.rollback(steps=3)  # Need to account for the previous rollback operation that was added to history
         assert await graph.count_nodes() == 0
 
     @pytest.mark.asyncio

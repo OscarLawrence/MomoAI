@@ -22,8 +22,8 @@ class PersistenceStrategy(ABC):
         self.enabled = True
 
     @abstractmethod
-    async def load(self) -> pd.DataFrame:
-        """Load data into pandas DataFrame."""
+    async def load(self, where_clause: Optional[str] = None, columns: Optional[List[str]] = None) -> pd.DataFrame:
+        """Load data into pandas DataFrame with optional filtering and column selection."""
         pass
 
     @abstractmethod
@@ -44,11 +44,14 @@ class NoPersistence(PersistenceStrategy):
         super().__init__()
         self.enabled = False
 
-    async def load(self) -> pd.DataFrame:
+    async def load(self, where_clause: Optional[str] = None, columns: Optional[List[str]] = None) -> pd.DataFrame:
         """Return empty DataFrame."""
-        return pd.DataFrame(
-            columns=["id", "content", "created_at", "updated_at", "metadata"]
-        )
+        if columns:
+            return pd.DataFrame(columns=columns)
+        else:
+            return pd.DataFrame(
+                columns=["id", "content", "created_at", "updated_at", "metadata"]
+            )
 
     async def save(self, df: pd.DataFrame):
         """No-op."""
@@ -68,31 +71,42 @@ class CSVPersistence(PersistenceStrategy):
         super().__init__()
         self.file_path = file_path
 
-    async def load(self) -> pd.DataFrame:
+    async def load(self, where_clause: Optional[str] = None, columns: Optional[List[str]] = None) -> pd.DataFrame:
         """Load DataFrame from CSV file."""
         try:
-            df = await asyncio.get_event_loop().run_in_executor(None, self._load_sync)
+            df = await asyncio.get_event_loop().run_in_executor(None, self._load_sync, columns)
+            # Note: CSV doesn't support WHERE clauses, so we ignore where_clause
             return df
         except Exception:
             # Return empty DataFrame if file doesn't exist or is corrupted
-            return pd.DataFrame(
-                columns=["id", "content", "created_at", "updated_at", "metadata"]
-            )
+            if columns:
+                return pd.DataFrame(columns=columns)
+            else:
+                return pd.DataFrame(
+                    columns=["id", "content", "created_at", "updated_at", "metadata"]
+                )
 
-    def _load_sync(self) -> pd.DataFrame:
+    def _load_sync(self, columns: Optional[List[str]] = None) -> pd.DataFrame:
         """Synchronous CSV loading."""
         try:
-            df = pd.read_csv(self.file_path)
-            # Parse metadata JSON column
+            if columns:
+                df = pd.read_csv(self.file_path, usecols=columns)
+            else:
+                df = pd.read_csv(self.file_path)
+            
+            # Parse metadata JSON column if it exists
             if "metadata" in df.columns:
                 df["metadata"] = df["metadata"].apply(
                     lambda x: json.loads(x) if pd.notnull(x) and x else {}
                 )
             return df
         except FileNotFoundError:
-            return pd.DataFrame(
-                columns=["id", "content", "created_at", "updated_at", "metadata"]
-            )
+            if columns:
+                return pd.DataFrame(columns=columns)
+            else:
+                return pd.DataFrame(
+                    columns=["id", "content", "created_at", "updated_at", "metadata"]
+                )
 
     async def save(self, df: pd.DataFrame):
         """Save DataFrame to CSV file."""
@@ -129,43 +143,57 @@ class HDF5Persistence(PersistenceStrategy):
         super().__init__()
         self.file_path = file_path
 
-    async def load(self) -> pd.DataFrame:
+    async def load(self, where_clause: Optional[str] = None, columns: Optional[List[str]] = None) -> pd.DataFrame:
         """Load DataFrame from HDF5 file."""
         try:
-            df = await asyncio.get_event_loop().run_in_executor(None, self._load_sync)
+            df = await asyncio.get_event_loop().run_in_executor(None, self._load_sync, columns)
+            # Note: HDF5 doesn't support WHERE clauses in this implementation, so we ignore where_clause
             return df
         except Exception:
             # Return empty DataFrame if file doesn't exist or is corrupted
-            return pd.DataFrame(
-                columns=["id", "content", "created_at", "updated_at", "metadata"]
-            )
+            if columns:
+                return pd.DataFrame(columns=columns)
+            else:
+                return pd.DataFrame(
+                    columns=["id", "content", "created_at", "updated_at", "metadata"]
+                )
 
-    def _load_sync(self) -> pd.DataFrame:
+    def _load_sync(self, columns: Optional[List[str]] = None) -> pd.DataFrame:
         """Synchronous HDF5 loading."""
         try:
             with pd.HDFStore(self.file_path, mode="r") as store:
                 if "/documents" in store:
-                    df_result = store["/documents"]
-                    # Parse metadata JSON column
+                    if columns:
+                        df_result = store.select("/documents", columns=columns)
+                    else:
+                        df_result = store["/documents"]
+                    
+                    # Parse metadata JSON column if it exists
                     if "metadata" in df_result.columns:
                         df_result["metadata"] = df_result["metadata"].apply(
                             lambda x: json.loads(x) if pd.notnull(x) and x else {}
                         )
                     return df_result
                 else:
-                    return pd.DataFrame(
-                        columns=[
-                            "id",
-                            "content",
-                            "created_at",
-                            "updated_at",
-                            "metadata",
-                        ]
-                    )
+                    if columns:
+                        return pd.DataFrame(columns=columns)
+                    else:
+                        return pd.DataFrame(
+                            columns=[
+                                "id",
+                                "content",
+                                "created_at",
+                                "updated_at",
+                                "metadata",
+                            ]
+                        )
         except FileNotFoundError:
-            return pd.DataFrame(
-                columns=["id", "content", "created_at", "updated_at", "metadata"]
-            )
+            if columns:
+                return pd.DataFrame(columns=columns)
+            else:
+                return pd.DataFrame(
+                    columns=["id", "content", "created_at", "updated_at", "metadata"]
+                )
 
     async def save(self, df: pd.DataFrame):
         """Save DataFrame to HDF5 file."""
@@ -247,25 +275,36 @@ class DuckDBPersistence(PersistenceStrategy):
         """
         )
 
-    async def load(self) -> pd.DataFrame:
-        """Load DataFrame from DuckDB."""
+    async def load(self, where_clause: Optional[str] = None, columns: Optional[List[str]] = None) -> pd.DataFrame:
+        """Load DataFrame from DuckDB with optional filtering and column selection."""
         try:
             loop = asyncio.get_event_loop()
-            df = await loop.run_in_executor(None, self._load_sync)
+            df = await loop.run_in_executor(None, self._load_sync, where_clause, columns)
             return df
         except Exception:
             return pd.DataFrame(
                 columns=["id", "content", "created_at", "updated_at", "metadata"]
             )
 
-    def _load_sync(self) -> pd.DataFrame:
-        """Synchronous DuckDB loading."""
+    def _load_sync(self, where_clause: Optional[str] = None, columns: Optional[List[str]] = None) -> pd.DataFrame:
+        """Synchronous DuckDB loading with optional filtering and column selection."""
         try:
             conn = self._get_connection()
-            result = conn.execute("SELECT * FROM documents").fetchdf()
+            
+            # Build SQL query with optional filtering and column selection
+            if columns:
+                column_list = ", ".join(columns)
+            else:
+                column_list = "*"
+            
+            query = f"SELECT {column_list} FROM documents"
+            if where_clause:
+                query += f" WHERE {where_clause}"
+            
+            result = conn.execute(query).fetchdf()
 
             if not result.empty:
-                # Parse metadata JSON column
+                # Parse metadata JSON column if it exists
                 if "metadata" in result.columns:
                     result["metadata"] = result["metadata"].apply(
                         lambda x: json.loads(x)
@@ -274,13 +313,21 @@ class DuckDBPersistence(PersistenceStrategy):
                     )
                 return result
             else:
+                # Return empty DataFrame with requested columns or all columns
+                if columns:
+                    return pd.DataFrame(columns=columns)
+                else:
+                    return pd.DataFrame(
+                        columns=["id", "content", "created_at", "updated_at", "metadata"]
+                    )
+        except Exception:
+            # Return empty DataFrame with requested columns or all columns
+            if columns:
+                return pd.DataFrame(columns=columns)
+            else:
                 return pd.DataFrame(
                     columns=["id", "content", "created_at", "updated_at", "metadata"]
                 )
-        except Exception:
-            return pd.DataFrame(
-                columns=["id", "content", "created_at", "updated_at", "metadata"]
-            )
 
     async def save(self, df: pd.DataFrame):
         """Save DataFrame to DuckDB."""

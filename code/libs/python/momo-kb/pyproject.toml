@@ -17,7 +17,7 @@ asyncio_mode = "auto"
 name = "momo-kb"
 version = "0.1.0"
 description = "Momo KnowledgeBase - High-performance, multi-agent, immutable knowledge graph with versioning and rollback"
-requires-python = ">=3.9,<3.13"
+requires-python = ">=3.12,<3.13"
 dependencies = [
     "pydantic>=2.0.0",
     "langchain>=0.1.0",

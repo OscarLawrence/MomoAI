@@ -19,7 +19,7 @@ addopts = """
 name = "momo-cmd"
 version = "1.0.0"
 description = "Universal command interface for MomoAI"
-requires-python = ">=3.9,<4"
+requires-python = ">=3.12,<3.13"
 readme = 'README.md'
 dependencies = [
     "click>=8.1.8",

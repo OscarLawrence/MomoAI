@@ -17,13 +17,13 @@ asyncio_mode = "auto"
 name = "momo-store-document"
 version = "0.1.0"
 description = "Document storage abstraction for Momo AI knowledge base"
-requires-python = ">=3.9,<3.13"
+requires-python = ">=3.12,<3.13"
 readme = 'README.md'
 dependencies = [
     "pydantic>=2.0.0",
     "pandas>=2.0.0",
     "duckdb>=0.8.0",
-    "momo-logger @ file:../momo-logger",
+    "momo-logger @ file:///home/vincent/Documents/Momo/MomoAI-nx/code/libs/python/momo-logger",
     "dvc>=3.61.0",
 ]
 

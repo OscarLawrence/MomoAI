@@ -17,7 +17,7 @@ asyncio_mode = "auto"
 name = "momo-logger"
 version = "0.1.0"
 description = "Structured logging for the Momo AI system"
-requires-python = ">=3.9,<3.13"
+requires-python = ">=3.12,<3.13"
 readme = 'README.md'
 dependencies = [
     "dvc>=3.61.0",

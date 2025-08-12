@@ -17,7 +17,7 @@ asyncio_mode = "auto"
 name = "kb-playground"
 version = "0.1.0"
 description = "Experimental high-performance immutable knowledge base with vector-graph hybrid architecture"
-requires-python = ">=3.9,<3.13"
+requires-python = ">=3.12,<3.13"
 dependencies = [
     "numpy>=1.24.0",
     "pydantic>=2.0.0",

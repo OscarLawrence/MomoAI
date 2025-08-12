@@ -88,12 +88,13 @@ class VectorStoreManager:
                 vs_class = type(self.vectorstore).__name__
                 vs_module = type(self.vectorstore).__module__
                 is_memory = (
-                    "InMemoryVectorStore" in vs_class
-                    or "in_memory" in vs_module
+                    "InMemoryVectorStore" in vs_class or "in_memory" in vs_module
                 )
                 if is_memory:
+
                     def filter_func(doc):
                         return all(doc.metadata.get(k) == v for k, v in filter.items())
+
                     search_filter = filter_func
             return await self.vectorstore.asimilarity_search(
                 query=query, k=k, filter=search_filter, **kwargs

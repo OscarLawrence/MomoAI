@@ -117,7 +117,9 @@ def _create_milvus_backend(embeddings: Embeddings, **config: Any) -> VectorStore
         ) from e
 
     # Extract Milvus-specific config with sensible defaults
-    connection_args = config.get("connection_args", {"host": "localhost", "port": "19530"})
+    connection_args = config.get(
+        "connection_args", {"host": "localhost", "port": "19530"}
+    )
     collection_name = config.get("collection_name", "momo_collection")
     primary_field = config.get("primary_field", "id")
     text_field = config.get("text_field", "content")

@@ -4,12 +4,63 @@ import asyncio
 import json
 from typing import List, Dict, Any, Optional
 from datetime import datetime
+from functools import lru_cache
 import pandas as pd
 
 from .main import BaseDocumentBackend
 from .persistence import PersistenceStrategy, NoPersistence
 from .exceptions import KnowledgeBaseError
 from momo_logger import get_logger
+
+
+class DocumentCache:
+    """Simple LRU cache for frequently accessed documents."""
+    
+    def __init__(self, max_size: int = 1000):
+        self.max_size = max_size
+        self._cache: Dict[str, Dict[str, Any]] = {}
+        self._access_order: List[str] = []
+    
+    def get(self, key: str) -> Optional[Dict[str, Any]]:
+        """Get document from cache."""
+        if key in self._cache:
+            # Move to end (most recently used)
+            self._access_order.remove(key)
+            self._access_order.append(key)
+            return self._cache[key].copy()
+        return None
+    
+    def put(self, key: str, value: Dict[str, Any]) -> None:
+        """Put document in cache."""
+        if key in self._cache:
+            # Update existing
+            self._cache[key] = value.copy()
+            self._access_order.remove(key)
+            self._access_order.append(key)
+        else:
+            # Add new
+            if len(self._cache) >= self.max_size:
+                # Remove least recently used
+                oldest_key = self._access_order.pop(0)
+                del self._cache[oldest_key]
+            
+            self._cache[key] = value.copy()
+            self._access_order.append(key)
+    
+    def invalidate(self, key: str) -> None:
+        """Remove document from cache."""
+        if key in self._cache:
+            del self._cache[key]
+            self._access_order.remove(key)
+    
+    def clear(self) -> None:
+        """Clear all cached documents."""
+        self._cache.clear()
+        self._access_order.clear()
+    
+    def size(self) -> int:
+        """Get current cache size."""
+        return len(self._cache)
 
 
 class PandasDocumentBackend(BaseDocumentBackend):
@@ -37,17 +88,20 @@ class PandasDocumentBackend(BaseDocumentBackend):
     - Memory-efficient columnar storage
     """
 
-    def __init__(self, persistence_strategy: Optional[PersistenceStrategy] = None):
+    def __init__(self, persistence_strategy: Optional[PersistenceStrategy] = None, cache_size: int = 1000):
         """
         Initialize pandas document backend.
 
         Args:
             persistence_strategy: Optional persistence strategy implementation
+            cache_size: Maximum number of documents to cache (0 to disable caching)
         """
         self.persistence = persistence_strategy or NoPersistence()
         self._df: pd.DataFrame = pd.DataFrame()
         # Initialize in async context
         self._initialized = False
+        # Initialize cache
+        self._cache = DocumentCache(cache_size) if cache_size > 0 else None
 
     async def _initialize_dataframe(self):
         """Initialize the pandas DataFrame."""
@@ -159,14 +213,30 @@ class PandasDocumentBackend(BaseDocumentBackend):
                 # No event loop in current thread, create a new one
                 asyncio.run(self.persistence.save(self._df))
 
+        # Invalidate cache for this document
+        if self._cache:
+            self._cache.invalidate(key)
+
         return True
 
     async def get(self, key: str) -> Optional[Dict[str, Any]]:
-        """Retrieve document data by key."""
+        """Retrieve document data by key with caching."""
+        # Check cache first
+        if self._cache:
+            cached_result = self._cache.get(key)
+            if cached_result is not None:
+                return cached_result
+        
         await self._initialize_dataframe()
         try:
             loop = asyncio.get_event_loop()
-            return await loop.run_in_executor(None, self._get_sync, key)
+            result = await loop.run_in_executor(None, self._get_sync, key)
+            
+            # Cache the result if caching is enabled
+            if result is not None and self._cache:
+                self._cache.put(key, result)
+            
+            return result
         except Exception as e:
             raise KnowledgeBaseError(f"Failed to retrieve document {key}: {e}") from e
 
@@ -215,18 +285,82 @@ class PandasDocumentBackend(BaseDocumentBackend):
                 # No event loop in current thread, create a new one
                 asyncio.run(self.persistence.save(self._df))
 
+        # Invalidate cache for this document
+        if self._cache:
+            self._cache.invalidate(key)
+
         return True
 
     async def scan(
         self, pattern: Optional[str] = None, filters: Optional[Dict[str, Any]] = None
     ) -> List[Dict[str, Any]]:
-        """Scan for matching documents using pandas filtering."""
+        """Scan for matching documents using optimized query pushdown when possible."""
         await self._initialize_dataframe()
         try:
-            loop = asyncio.get_event_loop()
-            return await loop.run_in_executor(None, self._scan_sync, pattern, filters)
+            # Try optimized query pushdown for DuckDB backend
+            if hasattr(self.persistence, '_get_connection') and filters:
+                return await self._scan_optimized(pattern, filters)
+            else:
+                # Fall back to pandas filtering
+                loop = asyncio.get_event_loop()
+                return await loop.run_in_executor(None, self._scan_sync, pattern, filters)
         except Exception as e:
             raise KnowledgeBaseError(f"Failed to scan documents: {e}") from e
+
+    async def _scan_optimized(
+        self, pattern: Optional[str] = None, filters: Optional[Dict[str, Any]] = None
+    ) -> List[Dict[str, Any]]:
+        """Optimized scan using query pushdown to DuckDB."""
+        try:
+            # Build WHERE clause for DuckDB
+            where_conditions = []
+            
+            # Add pattern matching to WHERE clause
+            if pattern:
+                pattern_escaped = pattern.replace("'", "''")  # Escape single quotes
+                where_conditions.append(
+                    f"(LOWER(id) LIKE LOWER('%{pattern_escaped}%') OR LOWER(content) LIKE LOWER('%{pattern_escaped}%'))"
+                )
+            
+            # Add metadata filters to WHERE clause
+            if filters:
+                for key, value in filters.items():
+                    if key in ["created_at", "updated_at"]:
+                        # Handle timestamp filters
+                        if isinstance(value, str):
+                            where_conditions.append(f"{key} = '{value}'")
+                        else:
+                            where_conditions.append(f"{key} = '{value.isoformat()}'")
+                    else:
+                        # Handle metadata filters using JSON extraction
+                        if isinstance(value, str):
+                            value_escaped = value.replace("'", "''")
+                            where_conditions.append(f"JSON_EXTRACT_STRING(metadata, '$.{key}') = '{value_escaped}'")
+                        else:
+                            where_conditions.append(f"JSON_EXTRACT_STRING(metadata, '$.{key}') = '{value}'")
+            
+            # Build complete WHERE clause
+            where_clause = " AND ".join(where_conditions) if where_conditions else None
+            
+            # Load filtered data directly from DuckDB
+            filtered_df = await self.persistence.load(where_clause=where_clause)
+            
+            # Sort by created_at descending (newest first)
+            if not filtered_df.empty and "created_at" in filtered_df.columns:
+                filtered_df = filtered_df.sort_values("created_at", ascending=False)
+            
+            # Convert to list of dictionaries
+            results = []
+            for idx, row in filtered_df.iterrows():
+                results.append(self._row_to_dict(str(row["id"]), row))
+            
+            return results
+            
+        except Exception as e:
+            # Fall back to pandas filtering if query pushdown fails
+            get_logger("momo.store.document").warning(f"Query pushdown failed, falling back to pandas: {e}")
+            loop = asyncio.get_event_loop()
+            return await loop.run_in_executor(None, self._scan_sync, pattern, filters)
 
     def _scan_sync(
         self, pattern: Optional[str] = None, filters: Optional[Dict[str, Any]] = None

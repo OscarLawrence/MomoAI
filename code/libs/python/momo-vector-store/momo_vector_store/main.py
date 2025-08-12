@@ -66,6 +66,7 @@ class VectorStore:
         # ADR guardrail: warn when using InMemory backend beyond tests/demos
         if backend_type == "memory":
             import warnings
+
             warnings.warn(
                 "InMemoryVectorStore is for prototyping only (≤10K vectors). "
                 "Do not use in production. See ADR-006: Vector Database Implementation.",

@@ -17,7 +17,7 @@ asyncio_mode = "auto"
 name = "momo-graph"
 version = "0.1.0"
 description = "Momo Graph - High-performance immutable graph database backend with 3-tier storage and rollback capabilities"
-requires-python = ">=3.9,<3.13"
+requires-python = ">=3.12,<3.13"
 dependencies = [
     "pydantic>=2.0.0",
     "psutil>=7.0.0",
