@@ -8,15 +8,15 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from ..context import WorkspaceContext, ModuleInfo
+    from ..context import WorkspaceContext
 
 from .base import (
+    BashFileExecutor,
     ExecutionStrategy,
     FileExecutor,
+    JavaScriptFileExecutor,
     PythonFileExecutor,
     TypeScriptFileExecutor,
-    JavaScriptFileExecutor,
-    BashFileExecutor,
 )
 
 
@@ -128,7 +128,7 @@ class ContextAwareFileStrategy(ExecutionStrategy):
     def _detect_from_shebang(self, file_path: Path) -> FileExecutor:
         """Detect executor from shebang line."""
         try:
-            with open(file_path, "r") as f:
+            with open(file_path) as f:
                 first_line = f.readline().strip()
                 if first_line.startswith("#!"):
                     if "python" in first_line:
@@ -155,7 +155,7 @@ class ContextAwareFileStrategy(ExecutionStrategy):
                     )
 
             if similar_files:
-                print(f"💡 Similar files found:")
+                print("💡 Similar files found:")
                 for similar_file in similar_files[:3]:  # Show max 3 suggestions
                     print(f"   {similar_file}")
 

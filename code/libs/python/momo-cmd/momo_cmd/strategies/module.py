@@ -4,12 +4,12 @@ Module command strategy with intelligent fallback chains.
 Executes module-specific commands with context awareness and fallback strategies.
 """
 
-import subprocess
 import shlex
-from typing import TYPE_CHECKING, Optional, Tuple, List
+import subprocess
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from ..context import WorkspaceContext, ModuleInfo
+    from ..context import ModuleInfo, WorkspaceContext
 
 from .base import ExecutionStrategy
 
@@ -17,7 +17,7 @@ from .base import ExecutionStrategy
 class ContextAwareModuleStrategy(ExecutionStrategy):
     """Execute module-specific commands with intelligent fallbacks."""
 
-    def __init__(self, command: str, args: List[str], context: "WorkspaceContext"):
+    def __init__(self, command: str, args: list[str], context: "WorkspaceContext"):
         super().__init__(context)
         self.command = command
         self.args = args
@@ -37,7 +37,7 @@ class ContextAwareModuleStrategy(ExecutionStrategy):
         else:
             return f"Execute {self.command} (context-dependent)"
 
-    def _determine_target_module(self) -> Tuple[Optional[str], List[str]]:
+    def _determine_target_module(self) -> tuple[Optional[str], list[str]]:
         """Determine target module and remaining arguments."""
 
         # Case 1: Explicit module specified (mom test-fast momo-agent)
@@ -58,7 +58,7 @@ class ContextAwareModuleStrategy(ExecutionStrategy):
 
         return None, self.args
 
-    def _execute_module_command(self, module: str, extra_args: List[str]) -> bool:
+    def _execute_module_command(self, module: str, extra_args: list[str]) -> bool:
         """Execute command for specific module with fallback chain."""
 
         print(f"🎯 Executing {self.command} for {module}")
@@ -79,25 +79,34 @@ class ContextAwareModuleStrategy(ExecutionStrategy):
         self._show_available_commands(module)
         return False
 
-    def _try_nx_command(self, module: str, extra_args: List[str]) -> bool:
+    def _try_nx_command(self, module: str, extra_args: list[str]) -> bool:
         """Try executing as nx command."""
         cmd = f"nx run {module}:{self.command}"
         if extra_args:
             cmd += f" {' '.join(shlex.quote(arg) for arg in extra_args)}"
 
-        # Quick check if command exists
-        check_cmd = f"nx show project {module} 2>/dev/null | grep -q '{self.command}:'"
+        # Simple check if nx target exists
+        check_cmd = f"nx show project {module} --json 2>/dev/null"
         check_result = subprocess.run(
             check_cmd, shell=True, capture_output=True, text=True
         )
 
         if check_result.returncode == 0:
-            print(f"📦 Using nx: {cmd}")
-            return self._execute_shell_command(cmd)
+            try:
+                import json
+
+                project_info = json.loads(check_result.stdout)
+                targets = project_info.get("targets", {})
+
+                if self.command in targets:
+                    print(f"📦 Using nx: {cmd}")
+                    return self._execute_shell_command(cmd)
+            except (json.JSONDecodeError, KeyError):
+                pass
 
         return False
 
-    def _try_uv_command(self, module: str, extra_args: List[str]) -> bool:
+    def _try_uv_command(self, module: str, extra_args: list[str]) -> bool:
         """Try executing as uv command in module directory."""
         module_info = self.context.get_module_info(module)
         if not module_info or not module_info.has_uv:
@@ -110,7 +119,7 @@ class ContextAwareModuleStrategy(ExecutionStrategy):
         print(f"🐍 Using uv: {cmd}")
         return self._execute_shell_command(cmd)
 
-    def _try_common_patterns(self, module: str, extra_args: List[str]) -> bool:
+    def _try_common_patterns(self, module: str, extra_args: list[str]) -> bool:
         """Try common command patterns as fallbacks."""
         module_info = self.context.get_module_info(module)
         if not module_info:
@@ -201,8 +210,8 @@ class ContextAwareModuleStrategy(ExecutionStrategy):
         print()
         print("Options:")
         print(f"  1. Specify module explicitly: mom {self.command} <module-name>")
-        print(f"  2. Run from within module directory")
-        print(f"  3. Use --context to see current context")
+        print("  2. Run from within module directory")
+        print("  3. Use --context to see current context")
         print()
 
         # Show available modules
@@ -222,7 +231,7 @@ class ContextAwareModuleStrategy(ExecutionStrategy):
                 f"💡 Available commands for {module}: {', '.join(module_info.available_commands)}"
             )
 
-    def _get_available_modules(self) -> List[str]:
+    def _get_available_modules(self) -> list[str]:
         """Get list of available modules in the workspace."""
         modules = []
 

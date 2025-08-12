@@ -4,8 +4,8 @@ Base classes for command execution strategies.
 Defines the interface and common functionality for all execution strategies.
 """
 
-import subprocess
 import shlex
+import subprocess
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import TYPE_CHECKING

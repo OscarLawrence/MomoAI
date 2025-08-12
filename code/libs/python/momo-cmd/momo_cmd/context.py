@@ -7,9 +7,9 @@ Automatically detects:
 - Module information (uv, nx configuration, available commands)
 """
 
+import json
 from pathlib import Path
 from typing import Optional
-import json
 
 
 class WorkspaceContext:

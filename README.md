@@ -38,16 +38,17 @@ Momo AI is a groundbreaking multi-agent system that combines the power of autono
 
 ```
 MomoAI-nx/
-├── apps/                       # User-facing applications
-│   ├── web/                   # Nuxt.js web interface (port 3000)
-│   ├── cli/                   # Node.js command-line interface
-│   └── core/                  # Core Momo functionality
-└── libs/python/               # Python libraries (uv + Nx managed)
-    ├── momo-kb/              # Knowledge base abstraction
-    ├── momo-logger/          # Structured logging system
-    ├── momo-graph-store/     # Graph database abstraction
-    ├── momo-vector-store/    # Vector store abstraction
-    └── momo-store-document/  # Document store abstraction
+├── code/                      # All source code
+│   ├── apps/                  # User-facing applications
+│   │   ├── web/              # Nuxt.js web interface (planned)
+│   │   ├── cli/              # Node.js command-line interface (planned)
+│   │   └── core/             # Core Momo functionality (in development)
+│   └── libs/python/          # Python libraries (uv + Nx managed)
+│       ├── momo-kb/          # Knowledge base abstraction (in development)
+│       ├── momo-logger/      # Structured logging system (in development)
+│       ├── momo-graph-store/ # Graph database abstraction (in development)
+│       ├── momo-vector-store/# Vector store abstraction (in development)
+│       └── momo-store-document/ # Document store abstraction (in development)
 ```
 
 ### System Flow
@@ -89,19 +90,46 @@ MomoAI-nx/
    pnpm nx run momo-kb:test-fast
    ```
 
-4. **Setup and run Web Application**
+4. **Install mo command globally (one-time setup)**
    ```bash
-   pnpm nx run web:serve  # Starts on port 3000
-   ```
-
-5. **Setup and run CLI Application**
-   ```bash
-   pnpm nx run cli:build
+   # Link mo command to PATH for global access
+   ln -sf $(pwd)/.venv/bin/mo ~/.local/bin/mo
+   
+   # Verify installation
+   mo --help
    ```
 
 ### Basic Usage
 
-**Knowledge Base Operations:**
+**Idea Workflow System:**
+```bash
+# Create structured idea for research and implementation
+mo create idea "implement OAuth2 authentication"
+
+# Agent investigates the idea (fills research templates)
+mo investigate idea-001
+
+# Decide on approach after investigation
+mo decide idea-001  
+
+# Implement with automatic ADR creation
+mo implement idea-001
+```
+
+**Module Development:**
+```bash
+# Test any module
+mo test momo-kb
+
+# Format and validate
+mo format momo-kb
+mo validate system
+
+# Check current context
+mo status
+```
+
+**Knowledge Base Operations (Python API):**
 ```python
 from momo_kb import InMemoryKnowledgeBase, Document
 
@@ -114,17 +142,6 @@ await kb.save(Document.from_text("Python is a programming language",
 
 # Query with natural language
 results = await kb.search("What is Python?")
-```
-
-**Web Interface:**
-```bash
-pnpm nx run web:serve
-# Open http://localhost:3000
-```
-
-**CLI Interface:**
-```bash
-pnpm nx run cli:serve -- --help
 ```
 
 ## 🔬 Technology Stack
@@ -229,10 +246,12 @@ class YourKnowledgeBase(KnowledgeBase):
 
 ### Current Focus: Knowledge Base Foundation
 - [x] Abstract interface and document models
-- [x] Core unified implementation with pluggable backends
-- [x] DuckDB backend implementation
+- [~] Core unified implementation with pluggable backends (type errors pending)
+- [~] DuckDB backend implementation (integration issues)
 - [ ] Comprehensive benchmark infrastructure
 - [ ] Production backend implementations
+
+**Legend**: ✅ Complete | 🔄 In Development | ❌ Not Started | ~ Issues Present
 
 ### Next Phase: Documentation Revolution
 - [ ] KB-driven documentation system

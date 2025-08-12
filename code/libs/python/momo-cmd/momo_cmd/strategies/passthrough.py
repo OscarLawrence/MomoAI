@@ -5,7 +5,7 @@ Executes arbitrary commands with useful enhancements for common tools.
 """
 
 import shlex
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..context import WorkspaceContext
@@ -16,7 +16,7 @@ from .base import ExecutionStrategy
 class PassthroughCommandStrategy(ExecutionStrategy):
     """Execute commands with intelligent enhancements."""
 
-    def __init__(self, args: List[str], context: "WorkspaceContext"):
+    def __init__(self, args: list[str], context: "WorkspaceContext"):
         super().__init__(context)
         self.args = args
 
@@ -31,7 +31,7 @@ class PassthroughCommandStrategy(ExecutionStrategy):
         enhanced_args = self._enhance_command(self.args)
         return f"Execute: {' '.join(enhanced_args)}"
 
-    def _enhance_command(self, args: List[str]) -> List[str]:
+    def _enhance_command(self, args: list[str]) -> list[str]:
         """Add intelligent enhancements to common commands."""
         if not args:
             return args
@@ -60,7 +60,7 @@ class PassthroughCommandStrategy(ExecutionStrategy):
 
         return args
 
-    def _enhance_git_command(self, args: List[str]) -> List[str]:
+    def _enhance_git_command(self, args: list[str]) -> list[str]:
         """Enhance git commands with useful flags."""
         if len(args) >= 2:
             subcommand = args[1]
@@ -78,16 +78,12 @@ class PassthroughCommandStrategy(ExecutionStrategy):
                 return args + ["--oneline", "--graph", "-10"]
 
             # Git branch with verbose info
-            elif subcommand == "branch" and len(args) == 2:
-                return args + ["-v"]
-
-            # Git remote with verbose info
-            elif subcommand == "remote" and len(args) == 2:
+            elif subcommand == "branch" and len(args) == 2 or subcommand == "remote" and len(args) == 2:
                 return args + ["-v"]
 
         return args
 
-    def _enhance_find_command(self, args: List[str]) -> List[str]:
+    def _enhance_find_command(self, args: list[str]) -> list[str]:
         """Enhance find commands to exclude common directories."""
         enhanced = args[:]
 
@@ -125,7 +121,7 @@ class PassthroughCommandStrategy(ExecutionStrategy):
 
         return enhanced
 
-    def _enhance_grep_command(self, args: List[str]) -> List[str]:
+    def _enhance_grep_command(self, args: list[str]) -> list[str]:
         """Enhance grep commands with useful options."""
         enhanced = args[:]
 
@@ -148,7 +144,7 @@ class PassthroughCommandStrategy(ExecutionStrategy):
 
         return enhanced
 
-    def _enhance_docker_command(self, args: List[str]) -> List[str]:
+    def _enhance_docker_command(self, args: list[str]) -> list[str]:
         """Enhance docker commands with useful defaults."""
         if len(args) >= 2:
             subcommand = args[1]
@@ -170,7 +166,7 @@ class PassthroughCommandStrategy(ExecutionStrategy):
 
         return args
 
-    def _enhance_npm_command(self, args: List[str]) -> List[str]:
+    def _enhance_npm_command(self, args: list[str]) -> list[str]:
         """Enhance npm commands."""
         if len(args) >= 2:
             subcommand = args[1]

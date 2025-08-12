@@ -27,7 +27,7 @@ dependencies = [
 ]
 
 [project.scripts]
-mom = "momo_cmd.cli:mom"
+mo = "momo_cmd.cli:mo"
 
 [tool.hatch.build.targets.wheel]
 packages = ["momo_cmd"]

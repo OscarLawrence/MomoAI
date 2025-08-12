@@ -7,7 +7,7 @@ execution strategy through a priority-based chain.
 
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .context import WorkspaceContext
@@ -18,13 +18,13 @@ class CommandDetector(ABC):
     """Base class for command detectors."""
 
     @abstractmethod
-    def can_handle(self, args: List[str], context: "WorkspaceContext") -> bool:
+    def can_handle(self, args: list[str], context: "WorkspaceContext") -> bool:
         """Check if this detector can handle the command."""
         pass
 
     @abstractmethod
     def create_strategy(
-        self, args: List[str], context: "WorkspaceContext"
+        self, args: list[str], context: "WorkspaceContext"
     ) -> "ExecutionStrategy":
         """Create appropriate execution strategy."""
         pass
@@ -35,9 +35,6 @@ class CommandDetectorRegistry:
 
     def __init__(self):
         # Import strategies here to avoid circular imports
-        from .strategies.file import ContextAwareFileStrategy
-        from .strategies.module import ContextAwareModuleStrategy
-        from .strategies.passthrough import PassthroughCommandStrategy
 
         self.detectors = [
             FileExecutionDetector(),  # Highest priority
@@ -46,14 +43,14 @@ class CommandDetectorRegistry:
             PassthroughDetector(),  # Lowest priority - catch-all
         ]
 
-    def get_detectors(self) -> List["CommandDetector"]:
+    def get_detectors(self) -> list["CommandDetector"]:
         return self.detectors
 
 
 class FileExecutionDetector(CommandDetector):
     """Detect direct file execution: mom test.py, mom build.ts"""
 
-    def can_handle(self, args: List[str], context: "WorkspaceContext") -> bool:
+    def can_handle(self, args: list[str], context: "WorkspaceContext") -> bool:
         if not args:
             return False
 
@@ -67,7 +64,7 @@ class FileExecutionDetector(CommandDetector):
         file_path = self._resolve_path(first_arg, context.cwd)
         return file_path.exists() and file_path.is_file()
 
-    def create_strategy(self, args: List[str], context: "WorkspaceContext"):
+    def create_strategy(self, args: list[str], context: "WorkspaceContext"):
         from .strategies.file import ContextAwareFileStrategy
 
         return ContextAwareFileStrategy(args[0], args[1:], context)
@@ -95,7 +92,7 @@ class ModuleCommandDetector(CommandDetector):
         "clean",
     }
 
-    def can_handle(self, args: List[str], context: "WorkspaceContext") -> bool:
+    def can_handle(self, args: list[str], context: "WorkspaceContext") -> bool:
         if not args:
             return False
 
@@ -113,7 +110,7 @@ class ModuleCommandDetector(CommandDetector):
 
         return False
 
-    def create_strategy(self, args: List[str], context: "WorkspaceContext"):
+    def create_strategy(self, args: list[str], context: "WorkspaceContext"):
         from .strategies.module import ContextAwareModuleStrategy
 
         return ContextAwareModuleStrategy(args[0], args[1:], context)
@@ -124,13 +121,13 @@ class ToolchainCommandDetector(CommandDetector):
 
     TOOLCHAIN_COMMANDS = {"nx", "npm", "pnpm", "yarn", "cargo", "go", "make"}
 
-    def can_handle(self, args: List[str], context: "WorkspaceContext") -> bool:
+    def can_handle(self, args: list[str], context: "WorkspaceContext") -> bool:
         if not args:
             return False
 
         return args[0] in self.TOOLCHAIN_COMMANDS
 
-    def create_strategy(self, args: List[str], context: "WorkspaceContext"):
+    def create_strategy(self, args: list[str], context: "WorkspaceContext"):
         from .strategies.passthrough import PassthroughCommandStrategy
 
         return PassthroughCommandStrategy(args, context)
@@ -139,11 +136,11 @@ class ToolchainCommandDetector(CommandDetector):
 class PassthroughDetector(CommandDetector):
     """Catch-all detector for arbitrary commands."""
 
-    def can_handle(self, args: List[str], context: "WorkspaceContext") -> bool:
+    def can_handle(self, args: list[str], context: "WorkspaceContext") -> bool:
         # Always can handle as a fallback
         return True
 
-    def create_strategy(self, args: List[str], context: "WorkspaceContext"):
+    def create_strategy(self, args: list[str], context: "WorkspaceContext"):
         from .strategies.passthrough import PassthroughCommandStrategy
 
         return PassthroughCommandStrategy(args, context)

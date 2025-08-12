@@ -5,9 +5,11 @@ Provides a single entry point for all command execution needs.
 """
 
 import sys
+
 import click
-from .router import ContextAwareCommandRouter
+
 from .context import WorkspaceContext
+from .router import ContextAwareCommandRouter
 
 
 @click.command()
@@ -15,15 +17,15 @@ from .context import WorkspaceContext
 @click.option("--verbose", "-v", is_flag=True, help="Show execution details")
 @click.option("--dry-run", is_flag=True, help="Show what would be executed")
 @click.option("--context", is_flag=True, help="Show current context")
-def mom(args, verbose, dry_run, context):
-    """Universal command interface - execute anything intelligently
+def mo(args, verbose, dry_run, context):
+    """Universal command interface with logical grouping
 
     Examples:
-        mom test.py                     # Execute Python file
-        mom test-fast                   # Run test-fast for current module
-        mom test-fast momo-agent        # Run test-fast for specific module
-        mom git status                  # Enhanced git status
-        mom scripts/benchmark.py        # Execute with module environment
+        mo test momo-kb                 # Test module
+        mo create task "implement auth" # Create structured task
+        mo execute command "git status" # Execute system command
+        mo validate system              # Full system validation
+        mo status                       # Show current status
     """
 
     if context:
@@ -69,4 +71,4 @@ def _get_module_type(module_info) -> str:
 
 
 if __name__ == "__main__":
-    mom()
+    mo()
