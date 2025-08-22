@@ -1,0 +1,8 @@
+2025-08-22 04:28:12,455 - ERROR - ❌ Daemon startup failed: Insufficient balance: $0.29
+2025-08-22 04:29:37,638 - INFO - 🚀 Continuous Trader initialized with $171.73
+2025-08-22 04:29:37,639 - INFO - 🚀 Starting continuous trading...
+2025-08-22 04:29:37,639 - INFO - 🔄 Trading Cycle 1
+2025-08-22 04:29:38,145 - INFO - 📊 BTC: $113,480, ETH: $4,311
+2025-08-22 04:29:38,145 - INFO - 📊 No high-confidence opportunities found
+2025-08-22 04:29:59,152 - INFO - 📨 Received signal 15, shutting down gracefully...
+2025-08-22 04:30:08,146 - INFO - 🏁 Continuous trading stopped

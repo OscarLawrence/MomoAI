@@ -8,6 +8,9 @@ version = "0.1.0"
 description = "Clean CLI code assistant with coherent tools"
 dependencies = []
 
+[project.scripts]
+axiom = "axiom.cli:main"
+
 [project.optional-dependencies]
 dev = ["pytest", "ruff"]
 

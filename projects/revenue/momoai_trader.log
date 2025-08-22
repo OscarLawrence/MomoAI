@@ -1,0 +1,11 @@
+2025-08-22 04:28:11,551 - INFO - 🚀 Starting MomoAI Trading Daemon...
+2025-08-22 04:28:11,552 - INFO - ✅ Trading daemon started (PID: 912429)
+2025-08-22 04:28:11,552 - INFO - 📁 Logs: /home/vincent/Documents/Momo/MomoAI/projects/revenue/momoai_trader.log
+2025-08-22 04:28:11,552 - INFO - 📊 Status: /home/vincent/Documents/Momo/MomoAI/projects/revenue/trader_status.json
+2025-08-22 04:29:36,840 - INFO - 🚀 Starting MomoAI Trading Daemon...
+2025-08-22 04:29:36,841 - INFO - ✅ Trading daemon started (PID: 913235)
+2025-08-22 04:29:36,841 - INFO - 📁 Logs: /home/vincent/Documents/Momo/MomoAI/projects/revenue/momoai_trader.log
+2025-08-22 04:29:36,841 - INFO - 📊 Status: /home/vincent/Documents/Momo/MomoAI/projects/revenue/trader_status.json
+2025-08-22 04:29:59,152 - INFO - ⏹️ Stopping trading daemon (PID: 913235)
+2025-08-22 04:30:09,153 - WARNING - 🔪 Force killing daemon
+2025-08-22 04:30:09,154 - ERROR - ❌ Failed to stop daemon: [Errno 3] No such process

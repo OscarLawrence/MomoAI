@@ -6,6 +6,7 @@ This provides actual logical proofs rather than heuristic pattern matching.
 */
 
 use z3::ast::Bool;
+use z3::Config;
 use z3::{Context, Solver, SatResult};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
