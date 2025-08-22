@@ -1,0 +1,16 @@
+repos:
+  - repo: local
+    hooks:
+      - id: no-syspath-append
+        name: Ban sys.path.append
+        entry: bash -c 'if grep -r "sys\.path\.append" --include="*.py" .; then echo "❌ sys.path.append found - use proper imports!"; exit 1; fi'
+        language: system
+        pass_filenames: false
+        types: [python]
+        
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.9
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format

@@ -1,0 +1,12 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "momo-interface"
+version = "0.1.0"
+description = "Momo chat interface with dual-mode human input routing"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]

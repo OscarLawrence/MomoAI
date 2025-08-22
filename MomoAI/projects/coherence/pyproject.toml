@@ -1,0 +1,12 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "momo-coherence"
+version = "0.1.0"
+description = "Coherence validation and monitoring engine"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]

@@ -1,0 +1,12 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "momo-cycles"
+version = "0.1.0"
+description = "Four autonomous AI cycles: problem identification, solution generation, implementation, optimization"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]

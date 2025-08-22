@@ -1,0 +1,40 @@
+[project]
+name = "om"
+version = "0.1.0"
+description = "AI-first monorepo management tool"
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.0.0",
+    "docs-parser",
+    "code-parser", 
+    "knowledge",
+    "protocols",
+    "pytest>=8.4.1",
+    "anthropic>=0.64.0",
+    "python-dotenv>=1.1.1",
+    "httpx>=0.28.1",
+]
+
+[project.scripts]
+om = "om.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.sources]
+docs-parser = { workspace = true }
+code-parser = { workspace = true }
+knowledge = { workspace = true }
+protocols = { workspace = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/om"]
+
+[dependency-groups]
+dev = [
+    "coverage>=7.10.4",
+    "mypy>=1.17.1",
+    "pytest>=8.4.1",
+    "ruff>=0.12.9",
+]

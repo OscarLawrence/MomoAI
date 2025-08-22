@@ -1,0 +1,249 @@
+{
+  "summary": {
+    "total_tests": 12,
+    "passed": 0,
+    "failed": 12,
+    "pass_rate": 0.0,
+    "avg_precision": 0.0,
+    "avg_recall": 0.0,
+    "avg_similarity": 0.0
+  },
+  "failed_queries": [
+    {
+      "query": "parse command line arguments",
+      "errors": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "similarity": 0.0
+    },
+    {
+      "query": "workspace status checking",
+      "errors": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "similarity": 0.0
+    },
+    {
+      "query": "parse Python code",
+      "errors": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "similarity": 0.0
+    },
+    {
+      "query": "extract function definitions",
+      "errors": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "similarity": 0.0
+    },
+    {
+      "query": "search documentation",
+      "errors": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "similarity": 0.0
+    },
+    {
+      "query": "parse documentation files",
+      "errors": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "similarity": 0.0
+    },
+    {
+      "query": "store code patterns",
+      "errors": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "similarity": 0.0
+    },
+    {
+      "query": "find similar functions",
+      "errors": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "similarity": 0.0
+    },
+    {
+      "query": "click command definition",
+      "errors": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "similarity": 0.0
+    },
+    {
+      "query": "workspace management commands",
+      "errors": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "similarity": 0.0
+    },
+    {
+      "query": "unit test creation",
+      "errors": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "similarity": 0.0
+    },
+    {
+      "query": "API integration testing",
+      "errors": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "similarity": 0.0
+    }
+  ],
+  "quality_issues": {
+    "low_precision": [
+      "parse command line arguments",
+      "workspace status checking",
+      "parse Python code",
+      "extract function definitions",
+      "search documentation",
+      "parse documentation files",
+      "store code patterns",
+      "find similar functions",
+      "click command definition",
+      "workspace management commands",
+      "unit test creation",
+      "API integration testing"
+    ],
+    "low_recall": [
+      "parse command line arguments",
+      "workspace status checking",
+      "parse Python code",
+      "extract function definitions",
+      "search documentation",
+      "parse documentation files",
+      "store code patterns",
+      "find similar functions",
+      "click command definition",
+      "workspace management commands",
+      "unit test creation",
+      "API integration testing"
+    ]
+  },
+  "detailed_results": [
+    {
+      "query": "parse command line arguments",
+      "passed": false,
+      "precision": 0.0,
+      "recall": 0.0,
+      "avg_similarity": 0.0,
+      "functions_found": [],
+      "patterns_found": [],
+      "errors": []
+    },
+    {
+      "query": "workspace status checking",
+      "passed": false,
+      "precision": 0.0,
+      "recall": 0.0,
+      "avg_similarity": 0.0,
+      "functions_found": [],
+      "patterns_found": [],
+      "errors": []
+    },
+    {
+      "query": "parse Python code",
+      "passed": false,
+      "precision": 0.0,
+      "recall": 0.0,
+      "avg_similarity": 0.0,
+      "functions_found": [],
+      "patterns_found": [],
+      "errors": []
+    },
+    {
+      "query": "extract function definitions",
+      "passed": false,
+      "precision": 0.0,
+      "recall": 0.0,
+      "avg_similarity": 0.0,
+      "functions_found": [],
+      "patterns_found": [],
+      "errors": []
+    },
+    {
+      "query": "search documentation",
+      "passed": false,
+      "precision": 0.0,
+      "recall": 0.0,
+      "avg_similarity": 0.0,
+      "functions_found": [],
+      "patterns_found": [],
+      "errors": []
+    },
+    {
+      "query": "parse documentation files",
+      "passed": false,
+      "precision": 0.0,
+      "recall": 0.0,
+      "avg_similarity": 0.0,
+      "functions_found": [],
+      "patterns_found": [],
+      "errors": []
+    },
+    {
+      "query": "store code patterns",
+      "passed": false,
+      "precision": 0.0,
+      "recall": 0.0,
+      "avg_similarity": 0.0,
+      "functions_found": [],
+      "patterns_found": [],
+      "errors": []
+    },
+    {
+      "query": "find similar functions",
+      "passed": false,
+      "precision": 0.0,
+      "recall": 0.0,
+      "avg_similarity": 0.0,
+      "functions_found": [],
+      "patterns_found": [],
+      "errors": []
+    },
+    {
+      "query": "click command definition",
+      "passed": false,
+      "precision": 0.0,
+      "recall": 0.0,
+      "avg_similarity": 0.0,
+      "functions_found": [],
+      "patterns_found": [],
+      "errors": []
+    },
+    {
+      "query": "workspace management commands",
+      "passed": false,
+      "precision": 0.0,
+      "recall": 0.0,
+      "avg_similarity": 0.0,
+      "functions_found": [],
+      "patterns_found": [],
+      "errors": []
+    },
+    {
+      "query": "unit test creation",
+      "passed": false,
+      "precision": 0.0,
+      "recall": 0.0,
+      "avg_similarity": 0.0,
+      "functions_found": [],
+      "patterns_found": [],
+      "errors": []
+    },
+    {
+      "query": "API integration testing",
+      "passed": false,
+      "precision": 0.0,
+      "recall": 0.0,
+      "avg_similarity": 0.0,
+      "functions_found": [],
+      "patterns_found": [],
+      "errors": []
+    }
+  ]
+}
