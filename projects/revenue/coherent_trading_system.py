@@ -335,7 +335,7 @@ class CoherentTradingEngine:
                     opportunities.append(signal)
         
         # Liquidation cascade analysis
-        liquidation_levels = await self.liquidation_analyzer.get_liquidation_levels("BTCUSDT")
+        liquidation_levels = await self.liquidation_analyzer.get_liquidation_levels("BTCUSDC")
         current_price = 50000.0  # Would get from API
         liquidation_signal = self.liquidation_analyzer.generate_liquidation_signal(current_price, liquidation_levels)
         if liquidation_signal:

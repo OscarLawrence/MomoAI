@@ -48,7 +48,7 @@ def compare_testnet_vs_mainnet():
         
         if testnet_ping:
             # Test market data for major pairs
-            test_symbols = ["BTCUSDT", "ETHUSDT", "BNBUSDT"]
+            test_symbols = ["BTCUSDC", "ETHUSDC", "BNBUSDC"]
             
             for symbol in test_symbols:
                 print(f"\n   Testing {symbol}:")
@@ -135,8 +135,8 @@ def compare_testnet_vs_mainnet():
             # Compare with testnet prices
             if testnet_ping:
                 try:
-                    testnet_btc = testnet_connector.get_current_price("BTCUSDT")
-                    testnet_eth = testnet_connector.get_current_price("ETHUSDT")
+                    testnet_btc = testnet_connector.get_current_price("BTCUSDC")
+                    testnet_eth = testnet_connector.get_current_price("ETHUSDC")
                     
                     btc_diff = abs(testnet_btc - real_btc) / real_btc * 100
                     eth_diff = abs(testnet_eth - real_eth) / real_eth * 100

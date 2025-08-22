@@ -43,15 +43,15 @@ def check_binance_api_capabilities():
                     active_count = sum(1 for s in symbols if s.get("status") == "TRADING")
                     print(f"   ✅ Success: {active_count} active trading symbols")
                     
-                    # Check for USDT pairs specifically
-                    usdt_pairs = [s for s in symbols if s.get("quoteAsset") == "USDT" and s.get("status") == "TRADING"]
-                    print(f"   📈 USDT pairs: {len(usdt_pairs)}")
+                    # Check for USDC pairs specifically
+                    USDC_pairs = [s for s in symbols if s.get("quoteAsset") == "USDC" and s.get("status") == "TRADING"]
+                    print(f"   📈 USDC pairs: {len(USDC_pairs)}")
                     
                     # Show sample pairs
-                    if usdt_pairs:
-                        sample_pairs = usdt_pairs[:5]
+                    if USDC_pairs:
+                        sample_pairs = USDC_pairs[:5]
                         for pair in sample_pairs:
-                            print(f"      - {pair['symbol']}: {pair['baseAsset']}/USDT")
+                            print(f"      - {pair['symbol']}: {pair['baseAsset']}/USDC")
                 else:
                     print(f"   ❌ Unexpected response format")
                     
@@ -72,7 +72,7 @@ def check_binance_api_capabilities():
                     
             elif endpoint == "ticker/price":
                 # Test with specific symbol
-                params = {"symbol": "BTCUSDT"}
+                params = {"symbol": "BTCUSDC"}
                 response = connector._make_request("GET", endpoint, params)
                 if "price" in response:
                     price = float(response["price"])
@@ -128,24 +128,24 @@ def test_symbol_discovery():
             data = response.json()
             symbols = data.get("symbols", [])
             
-            # Filter for USDT pairs
-            usdt_pairs = []
+            # Filter for USDC pairs
+            USDC_pairs = []
             for symbol in symbols:
                 if (symbol.get("status") == "TRADING" and 
-                    symbol.get("quoteAsset") == "USDT" and
+                    symbol.get("quoteAsset") == "USDC" and
                     "SPOT" in symbol.get("permissions", [])):
-                    usdt_pairs.append(symbol)
+                    USDC_pairs.append(symbol)
             
-            print(f"   ✅ Found {len(usdt_pairs)} active USDT pairs")
+            print(f"   ✅ Found {len(USDC_pairs)} active USDC pairs")
             
             # Show sample with base assets
-            if usdt_pairs:
+            if USDC_pairs:
                 print(f"   📊 Sample pairs:")
-                for pair in usdt_pairs[:10]:
+                for pair in USDC_pairs[:10]:
                     print(f"      - {pair['symbol']}: {pair['baseAsset']}")
                     
                 # Extract unique base assets
-                base_assets = list(set(p['baseAsset'] for p in usdt_pairs))
+                base_assets = list(set(p['baseAsset'] for p in USDC_pairs))
                 print(f"   🎯 Total unique base assets: {len(base_assets)}")
                 
         else:

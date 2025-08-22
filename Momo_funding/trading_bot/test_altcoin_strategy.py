@@ -27,10 +27,10 @@ def compare_strategies():
     
     # Test symbols for different market cap tiers
     test_symbols = {
-        "Top Tier (1-2)": ["BTCUSDT", "ETHUSDT"],
-        "Major Alts (3-5)": ["BNBUSDT", "SOLUSDT", "ADAUSDT"], 
-        "Mid Alts (6-10)": ["AVAXUSDT", "DOTUSDT", "LINKUSDT", "MATICUSDT", "UNIUSDT"],
-        "Lower Alts (11-15)": ["ATOMUSDT", "FTMUSDT", "ALGOUSDT", "VETUSDT"]
+        "Top Tier (1-2)": ["BTCUSDC", "ETHUSDC"],
+        "Major Alts (3-5)": ["BNBUSDC", "SOLUSDC", "ADAUSDC"], 
+        "Mid Alts (6-10)": ["AVAXUSDC", "DOTUSDC", "LINKUSDC", "MATICUSDC", "UNIUSDC"],
+        "Lower Alts (11-15)": ["ATOMUSDC", "FTMUSDC", "ALGOUSDC", "VETUSDC"]
     }
     
     try:
@@ -54,7 +54,7 @@ def compare_strategies():
                 try:
                     data = trader.get_market_data(symbol, "1h", 100)
                     if len(data) >= 50:
-                        tier_data[symbol.replace("USDT", "")] = [
+                        tier_data[symbol.replace("USDC", "")] = [
                             {
                                 'close': d.close,
                                 'volume': d.volume,

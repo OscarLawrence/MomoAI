@@ -52,12 +52,12 @@ class ContinuousTrader:
         
         # Get account balance
         balances = self.connector.get_account_info()
-        usdt_balance = balances.get("USDC") or balances.get("USDT") or balances.get("BUSD")
+        USDC_balance = balances.get("USDC") or balances.get("USDC") or balances.get("BUSD")
         
-        if not usdt_balance or usdt_balance.total < 1:
-            raise ValueError(f"Insufficient balance: ${usdt_balance.total if usdt_balance else 0:.2f}")
+        if not USDC_balance or USDC_balance.total < 1:
+            raise ValueError(f"Insufficient balance: ${USDC_balance.total if USDC_balance else 0:.2f}")
         
-        self.start_balance = usdt_balance.total
+        self.start_balance = USDC_balance.total
         self.current_balance = self.start_balance
         self.total_pnl = 0.0
         self.trade_history = []
@@ -66,7 +66,7 @@ class ContinuousTrader:
         self.scan_interval = 1800  # 30 minutes (more frequent than 1 hour)
         self.min_confidence = 0.75  # Slightly higher for live trading
         self.max_position_percent = 0.02  # 2% max per trade
-        self.symbols = ["BTCUSDT", "ETHUSDT"]
+        self.symbols = ["BTCUSDC", "ETHUSDC"]
         
         # State management
         self.running = True
@@ -302,8 +302,8 @@ class ContinuousTrader:
         self.logger.info(f"🔄 Trading Cycle {self.cycle_count}")
         
         # Get market data
-        btc_data = self.get_market_data("BTCUSDT")
-        eth_data = self.get_market_data("ETHUSDT")
+        btc_data = self.get_market_data("BTCUSDC")
+        eth_data = self.get_market_data("ETHUSDC")
         
         if not btc_data or not eth_data:
             self.logger.warning("⚠️ Failed to get market data")
@@ -323,7 +323,7 @@ class ContinuousTrader:
                 opportunities_found += 1
         
         # Check mean reversion for both symbols
-        for symbol, data, price in [("BTCUSDT", btc_data, current_btc), ("ETHUSDT", eth_data, current_eth)]:
+        for symbol, data, price in [("BTCUSDC", btc_data, current_btc), ("ETHUSDC", eth_data, current_eth)]:
             mean_rev_opp = self.calculate_mean_reversion(data)
             if mean_rev_opp:
                 if self.execute_trade(mean_rev_opp, symbol, price):

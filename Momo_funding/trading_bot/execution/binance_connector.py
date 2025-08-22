@@ -75,7 +75,7 @@ class BinanceConnector:
         self.position_size_range = (10.0, 20.0)  # $10-20 per trade
         self.emergency_stop_threshold = 50.0  # Emergency stop if capital < $50
         self.max_concurrent_positions = 5
-        self.target_pairs = ["BTCUSDC", "ETHUSDC"]  # USDC only - USDT being phased out
+        self.target_pairs = ["BTCUSDC", "ETHUSDC"]  # USDC only - USDC being phased out
         
     def _generate_signature(self, query_string: str) -> str:
         """Generate HMAC SHA256 signature for authenticated requests."""

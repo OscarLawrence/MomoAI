@@ -35,8 +35,8 @@ def main():
             print("   No balances found")
         
         # Get current prices
-        btc_price = connector.get_current_price("BTCUSDT")
-        eth_price = connector.get_current_price("ETHUSDT")
+        btc_price = connector.get_current_price("BTCUSDC")
+        eth_price = connector.get_current_price("ETHUSDC")
         
         print(f"\n📊 Current Prices:")
         print(f"   BTC: ${btc_price:,.2f}" if btc_price else "   BTC: Price unavailable")
@@ -44,7 +44,7 @@ def main():
         
         # Test market data
         print(f"\n📈 Testing Market Data:")
-        klines = connector.get_kline_data("BTCUSDT", "1h", 5)
+        klines = connector.get_kline_data("BTCUSDC", "1h", 5)
         if klines:
             latest = klines[-1]
             print(f"   ✅ Latest BTC data: ${latest['close']:,.2f}")

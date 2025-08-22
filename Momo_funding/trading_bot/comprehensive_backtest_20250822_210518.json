@@ -1,0 +1,107 @@
+{
+  "analysis_timestamp": "2025-08-22T21:05:18.507178",
+  "regime_results": {
+    "crypto_winter_2022": {
+      "regime_name": "crypto_winter_2022",
+      "period": "2022-01-01 to 2022-12-31",
+      "market_condition": "Bear",
+      "error": "Unknown format code 'f' for object of type 'str'",
+      "success": false
+    },
+    "recovery_2023": {
+      "regime_name": "recovery_2023",
+      "period": "2023-01-01 to 2023-12-31",
+      "market_condition": "Sideways",
+      "error": "Unknown format code 'f' for object of type 'str'",
+      "success": false
+    },
+    "recent_period": {
+      "regime_name": "recent_period",
+      "period": "2024-01-01 to 2024-12-31",
+      "market_condition": "Mixed",
+      "error": "Unknown format code 'f' for object of type 'str'",
+      "success": false
+    },
+    "full_cycle": {
+      "regime_name": "full_cycle",
+      "period": "2022-01-01 to 2024-12-31",
+      "market_condition": "Full Cycle",
+      "error": "Unknown format code 'f' for object of type 'str'",
+      "success": false
+    },
+    "high_volatility": {
+      "regime_name": "high_volatility",
+      "period": "2022-01-01 to 2022-03-31",
+      "market_condition": "High Vol",
+      "description": "High volatility period, many breakdown opportunities",
+      "symbols_tested": 10,
+      "total_trades": 0,
+      "total_return": 0.0,
+      "annualized_return": 0.0,
+      "volatility": 0.0,
+      "sharpe_ratio": 0.0,
+      "sortino_ratio": 0.0,
+      "max_drawdown": 0.0,
+      "calmar_ratio": 0.0,
+      "win_rate": 0.0,
+      "profit_factor": 0.0,
+      "recovery_factor": 0.0,
+      "var_95": 0.0,
+      "expected_shortfall_95": 0.0,
+      "is_statistically_significant": false,
+      "t_statistic": 0.0,
+      "p_value": 1.0,
+      "confidence_interval_95": [
+        0.0,
+        0.0
+      ],
+      "execution_stats": {},
+      "success": true
+    },
+    "recent_3months": {
+      "regime_name": "recent_3months",
+      "period": "2025-05-24 to 2025-08-21",
+      "market_condition": "Current",
+      "description": "Most recent data, current market conditions",
+      "symbols_tested": 10,
+      "total_trades": 0,
+      "total_return": 0.0,
+      "annualized_return": 0.0,
+      "volatility": 0.0,
+      "sharpe_ratio": 0.0,
+      "sortino_ratio": 0.0,
+      "max_drawdown": 0.0,
+      "calmar_ratio": 0.0,
+      "win_rate": 0.0,
+      "profit_factor": 0.0,
+      "recovery_factor": 0.0,
+      "var_95": 0.0,
+      "expected_shortfall_95": 0.0,
+      "is_statistically_significant": false,
+      "t_statistic": 0.0,
+      "p_value": 1.0,
+      "confidence_interval_95": [
+        0.0,
+        0.0
+      ],
+      "execution_stats": {},
+      "success": true
+    }
+  },
+  "walk_forward_validation": {
+    "success": false,
+    "error": "Unknown format code 'f' for object of type 'str'"
+  },
+  "summary": {
+    "status": "NEEDS_IMPROVEMENT",
+    "regimes_tested": 6,
+    "successful_regimes": 2,
+    "total_trades_all_regimes": 0,
+    "average_annual_return": 0.0,
+    "average_sharpe_ratio": 0.0,
+    "worst_max_drawdown": 0.0,
+    "statistically_significant_regimes": 0,
+    "validation_robust": false,
+    "recommendation": "NOT RECOMMENDED - strategy shows insufficient edge"
+  }
+}

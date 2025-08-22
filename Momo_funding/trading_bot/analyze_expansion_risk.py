@@ -33,13 +33,13 @@ def analyze_expansion_risks():
         
         # Test different market cap tiers
         test_tiers = {
-            "Top 10": ["BTCUSDT", "ETHUSDT", "BNBUSDT", "SOLUSDT", "ADAUSDT", 
-                      "AVAXUSDT", "DOTUSDT", "LINKUSDT", "MATICUSDT", "UNIUSDT"],
-            "Top 11-25": ["ATOMUSDT", "ALGOUSDT", "VETUSDT", "XLMUSDT", "TRXUSDT",
-                         "FILUSDT", "ICPUSDT", "HBARUSDT", "NEARUSDT", "FLOWUSDT"],
-            "Mid Cap (26-50)": ["AAVEUSDT", "GRTUSDT", "SANDUSDT", "MANAUSDT", "AXSUSDT"],
-            "Lower Cap (51-100)": ["CHZUSDT", "ENJUSDT", "BATUSDT", "ZECUSDT"],
-            "Micro Cap (100+)": ["HOTUSDT", "DENTUSDT", "WINUSDT", "BTTUSDT"]
+            "Top 10": ["BTCUSDC", "ETHUSDC", "BNBUSDC", "SOLUSDC", "ADAUSDC", 
+                      "AVAXUSDC", "DOTUSDC", "LINKUSDC", "MATICUSDC", "UNIUSDC"],
+            "Top 11-25": ["ATOMUSDC", "ALGOUSDC", "VETUSDC", "XLMUSDC", "TRXUSDC",
+                         "FILUSDC", "ICPUSDC", "HBARUSDC", "NEARUSDC", "FLOWUSDC"],
+            "Mid Cap (26-50)": ["AAVEUSDC", "GRTUSDC", "SANDUSDC", "MANAUSDC", "AXSUSDC"],
+            "Lower Cap (51-100)": ["CHZUSDC", "ENJUSDC", "BATUSDC", "ZECUSDC"],
+            "Micro Cap (100+)": ["HOTUSDC", "DENTUSDC", "WINUSDC", "BTTUSDC"]
         }
         
         tier_analysis = {}

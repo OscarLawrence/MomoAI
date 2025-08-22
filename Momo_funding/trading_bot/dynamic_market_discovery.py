@@ -55,7 +55,7 @@ class DynamicMarketDiscovery:
         
         self.min_daily_volume = 50000  # $50K minimum daily volume
         self.min_market_cap_rank = 200  # Top 200 by market cap
-        self.quote_currencies = ["USDT", "USDC", "BUSD"]  # Accepted quote currencies
+        self.quote_currencies = ["USDC", "USDC", "BUSD"]  # Accepted quote currencies
         
         print("🔄 Dynamic Market Discovery initialized")
     
@@ -179,7 +179,7 @@ class DynamicMarketDiscovery:
         Discover optimal assets using real-time market data.
         
         DYNAMIC FILTERING CRITERIA:
-        1. Active on Binance with USDT/USDC pairs
+        1. Active on Binance with USDC/USDC pairs
         2. Top 200 by market cap (from CoinGecko)
         3. >$50K daily volume
         4. >100 trades per day (liquidity)
@@ -215,7 +215,7 @@ class DynamicMarketDiscovery:
             
             # Calculate daily volume in USD
             quote_volume = ticker.get("quoteVolume", 0)
-            daily_volume_usd = quote_volume  # Already in USD terms for USDT/USDC pairs
+            daily_volume_usd = quote_volume  # Already in USD terms for USDC/USDC pairs
             
             # Get market cap ranking
             market_cap_rank = market_cap_rankings.get(base_asset)

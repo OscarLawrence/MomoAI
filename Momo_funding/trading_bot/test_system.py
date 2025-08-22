@@ -13,7 +13,7 @@ def test_crypto_trading_strategy():
     
     WHAT WE'RE TRADING:
     
-    1. BASE CURRENCY: USDT/USDC (USD-pegged stablecoins)
+    1. BASE CURRENCY: USDC/USDC (USD-pegged stablecoins)
        - All profits/losses measured in USD terms
        - No exposure to USD/crypto volatility in positions
        
@@ -38,7 +38,7 @@ def test_crypto_trading_strategy():
     print("="*60)
     
     print("\n💱 BASE CURRENCY ANALYSIS:")
-    print("   Primary: USDT (Tether - most liquid)")
+    print("   Primary: USDC (Tether - most liquid)")
     print("   Secondary: USDC (Circle - most regulated)")  
     print("   Purpose: USD-denominated returns, no crypto exposure in base")
     
@@ -69,8 +69,8 @@ def test_crypto_trading_strategy():
         trader = ScientificTrader(min_confidence=0.75, max_position=0.02)
         
         # Get current market data
-        btc_data = trader.get_market_data("BTCUSDT", "1h", 100)
-        eth_data = trader.get_market_data("ETHUSDT", "1h", 100)
+        btc_data = trader.get_market_data("BTCUSDC", "1h", 100)
+        eth_data = trader.get_market_data("ETHUSDC", "1h", 100)
         
         if btc_data and eth_data:
             current_btc = btc_data[-1].close

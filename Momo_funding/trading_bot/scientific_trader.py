@@ -100,8 +100,8 @@ class ScientificTrader:
         print("🔍 Scanning for opportunities...")
         
         # Get market data for BTC and ETH
-        btc_data = self.get_market_data("BTCUSDT", "1h", 100)
-        eth_data = self.get_market_data("ETHUSDT", "1h", 100)
+        btc_data = self.get_market_data("BTCUSDC", "1h", 100)
+        eth_data = self.get_market_data("ETHUSDC", "1h", 100)
         
         if len(btc_data) < 50 or len(eth_data) < 50:
             print("❌ Insufficient market data")
@@ -130,11 +130,11 @@ class ScientificTrader:
         return signal
     
     def get_available_capital(self) -> float:
-        """Get available trading capital in USDT."""
+        """Get available trading capital in USDC."""
         balances = self.connector.get_account_info()
         
-        # Check for USDT, USDC, or BUSD
-        for asset in ["USDT", "USDC", "BUSD"]:
+        # Check for USDC, USDC, or BUSD
+        for asset in ["USDC", "USDC", "BUSD"]:
             if asset in balances:
                 return balances[asset].free
         

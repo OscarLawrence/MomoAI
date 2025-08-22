@@ -1,0 +1,481 @@
+{
+  "timestamp": "2025-08-22T21:09:51.984807",
+  "parameter_tests": [
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.5,
+        "max_position_size": 0.015
+      },
+      "total_trades": 0,
+      "annualized_return": 0.0,
+      "sharpe_ratio": 0.0,
+      "max_drawdown": 0.0,
+      "win_rate": 0.0,
+      "profit_factor": 0.0,
+      "is_statistically_significant": false,
+      "optimization_score": 0.0,
+      "test_period_days": 90,
+      "success": true
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.5,
+        "max_position_size": 0.02
+      },
+      "total_trades": 0,
+      "annualized_return": 0.0,
+      "sharpe_ratio": 0.0,
+      "max_drawdown": 0.0,
+      "win_rate": 0.0,
+      "profit_factor": 0.0,
+      "is_statistically_significant": false,
+      "optimization_score": 0.0,
+      "test_period_days": 90,
+      "success": true
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.5,
+        "max_position_size": 0.025
+      },
+      "total_trades": 0,
+      "annualized_return": 0.0,
+      "sharpe_ratio": 0.0,
+      "max_drawdown": 0.0,
+      "win_rate": 0.0,
+      "profit_factor": 0.0,
+      "is_statistically_significant": false,
+      "optimization_score": 0.0,
+      "test_period_days": 90,
+      "success": true
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.6,
+        "max_position_size": 0.015
+      },
+      "total_trades": 0,
+      "annualized_return": 0.0,
+      "sharpe_ratio": 0.0,
+      "max_drawdown": 0.0,
+      "win_rate": 0.0,
+      "profit_factor": 0.0,
+      "is_statistically_significant": false,
+      "optimization_score": 0.0,
+      "test_period_days": 90,
+      "success": true
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.6,
+        "max_position_size": 0.02
+      },
+      "total_trades": 0,
+      "annualized_return": 0.0,
+      "sharpe_ratio": 0.0,
+      "max_drawdown": 0.0,
+      "win_rate": 0.0,
+      "profit_factor": 0.0,
+      "is_statistically_significant": false,
+      "optimization_score": 0.0,
+      "test_period_days": 90,
+      "success": true
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.6,
+        "max_position_size": 0.025
+      },
+      "total_trades": 0,
+      "annualized_return": 0.0,
+      "sharpe_ratio": 0.0,
+      "max_drawdown": 0.0,
+      "win_rate": 0.0,
+      "profit_factor": 0.0,
+      "is_statistically_significant": false,
+      "optimization_score": 0.0,
+      "test_period_days": 90,
+      "success": true
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.7,
+        "max_position_size": 0.015
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.7,
+        "max_position_size": 0.02
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.7,
+        "max_position_size": 0.025
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.75,
+        "max_position_size": 0.015
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.75,
+        "max_position_size": 0.02
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.75,
+        "max_position_size": 0.025
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.8,
+        "max_position_size": 0.015
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.8,
+        "max_position_size": 0.02
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.8,
+        "max_position_size": 0.025
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.9,
+        "max_position_size": 0.015
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.9,
+        "max_position_size": 0.02
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.15,
+        "min_confidence": 0.9,
+        "max_position_size": 0.025
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.5,
+        "max_position_size": 0.015
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.5,
+        "max_position_size": 0.02
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.5,
+        "max_position_size": 0.025
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.6,
+        "max_position_size": 0.015
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.6,
+        "max_position_size": 0.02
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.6,
+        "max_position_size": 0.025
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.7,
+        "max_position_size": 0.015
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.7,
+        "max_position_size": 0.02
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.7,
+        "max_position_size": 0.025
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.75,
+        "max_position_size": 0.015
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.75,
+        "max_position_size": 0.02
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.75,
+        "max_position_size": 0.025
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.8,
+        "max_position_size": 0.015
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.8,
+        "max_position_size": 0.02
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.8,
+        "max_position_size": 0.025
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.9,
+        "max_position_size": 0.015
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.9,
+        "max_position_size": 0.02
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.2,
+        "min_confidence": 0.9,
+        "max_position_size": 0.025
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.25,
+        "min_confidence": 0.5,
+        "max_position_size": 0.015
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.25,
+        "min_confidence": 0.5,
+        "max_position_size": 0.02
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.25,
+        "min_confidence": 0.5,
+        "max_position_size": 0.025
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    },
+    {
+      "params": {
+        "correlation_threshold": 0.25,
+        "min_confidence": 0.6,
+        "max_position_size": 0.015
+      },
+      "error": "No historical data available for backtesting",
+      "optimization_score": -999.0,
+      "success": false
+    }
+  ],
+  "analysis": {
+    "status": "NO_TRADES",
+    "message": "No parameter combination generated trades",
+    "best_params_tested": {
+      "correlation_threshold": 0.15,
+      "min_confidence": 0.5,
+      "max_position_size": 0.015
+    },
+    "total_combinations_tested": 6,
+    "recommendation": "Consider: (1) Different timeframes, (2) Alternative strategies, (3) Market regime analysis"
+  },
+  "timeframe_analysis": {
+    "1h": {
+      "success": false,
+      "error": "No historical data available for backtesting"
+    },
+    "4h": {
+      "success": false,
+      "error": "No historical data available for backtesting"
+    },
+    "12h": {
+      "success": false,
+      "error": "No historical data available for backtesting"
+    },
+    "1d": {
+      "success": false,
+      "error": "No historical data available for backtesting"
+    }
+  },
+  "summary": {
+    "total_tests": 40,
+    "successful_tests": 6,
+    "tests_with_trades": 0
+  }
+}

@@ -62,7 +62,8 @@ class KellyPositionSizer:
         
         kelly_fraction = (b * p - q) / b
         
-        # Ensure non-negative
+        # Ensure non-negative (return 0 if expected value is negative)
+        # This handles cases where risk > expected return
         return max(0.0, kelly_fraction)
     
     @coherence_contract(

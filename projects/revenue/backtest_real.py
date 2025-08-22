@@ -34,7 +34,7 @@ def main():
         return
     
     # Get 30 days of hourly data
-    klines = connector.get_kline_data("BTCUSDT", "1h", 720)  # 30 days
+    klines = connector.get_kline_data("BTCUSDC", "1h", 720)  # 30 days
     if not klines:
         print("❌ Failed to fetch historical data")
         return

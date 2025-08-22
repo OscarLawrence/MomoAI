@@ -198,9 +198,9 @@ class AltcoinCorrelationDetector:
             
             breakdown_magnitude = abs(historical_corr - current_corr)
             
-            # Higher threshold for altcoins due to natural volatility
-            if breakdown_magnitude > 0.3:  # Lower threshold than BTC/ETH (0.4)
-                confidence = min(breakdown_magnitude * 2.0, 0.95)  # Higher multiplier
+            # Threshold adjusted for altcoin volatility (slightly lower than BTC/ETH)
+            if breakdown_magnitude > 0.35:  # Slightly lower than BTC/ETH (0.4) due to higher volatility
+                confidence = min(breakdown_magnitude * 1.5, 0.9)  # Unified confidence calculation
                 expected_return = self.calculate_profit_potential(asset1, asset2)
                 
                 # Risk adjustment based on asset characteristics

@@ -29,9 +29,9 @@ def debug_binance_symbols():
             print(f"\n3. Trading symbols: {len(trading_symbols)}")
             
             # Step 4: Filter for quote currencies
-            quote_currencies = ["USDT", "USDC", "BUSD"]
+            quote_currencies = ["USDC", "USDC", "BUSD"]
             quote_filtered = [s for s in trading_symbols if s.get("quoteAsset") in quote_currencies]
-            print(f"4. With USDT/USDC/BUSD: {len(quote_filtered)}")
+            print(f"4. With USDC/USDC/BUSD: {len(quote_filtered)}")
             
             # Step 5: Filter for SPOT permissions
             spot_filtered = [s for s in quote_filtered if "SPOT" in s.get("permissions", [])]

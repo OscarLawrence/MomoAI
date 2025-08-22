@@ -39,28 +39,28 @@ class LiveTradingEngine:
         balances = self.connector.get_account_info()
         
         # Check for stablecoin balances
-        usdt_balance = balances.get("USDT")
+        USDC_balance = balances.get("USDC")
         usdc_balance = balances.get("USDC") 
         busd_balance = balances.get("BUSD")
         
         # Use the largest stablecoin balance
-        stable_balances = [(b, name) for b, name in [(usdt_balance, "USDT"), (usdc_balance, "USDC"), (busd_balance, "BUSD")] if b and b.total > 0]
+        stable_balances = [(b, name) for b, name in [(USDC_balance, "USDC"), (usdc_balance, "USDC"), (busd_balance, "BUSD")] if b and b.total > 0]
         
         if not stable_balances:
-            raise ValueError(f"No stablecoin balance found. Balances: USDT={usdt_balance.total if usdt_balance else 0:.2f}, USDC={usdc_balance.total if usdc_balance else 0:.2f}")
+            raise ValueError(f"No stablecoin balance found. Balances: USDC={USDC_balance.total if USDC_balance else 0:.2f}, USDC={usdc_balance.total if usdc_balance else 0:.2f}")
         
         # Use the largest balance
-        usdt_balance, balance_currency = max(stable_balances, key=lambda x: x[0].total)
+        USDC_balance, balance_currency = max(stable_balances, key=lambda x: x[0].total)
         
-        if usdt_balance.total < 1:
-            raise ValueError(f"Insufficient {balance_currency} balance: ${usdt_balance.total:.2f}")
+        if USDC_balance.total < 1:
+            raise ValueError(f"Insufficient {balance_currency} balance: ${USDC_balance.total:.2f}")
         
         # For demo with small balance
-        if usdt_balance.total < 100:
-            self.logger.warning(f"⚠️  Small {balance_currency} balance detected: ${usdt_balance.total:.2f}")
+        if USDC_balance.total < 100:
+            self.logger.warning(f"⚠️  Small {balance_currency} balance detected: ${USDC_balance.total:.2f}")
             self.logger.warning("Running in analysis-only mode for safety")
         
-        self.capital = usdt_balance.total
+        self.capital = USDC_balance.total
         self.initial_capital = self.capital
         self.positions = {}
         self.trade_history = []
@@ -69,7 +69,7 @@ class LiveTradingEngine:
         self.scan_interval = 3600  # 1 hour (to match backtest)
         self.min_confidence = 0.7  # High confidence threshold
         self.max_position_percent = 0.02  # 2% max position size
-        self.symbols = ["BTCUSDT", "ETHUSDT"]
+        self.symbols = ["BTCUSDC", "ETHUSDC"]
         
         # Setup logging
         logging.basicConfig(
@@ -315,8 +315,8 @@ class LiveTradingEngine:
         opportunities_found = 0
         
         # Get market data
-        btc_data = self.get_market_data("BTCUSDT")
-        eth_data = self.get_market_data("ETHUSDT")
+        btc_data = self.get_market_data("BTCUSDC")
+        eth_data = self.get_market_data("ETHUSDC")
         
         if not btc_data or not eth_data:
             self.logger.warning("Failed to get market data")
@@ -334,8 +334,8 @@ class LiveTradingEngine:
             opportunities_found += 1
         
         # Check mean reversion for both symbols
-        for symbol, data, price in [("BTCUSDT", btc_data, current_btc_price), 
-                                    ("ETHUSDT", eth_data, current_eth_price)]:
+        for symbol, data, price in [("BTCUSDC", btc_data, current_btc_price), 
+                                    ("ETHUSDC", eth_data, current_eth_price)]:
             mean_rev_opp = self.calculate_mean_reversion(data)
             if mean_rev_opp:
                 self.execute_trade(mean_rev_opp, symbol, price)

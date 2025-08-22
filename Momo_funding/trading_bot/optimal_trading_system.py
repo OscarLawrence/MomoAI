@@ -18,6 +18,7 @@ sys.path.insert(0, str(current_dir))
 from execution.binance_connector import create_binance_connector
 from strategies.altcoin_correlation_matrix import create_altcoin_detector
 from risk.position_sizing import create_volatility_sizer
+from dynamic_market_discovery import DynamicMarketDiscovery
 
 # Add formal contracts
 sys.path.insert(0, str(current_dir.parent.parent / "MomoAI/projects/coherence/formal_contracts"))
@@ -45,26 +46,27 @@ class OptimalTradingSystem:
     
     STRATEGY: Multi-Asset Correlation Breakdown Arbitrage
     - Scan top 25 assets for correlation breakdowns
-    - Use USDC as base (Binance migration from USDT)
+    - Use USDC as base (highest liquidity on Binance)
     - Kelly criterion with volatility adjustment
     - Real-time execution with transaction cost modeling
     """
     
-    def __init__(self, min_confidence: float = 0.70, max_position: float = 0.015):
+    def __init__(self, min_confidence: float = 0.70, max_position: float = 0.02):
         """
         Initialize optimal system with mathematically derived parameters.
         
         Args:
             min_confidence: 0.70 (lower than BTC/ETH 0.75 for more altcoin opportunities)
-            max_position: 0.015 (1.5% vs 2% - more conservative for altcoins)
+            max_position: 0.02 (2% unified across all strategies)
         """
         print("🧬 OPTIMAL TRADING SYSTEM - Initializing...")
         
         # Core components
         self.connector = create_binance_connector()
+        self.market_discovery = DynamicMarketDiscovery()
         self.altcoin_detector = create_altcoin_detector(min_confidence=min_confidence)
         self.position_sizer = create_volatility_sizer(
-            safety_factor=0.2,  # More conservative for altcoins
+            safety_factor=0.25,  # Standard Kelly safety factor
             max_position=max_position,
             base_volatility=0.03  # Higher base volatility for altcoins
         )
@@ -72,49 +74,95 @@ class OptimalTradingSystem:
         if not self.connector:
             raise ValueError("Failed to connect to Binance API")
         
-        # Optimal asset universe (Top 11-25 + select from 26-50)
-        self.optimal_universe = self._define_optimal_universe()
+        # Dynamic asset universe discovery
+        self.optimal_universe = self._discover_optimal_universe()
         
         print(f"✅ System initialized:")
         print(f"   Universe: {len(self.optimal_universe)} optimal assets")
         print(f"   Min Confidence: {min_confidence:.1%}")
         print(f"   Max Position: {max_position:.1%}")
-        print(f"   Base Currency: USDC (post-USDT migration)")
+        print(f"   Base Currency: USDC (maximum liquidity)")
     
-    def _define_optimal_universe(self) -> Dict[str, OptimalAsset]:
+    def _discover_optimal_universe(self) -> Dict[str, OptimalAsset]:
         """
-        Define mathematically optimal asset universe.
+        Dynamically discover optimal asset universe using real market data.
         
-        SELECTION CRITERIA (based on analysis):
-        1. Rank 11-25: Best risk-adjusted score (8.2)
-        2. Daily volume >$10K (execution feasible)  
-        3. Volatility 0.3-1.0% (opportunity without chaos)
-        4. Available on Binance with USDC pairs
+        SELECTION CRITERIA:
+        1. Rank 11-50: Sweet spot for inefficiencies vs liquidity
+        2. Daily volume >$50K (execution feasible)  
+        3. Active trading pairs with USDC/USDC
+        4. Real-time market cap and volume data
         """
-        return {
-            # Tier 1: Top 11-20 (highest priority) - Use USDT pairs for liquidity
-            "ATOM": OptimalAsset("ATOMUSDT", 11, 50000, 0.006, 0.7, 0.85, 0.9),
-            "ALGO": OptimalAsset("ALGOUSDT", 12, 58000, 0.004, 0.6, 0.80, 0.9),
-            "VET": OptimalAsset("VETUSDT", 13, 25000, 0.007, 0.5, 0.90, 0.8),
-            "XLM": OptimalAsset("XLMUSDT", 14, 600000, 0.006, 0.8, 0.75, 0.95),
-            "TRX": OptimalAsset("TRXUSDT", 15, 1300000, 0.003, 0.9, 0.70, 0.95),
-            "FIL": OptimalAsset("FILUSDT", 16, 200000, 0.008, 0.6, 0.85, 0.85),
-            "ICP": OptimalAsset("ICPUSDT", 17, 150000, 0.009, 0.5, 0.90, 0.85),
-            "HBAR": OptimalAsset("HBARUSDT", 18, 100000, 0.007, 0.6, 0.85, 0.85),
-            "NEAR": OptimalAsset("NEARUSDT", 19, 180000, 0.008, 0.7, 0.80, 0.90),
-            "FLOW": OptimalAsset("FLOWUSDT", 20, 80000, 0.009, 0.5, 0.85, 0.80),
+        print("🔍 Discovering optimal asset universe...")
+        
+        try:
+            # Use dynamic discovery to get current market assets
+            market_assets = self.market_discovery.discover_optimal_assets(
+                max_assets=30  # Get top 30 for selection
+            )
             
-            # Tier 2: Top 21-25 (secondary priority)
-            "AAVE": OptimalAsset("AAVEUSDT", 21, 1400000, 0.007, 0.8, 0.75, 0.95),
-            "GRT": OptimalAsset("GRTUSDT", 22, 4000, 0.003, 0.3, 0.85, 0.7),
-            "SAND": OptimalAsset("SANDUSDT", 23, 18000, 0.005, 0.4, 0.80, 0.8),
-            "MANA": OptimalAsset("MANAUSDT", 24, 9000, 0.004, 0.4, 0.80, 0.8),
-            "AXS": OptimalAsset("AXSUSDT", 25, 4000, 0.003, 0.3, 0.85, 0.7),
+            # Filter for our sweet spot (rank 11-50) and volume requirements
+            filtered_assets = []
+            for asset in market_assets:
+                if (11 <= asset.market_cap_rank <= 50 and 
+                    asset.daily_volume_usd >= 50000):
+                    filtered_assets.append(asset)
             
-            # Tier 3: Select from 26-50 (high-potential additions)
-            "CHZ": OptimalAsset("CHZUSDT", 26, 5000, 0.002, 0.3, 0.75, 0.7),
-            "ENJ": OptimalAsset("ENJUSDT", 27, 4000, 0.004, 0.3, 0.80, 0.7),
-        }
+            market_assets = filtered_assets
+            
+            optimal_universe = {}
+            
+            for asset in market_assets:
+                # Convert to OptimalAsset format
+                optimal_asset = OptimalAsset(
+                    symbol=asset.symbol,
+                    rank=asset.market_cap_rank,
+                    daily_volume_usd=asset.daily_volume_usd,
+                    volatility=asset.volatility_24h,  # Use correct attribute name
+                    liquidity_score=asset.liquidity_score,
+                    inefficiency_potential=self._calculate_inefficiency_potential(asset),
+                    execution_feasibility=self._calculate_execution_feasibility(asset)
+                )
+                
+                # Use base asset as key (BTC, ETH, ATOM, etc.)
+                base_asset = asset.symbol.replace("USDC", "").replace("USDC", "").replace("BUSD", "")
+                optimal_universe[base_asset] = optimal_asset
+            
+            print(f"✅ Discovered {len(optimal_universe)} optimal assets dynamically")
+            return optimal_universe
+            
+        except Exception as e:
+            print(f"⚠️ Dynamic discovery failed: {e}")
+            print("🔄 Falling back to minimal safe universe...")
+            
+            # Fallback to minimal universe if discovery fails
+            return {
+                "BTC": OptimalAsset("BTCUSDC", 1, 5000000, 0.04, 0.9, 0.6, 0.95),
+                "ETH": OptimalAsset("ETHUSDC", 2, 3000000, 0.05, 0.9, 0.7, 0.95),
+            }
+    
+    def _calculate_inefficiency_potential(self, asset) -> float:
+        """Calculate inefficiency potential based on market characteristics."""
+        # Higher rank (lower market cap) = higher inefficiency potential
+        rank_factor = min(1.0, asset.market_cap_rank / 50)
+        
+        # Higher volatility = more opportunities
+        vol_factor = min(1.0, asset.volatility_24h / 0.1)
+        
+        # Lower liquidity = higher spreads = more potential (but also more risk)
+        liquidity_factor = max(0.1, 1.0 - asset.liquidity_score)
+        
+        return 0.5 + (rank_factor * 0.2) + (vol_factor * 0.2) + (liquidity_factor * 0.1)
+    
+    def _calculate_execution_feasibility(self, asset) -> float:
+        """Calculate execution feasibility based on volume and liquidity."""
+        # Higher volume = better execution
+        volume_factor = min(1.0, asset.daily_volume_usd / 1000000)  # Normalize to $1M
+        
+        # Higher liquidity = better execution
+        liquidity_factor = asset.liquidity_score
+        
+        return (volume_factor * 0.6) + (liquidity_factor * 0.4)
     
     @coherence_contract(
         input_types={},
@@ -144,7 +192,7 @@ class OptimalTradingSystem:
         
         for asset in assets:
             try:
-                # Assets already use USDT symbols for maximum liquidity
+                # Assets already use USDC symbols for maximum liquidity
                 symbol = self.optimal_universe[asset].symbol
                 data = self.connector.get_kline_data(symbol, "1h", hours)
                 
@@ -220,7 +268,7 @@ class OptimalTradingSystem:
         
         # Get recent price data for volatility adjustment
         primary_asset = opportunity.pair1
-        symbol_for_data = primary_asset.replace("USDC", "USDT")
+        symbol_for_data = self.optimal_universe[primary_asset].symbol  # Use correct USDC symbol
         recent_data = self.connector.get_kline_data(symbol_for_data, "1h", 50)
         
         if not recent_data:
@@ -287,10 +335,10 @@ class OptimalTradingSystem:
         print(f"\n🔄 OPTIMAL TRADING CYCLE - {cycle_start.strftime('%Y-%m-%d %H:%M:%S')}")
         
         try:
-            # Get available capital
+            # Get available capital (use largest balance)
             balances = self.connector.get_account_info()
             capital = 0
-            for asset in ["USDC", "USDT", "BUSD"]:
+            for asset in ["USDC", "USDC", "BUSD"]:
                 if asset in balances:
                     capital = max(capital, balances[asset].free)
             
@@ -344,7 +392,7 @@ def main():
     
     try:
         # Initialize optimal system
-        system = OptimalTradingSystem(min_confidence=0.70, max_position=0.015)
+        system = OptimalTradingSystem(min_confidence=0.70, max_position=0.02)
         
         # Run test cycle
         result = system.run_optimal_cycle()
