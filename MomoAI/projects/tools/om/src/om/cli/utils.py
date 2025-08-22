@@ -10,9 +10,9 @@ def _check_docs_parser():
     global DOCS_PARSER_AVAILABLE 
     if DOCS_PARSER_AVAILABLE is None:
         try:
-            # Only check core functionality
-            from docs_parser.parser import parse_docstring
-            from docs_parser.search import find_docs
+            # Check actual available functionality
+            from docs_parser.search import DocumentationSearcher
+            from docs_parser.universal_parser import UniversalParser
             DOCS_PARSER_AVAILABLE = True
         except ImportError:
             DOCS_PARSER_AVAILABLE = False
