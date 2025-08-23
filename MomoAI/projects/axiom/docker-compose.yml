@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  axiom-chat:
+    build: .
+    container_name: axiom-chat
+    ports:
+      - "8000:8000"
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      # Optional: Mount for development (comment out for production)
+      - ./backend:/app/backend:ro
+      - ./frontend:/app/frontend:ro
+    networks:
+      - axiom-network
+
+networks:
+  axiom-network:
+    driver: bridge

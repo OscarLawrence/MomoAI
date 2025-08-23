@@ -39,12 +39,32 @@ Axiom is the foundation for building truly coherent AI tools. It provides a clea
 
 ## Quick Start
 
+### Option 1: Docker (Recommended for Production)
 ```bash
-# Clone and start
-python3 start.py
+# Start with Docker
+./docker-start.sh start
+
+# Or using docker-compose directly
+docker-compose up -d
 ```
 
-Open http://localhost:8000 for the PWA interface.
+### Option 2: Direct Python (Development)
+```bash
+# Start directly
+python start.py
+```
+
+Open http://localhost:8000 for the chat interface.
+
+### Docker Commands
+```bash
+./docker-start.sh start    # Start the application
+./docker-start.sh stop     # Stop the application  
+./docker-start.sh logs     # View logs
+./docker-start.sh status   # Check status
+./docker-start.sh restart  # Restart application
+./docker-start.sh help     # Show all commands
+```
 
 ## Status
 
