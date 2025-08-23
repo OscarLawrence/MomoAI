@@ -1,41 +1,26 @@
-# Axiom - Coherent AI Collaboration Platform
+# Axiom - Minimal AI Chat Interface
 
-## Purpose
+## What This Is
 
-Axiom is the foundation for building truly coherent AI tools. It provides a clean Progressive Web App interface that democratizes software creation beyond developers, enabling anyone to collaborate with AI to build software solutions.
+Basic chat interface for direct communication with Claude Sonnet 4. Clean, minimal implementation without SDK pollution or complex abstractions.
 
-**Core Problem**: Cannot build coherent system with incoherent tools. Current AI assistants have system message pollution, conflicting instructions, messy tool abstractions, and no coherence validation.
+**Core Problem**: Cannot build coherent systems with incoherent tools. Most AI interfaces have system message pollution, conflicting instructions, and messy abstractions.
 
-**Axiom Solution**: Clean PWA with formal contracts, pure model interface, no SDK pollution.
+**Axiom Solution**: Direct API calls to Claude Sonnet 4 with minimal, focused system message.
 
-## Architecture
+## Implementation
 
-### PWA + FastAPI Stack
-- **Local FastAPI backend** with pure HTTP client to Claude Sonnet 4
-- **Progressive Web App frontend** for universal device access
-- **WebSocket integration** for real-time task progress
-- **Future-proof design** works local + remote deployment
+### FastAPI + Static Frontend
+- **FastAPI backend** with direct HTTP client to Anthropic API
+- **Static HTML/CSS/JS frontend** 
+- **In-memory message storage** for chat history
+- **Minimal system message** loaded from file
 
-### Staged Collaboration Workflow
-1. **Vision**: Free-form problem exploration
-2. **Architecture**: Solution design & validation  
-3. **Implementation**: Autonomous AI execution
-4. **Review**: Human evaluation & refinement
-
-### Essential Coherent Tools
-- Pure model interface (no system message pollution)
-- Formal contract system (`@contract_enforced`)
-- Simple function call tools: `read_file()`, `edit_file()`, `bash_exec()`
-- Real-time coherence monitoring
-- Docless architecture with auto-generated searchable knowledge base
-
-## Key Features
-
-- **Universal Access**: PWA works on any device without installation
-- **Democratized Creation**: Café owner builds website without terminal skills
-- **Clean Tool System**: Natural function calls instead of complex JSON
-- **Real-time Collaboration**: Live task progress and stage transitions
-- **Coherence Validation**: Formal contracts ensure logical consistency
+### Current Features
+- Direct chat with Claude Sonnet 4
+- Chat history persistence (session-based)
+- Clean system message from file
+- Basic web interface
 
 ## Quick Start
 
@@ -68,10 +53,10 @@ Open http://localhost:8000 for the chat interface.
 
 ## Status
 
-**Current**: Working PWA with complete coherence validation pipeline
-- ✅ Real-time input contradiction detection
-- ✅ AI output formal contract verification  
-- ✅ WebSocket collaboration interface
-- ✅ Progressive Web App frontend
+**Current**: Working minimal chat interface
+- ✅ Direct Claude Sonnet 4 API integration
+- ✅ Basic chat history
+- ✅ Clean system message loading
+- ✅ Static frontend
 
-This follows the principle: "Cannot build coherent system with incoherent tools, but need tools to build tools."
+**Next**: Add coherence validation and tool capabilities incrementally.

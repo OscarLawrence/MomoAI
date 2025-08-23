@@ -69,8 +69,8 @@ case "${1:-start}" in
     
     "restart")
         log_info "Restarting Axiom Chat..."
-        docker-compose down
-        docker-compose up -d
+        docker compose down
+        docker compose up -d
         log_success "Axiom Chat restarted!"
         ;;
     
@@ -82,20 +82,20 @@ case "${1:-start}" in
     
     "rebuild")
         log_info "Rebuilding Axiom Chat (no cache)..."
-        docker-compose build --no-cache
+        docker compose build --no-cache
         log_success "Rebuild complete!"
         ;;
     
     "logs")
         log_info "Showing Axiom Chat logs..."
-        docker-compose logs -f axiom-chat
+        docker compose logs -f axiom-chat
         ;;
     
     "status")
         log_info "Axiom Chat status:"
-        docker-compose ps
+        docker compose ps
         echo
-        if docker-compose ps | grep -q "Up"; then
+        if docker compose ps | grep -q "Up"; then
             log_success "Axiom Chat is running!"
             log_info "🌐 Access at: http://localhost:8000"
         else
@@ -105,12 +105,12 @@ case "${1:-start}" in
     
     "shell")
         log_info "Opening shell in Axiom Chat container..."
-        docker-compose exec axiom-chat /bin/bash
+        docker compose exec axiom-chat /bin/bash
         ;;
     
     "clean")
         log_info "Cleaning up Docker resources..."
-        docker-compose down -v
+        docker compose down -v
         docker system prune -f
         log_success "Cleanup complete!"
         ;;

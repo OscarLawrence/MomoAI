@@ -9,7 +9,7 @@ services:
     environment:
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     env_file:
-      - .env
+      - /home/vincent/Documents/Momo/.env
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/"]
@@ -18,7 +18,6 @@ services:
       retries: 3
       start_period: 40s
     volumes:
-      # Optional: Mount for development (comment out for production)
       - ./backend:/app/backend:ro
       - ./frontend:/app/frontend:ro
     networks:
