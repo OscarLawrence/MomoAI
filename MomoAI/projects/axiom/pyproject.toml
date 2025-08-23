@@ -5,17 +5,16 @@ build-backend = "hatchling.build"
 [project]
 name = "axiom"
 version = "0.1.0"
-description = "Minimal CLI for direct Claude Sonnet 4 interaction with formal contracts"
+description = "Coherent AI collaboration platform - PWA for democratizing software creation"
 dependencies = [
-    "httpx>=0.25.0",
-    "click>=8.0.0",
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.23.0",
+    "websockets>=12.0",
     "pydantic>=2.0.0",
+    "httpx>=0.25.0",
     "python-dotenv>=1.0.0",
-    "rich>=13.0.0"
+    "python-multipart>=0.0.6"
 ]
-
-[project.scripts]
-axiom = "axiom.cli:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0.0", "pytest-asyncio>=0.21.0", "ruff>=0.1.0", "mypy>=1.0.0"]
@@ -38,4 +37,5 @@ warn_return_any = true
 warn_unused_configs = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/axiom"]
+packages = ["axiom"]
+
