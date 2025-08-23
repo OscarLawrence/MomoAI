@@ -5,39 +5,24 @@ build-backend = "hatchling.build"
 [project]
 name = "axiom"
 version = "0.1.0"
-description = "Coherent AI collaboration platform - PWA for democratizing software creation"
+description = "Minimal web chat interface for direct Claude communication"
 dependencies = [
     "fastapi>=0.100.0",
     "uvicorn[standard]>=0.23.0",
-    "websockets>=12.0",
     "pydantic>=2.0.0",
     "httpx>=0.25.0",
     "python-dotenv>=1.0.0",
-    "python-multipart>=0.0.6",
-    "anthropic>=0.64.0",
-    "requests>=2.32.5",
+    "python-multipart>=0.0.6"
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0.0", "pytest-asyncio>=0.21.0", "ruff>=0.1.0", "mypy>=1.0.0"]
+dev = ["ruff>=0.1.0"]
 
 [tool.ruff]
 target-version = "py311"
 line-length = 88
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "N", "UP", "S", "B"]
-ignore = ["S101"]  # Allow assert statements
-
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101"]
-
-[tool.mypy]
-python_version = "3.11"
-strict = true
-warn_return_any = true
-warn_unused_configs = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["axiom"]
+select = ["E", "F", "W", "I"]
+ignore = []
 
