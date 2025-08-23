@@ -15,7 +15,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.sessions import router as sessions_router
 from api.messages import router as messages_router
-from api.coherence import router as coherence_router
 from core.session_manager import SessionManager
 
 # Global session manager
@@ -52,7 +51,6 @@ app.add_middleware(
 # Include API routers
 app.include_router(sessions_router, prefix="/api")
 app.include_router(messages_router, prefix="/api")
-app.include_router(coherence_router, prefix="/api")
 
 
 @app.websocket("/ws/{session_id}")

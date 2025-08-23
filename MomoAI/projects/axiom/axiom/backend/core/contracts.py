@@ -128,28 +128,66 @@ def coherence_contract(
         if description:
             func.__doc__ = description
         
-        # Add runtime verification wrapper
-        def wrapper(*args, **kwargs):
-            # Pre-condition checking
-            if not verify_preconditions(contract, args, kwargs):
-                raise ContractViolation(f"Precondition violated in {func_name}")
+        # Add runtime verification wrapper with preserved signature
+        if inspect.iscoroutinefunction(func):
+            @wraps(func)
+            async def async_wrapper(*args, **kwargs):
+                # Pre-condition checking
+                if not verify_preconditions(contract, args, kwargs):
+                    raise ContractViolation(f"Precondition violated in {func_name}")
+                
+                # Execute async function
+                result = await func(*args, **kwargs)
+                
+                # Post-condition checking
+                if not verify_postconditions(contract, args, kwargs, result):
+                    raise ContractViolation(f"Postcondition violated in {func_name}")
+                
+                return result
             
-            # Execute function
-            result = func(*args, **kwargs)
+            wrapper = async_wrapper
+        else:
+            @wraps(func)
+            def sync_wrapper(*args, **kwargs):
+                # Pre-condition checking
+                if not verify_preconditions(contract, args, kwargs):
+                    raise ContractViolation(f"Precondition violated in {func_name}")
+                
+                # Execute function
+                result = func(*args, **kwargs)
+                
+                # Post-condition checking
+                if not verify_postconditions(contract, args, kwargs, result):
+                    raise ContractViolation(f"Postcondition violated in {func_name}")
+                
+                return result
             
-            # Post-condition checking
-            if not verify_postconditions(contract, args, kwargs, result):
-                raise ContractViolation(f"Postcondition violated in {func_name}")
-            
-            return result
+            wrapper = sync_wrapper
         
+        # Preserve contract metadata
         wrapper._formal_contract = contract
-        wrapper.__name__ = func.__name__
-        wrapper.__doc__ = func.__doc__
+        wrapper.__signature__ = sig  # Preserve signature for FastAPI
         
         return wrapper
     
     return decorator
+
+
+# Contract verification functions (placeholders)
+def verify_preconditions(contract: FormalContract, args, kwargs) -> bool:
+    """Verify function preconditions - placeholder implementation"""
+    return True
+
+
+def verify_postconditions(contract: FormalContract, args, kwargs, result) -> bool:
+    """Verify function postconditions - placeholder implementation"""
+    return True
+
+
+def get_contract_info(func) -> Optional[FormalContract]:
+    """Get contract information from a function"""
+    return getattr(func, '_formal_contract', None)
+
 
 # Legacy contract_enforced decorator for backward compatibility
 def contract_enforced(
@@ -179,15 +217,6 @@ def contract_enforced(
         return wrapper
     return decorator
 
-def verify_preconditions(contract: FormalContract, args: tuple, kwargs: dict) -> bool:
-    """Verify all preconditions are satisfied"""
-    # Implementation will check each precondition
-    return True  # Placeholder
-
-def verify_postconditions(contract: FormalContract, args: tuple, kwargs: dict, result: Any) -> bool:
-    """Verify all postconditions are satisfied"""
-    # Implementation will check each postcondition
-    return True  # Placeholder
 
 # Built-in predicates for common operations
 class BuiltinPredicates:

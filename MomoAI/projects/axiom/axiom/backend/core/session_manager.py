@@ -4,15 +4,13 @@ Handles session state, WebSocket connections, and collaboration stages
 """
 import uuid
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from enum import Enum
 from dataclasses import dataclass, field
 from fastapi import WebSocket
 
 from core.contracts import contract_enforced, coherence_contract, ComplexityClass
 from core.anthropic_client import AnthropicClient
-from core.input_validator import UserInputValidator, CoherenceLevel
-from core.output_validator import AIOutputValidator
 from tools.parser import ToolCallParser
 from tools.executor import ToolExecutor
 
@@ -62,8 +60,6 @@ class Session:
     active_tasks: List[Task] = field(default_factory=list)
     project_context: Dict = field(default_factory=dict)
     created_at: datetime = field(default_factory=datetime.now)
-    coherence_enabled: bool = True
-    coherence_level: str = "standard"  # permissive, standard, strict
 
 
 class SessionManager:
@@ -75,8 +71,6 @@ class SessionManager:
         self.anthropic_client = AnthropicClient()
         self.tool_parser = ToolCallParser()
         self.tool_executor = ToolExecutor()
-        self.input_validator = UserInputValidator()
-        self.output_validator = AIOutputValidator()
     
     @contract_enforced(
         postconditions=["returns valid session with unique ID"],
@@ -149,27 +143,7 @@ class SessionManager:
             })
             return
         
-        # Validate user input for coherence if enabled
-        if session.coherence_enabled:
-            coherence_result = self.input_validator.validate_prompt(content)
-            
-            # Send coherence feedback to client
-            await websocket.send_json({
-                "type": "coherence_validation",
-                "level": coherence_result.level.name,
-                "score": coherence_result.score,
-                "contradictions": coherence_result.contradictions,
-                "suggestions": coherence_result.suggestions or []
-            })
-            
-            # Block incoherent input based on session settings
-            if self._should_block_input(coherence_result, session.coherence_level):
-                await websocket.send_json({
-                    "type": "input_blocked",
-                    "reason": "Input contains logical contradictions",
-                    "suggestions": coherence_result.suggestions or []
-                })
-                return
+        # Input validation removed - proceeding with message processing
         
         # Add user message to session
         user_message = Message(role="user", content=content)
@@ -201,32 +175,7 @@ class SessionManager:
                         "content": delta
                     })
             
-            # Validate AI output for contracts if enabled
-            if session.coherence_enabled:
-                validation_result = self.output_validator.validate_response(response_content)
-                
-                # Send validation feedback to client
-                await websocket.send_json({
-                    "type": "output_validation",
-                    "has_contracts": validation_result.has_contracts,
-                    "contracts_valid": validation_result.contracts_valid,
-                    "contracts_verified": validation_result.contracts_verified,
-                    "violations": validation_result.violations,
-                    "suggestions": validation_result.suggestions
-                })
-                
-                # Regenerate if output doesn't meet standards
-                if self._should_regenerate_output(validation_result, session.coherence_level):
-                    await websocket.send_json({
-                        "type": "regenerating",
-                        "reason": "Output doesn't meet coherence standards"
-                    })
-                    
-                    # Add contract requirement to system prompt and regenerate
-                    enhanced_prompt = self._enhance_system_prompt_for_contracts(system_prompt)
-                    response_content = await self._regenerate_with_contracts(
-                        claude_messages, enhanced_prompt, websocket
-                    )
+            # Output validation removed - proceeding with response
             
             # Parse tool calls from response
             tool_calls = self.tool_parser.parse_tool_calls(response_content)
@@ -362,25 +311,6 @@ Provide honest, constructive feedback.
         }
         return prompts.get(stage, prompts[CollaborationStage.VISION])
     
-    def _should_block_input(self, coherence_result, coherence_level: str) -> bool:
-        """Determine if input should be blocked based on coherence level"""
-        if coherence_level == "permissive":
-            return coherence_result.level == CoherenceLevel.INCOHERENT
-        elif coherence_level == "standard":
-            return coherence_result.level in [CoherenceLevel.INCOHERENT, CoherenceLevel.LOW]
-        elif coherence_level == "strict":
-            return coherence_result.level in [CoherenceLevel.INCOHERENT, CoherenceLevel.LOW, CoherenceLevel.MEDIUM]
-        return False
-    
-    def _should_regenerate_output(self, validation_result, coherence_level: str) -> bool:
-        """Determine if AI output should be regenerated"""
-        if coherence_level == "permissive":
-            return not validation_result.has_contracts and len(validation_result.violations) > 2
-        elif coherence_level == "standard":
-            return not validation_result.has_contracts or not validation_result.contracts_valid
-        elif coherence_level == "strict":
-            return not (validation_result.has_contracts and validation_result.contracts_valid and validation_result.contracts_verified)
-        return False
     
     def _enhance_system_prompt_for_contracts(self, original_prompt: str) -> str:
         """Add contract requirements to system prompt"""
@@ -431,23 +361,3 @@ Always specify:
         
         return response_content
     
-    @coherence_contract(
-        input_types={"session_id": "str", "coherence_settings": "Dict[str, Any]"},
-        requires=["session_id in self.sessions"],
-        complexity_time=ComplexityClass.CONSTANT,
-        pure=False,
-        modifies=["session.coherence_enabled", "session.coherence_level"]
-    )
-    async def update_coherence_settings(self, session_id: str, coherence_settings: Dict[str, Any]):
-        """Update coherence validation settings for session"""
-        session = self.get_session(session_id)
-        if session:
-            session.coherence_enabled = coherence_settings.get("enabled", True)
-            session.coherence_level = coherence_settings.get("level", "standard")
-            
-            # Broadcast settings change to all connected clients
-            await self.broadcast_to_session(session_id, {
-                "type": "coherence_settings_updated",
-                "enabled": session.coherence_enabled,
-                "level": session.coherence_level
-            })

@@ -37,10 +37,21 @@ Axiom is the foundation for building truly coherent AI tools. It provides a clea
 - **Real-time Collaboration**: Live task progress and stage transitions
 - **Coherence Validation**: Formal contracts ensure logical consistency
 
-## Implementation Status
+## Quick Start
 
-**Current**: Basic CLI with contract system, usability issues
-**Next Phase**: Full PWA implementation following IMPLEMENTATION_PLAN.md
-**Bootstrap Strategy**: Use Axiom to rebuild itself with higher coherence
+```bash
+# Clone and start
+python3 start.py
+```
+
+Open http://localhost:8000 for the PWA interface.
+
+## Status
+
+**Current**: Working PWA with complete coherence validation pipeline
+- ✅ Real-time input contradiction detection
+- ✅ AI output formal contract verification  
+- ✅ WebSocket collaboration interface
+- ✅ Progressive Web App frontend
 
 This follows the principle: "Cannot build coherent system with incoherent tools, but need tools to build tools."

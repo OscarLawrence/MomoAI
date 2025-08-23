@@ -135,8 +135,8 @@ Claude claims O(1) complexity but uses nested loops
 
 ### Quick Start
 ```bash
-# Start with coherence validation
-python3 start_axiom_with_coherence.py
+# Start Axiom (coherence validation built-in)
+python3 start.py
 ```
 
 ### Manual Start

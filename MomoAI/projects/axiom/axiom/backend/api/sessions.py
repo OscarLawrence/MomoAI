@@ -13,8 +13,9 @@ router = APIRouter(prefix="/sessions", tags=["sessions"])
 
 # Dependency to get session manager
 def get_session_manager() -> SessionManager:
-    from ..main import session_manager
-    return session_manager
+    # Import main module from the application
+    import main
+    return main.session_manager
 
 
 class SessionResponse(BaseModel):
@@ -33,10 +34,6 @@ class StageChangeRequest(BaseModel):
 
 
 @router.post("/", response_model=SessionResponse)
-@contract_enforced(
-    postconditions=["returns new session with unique ID"],
-    description="Create new collaboration session"
-)
 async def create_session(
     session_manager: SessionManager = Depends(get_session_manager)
 ) -> SessionResponse:

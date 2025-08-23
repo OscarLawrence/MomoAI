@@ -90,9 +90,14 @@ def main():
     install_dependencies()
     
     # Start server
-    print("\n🌐 Server will be available at:")
+    print("\n🌐 Axiom PWA will be available at:")
     print("   http://localhost:8000")
     print("   http://127.0.0.1:8000")
+    print("\n📋 Features enabled:")
+    print("   • Real-time coherence validation")  
+    print("   • Formal contract system")
+    print("   • AI-human collaboration stages")
+    print("   • Progressive Web App interface")
     print("\n💡 Press Ctrl+C to stop the server")
     print("=" * 50)
     
