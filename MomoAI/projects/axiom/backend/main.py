@@ -172,7 +172,13 @@ async def websocket_endpoint(websocket: WebSocket):
 
 @app.get("/")
 async def serve_frontend():
-    return FileResponse("frontend/index.html")
+    # For development: ../frontend/index.html
+    # For docker: ./frontend/index.html  
+    import os
+    if os.path.exists("../frontend/index.html"):
+        return FileResponse("../frontend/index.html")
+    else:
+        return FileResponse("./frontend/index.html")
 
 if __name__ == "__main__":
     import uvicorn

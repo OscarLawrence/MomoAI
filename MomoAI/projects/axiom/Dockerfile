@@ -13,17 +13,14 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
-COPY pyproject.toml ./
-
-
-# Install Python dependencies
-RUN pip install --no-cache-dir -e .
-
-# Copy application code
+# Copy backend with pyproject.toml first for better caching
 COPY backend/ ./backend/
+
+# Install Python dependencies from backend directory
+RUN cd backend && pip install --no-cache-dir -e .
+
+# Copy frontend
 COPY frontend/ ./frontend/
-COPY start.py ./
 
 # Create non-root user for security
 RUN useradd --create-home --shell /bin/bash axiom
