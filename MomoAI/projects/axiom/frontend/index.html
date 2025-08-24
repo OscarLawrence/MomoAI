@@ -3,31 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Axiom Chat</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Axiom - Coherent Coding Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        h1 {
+            color: #4a9eff;
+            margin-bottom: 20px;
+            font-weight: 300;
+            font-size: 24px;
+        }
+
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 20px;
+            background: #111;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+
+        .message.user {
+            color: #4a9eff;
+        }
+
+        .message.user::before {
+            content: "You: ";
+            font-weight: bold;
+        }
+
+        .message.assistant {
+            color: #e0e0e0;
+        }
+
+        .message.assistant::before {
+            content: "Axiom: ";
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        .message.tool-result {
+            background: #1a1a1a;
+            border-left: 3px solid #f39c12;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            color: #b0b0b0;
+        }
+
+        #input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        #input {
+            flex: 1;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #e0e0e0;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        #input:focus {
+            outline: none;
+            border-color: #4a9eff;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: #4a9eff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            align-self: flex-end;
+        }
+
+        button:hover:not(:disabled) {
+            background: #357abd;
+        }
+
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        #status {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        #status.connected {
+            color: #2ecc71;
+        }
+
+        #status.error {
+            color: #e74c3c;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Axiom</h1>
-            <button id="clearBtn" class="clear-btn">Clear History</button>
-        </div>
-        
-        <div id="chatHistory" class="chat-history"></div>
-        
-        <form id="chatForm" class="chat-form">
-            <textarea 
-                id="messageInput" 
-                placeholder="Type your message here..."
-                rows="4"
-                required
-            ></textarea>
-            <button type="submit" id="sendBtn">Send</button>
-        </form>
-        
-        <div id="status" class="status"></div>
+    <h1>Axiom</h1>
+    <div id="messages"></div>
+    <div id="input-area">
+        <textarea id="input" placeholder="Describe what you need..." rows="3"></textarea>
+        <button id="send">Send</button>
     </div>
-    
-    <script src="script.js"></script>
+    <div id="status">Connecting...</div>
+
+    <script>
+        class AxiomChat {
+            constructor() {
+                this.ws = null;
+                this.messagesDiv = document.getElementById('messages');
+                this.input = document.getElementById('input');
+                this.sendBtn = document.getElementById('send');
+                this.status = document.getElementById('status');
+                this.currentMessage = null;
+                
+                this.connect();
+                this.setupEvents();
+            }
+
+            connect() {
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                this.ws = new WebSocket(`${protocol}//${window.location.host}/ws`);
+
+                this.ws.onopen = () => {
+                    this.status.textContent = 'Connected';
+                    this.status.className = 'connected';
+                    this.sendBtn.disabled = false;
+                };
+
+                this.ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    this.handleMessage(data);
+                };
+
+                this.ws.onclose = () => {
+                    this.status.textContent = 'Disconnected - Reconnecting...';
+                    this.status.className = 'error';
+                    this.sendBtn.disabled = true;
+                    setTimeout(() => this.connect(), 2000);
+                };
+
+                this.ws.onerror = () => {
+                    this.status.textContent = 'Connection error';
+                    this.status.className = 'error';
+                };
+            }
+
+            handleMessage(data) {
+                switch(data.type) {
+                    case 'start':
+                        this.currentMessage = this.addMessage('assistant', '');
+                        break;
+                    
+                    case 'token':
+                        if (this.currentMessage) {
+                            this.currentMessage.textContent += data.content;
+                            this.scrollToBottom();
+                        }
+                        break;
+                    
+                    case 'tool_result':
+                        this.addMessage('tool-result', data.content);
+                        break;
+                    
+                    case 'complete':
+                        this.currentMessage = null;
+                        this.sendBtn.disabled = false;
+                        this.input.disabled = false;
+                        break;
+                    
+                    case 'error':
+                        this.addMessage('tool-result', `Error: ${data.content}`);
+                        this.sendBtn.disabled = false;
+                        this.input.disabled = false;
+                        break;
+                }
+            }
+
+            setupEvents() {
+                this.sendBtn.onclick = () => this.send();
+                this.input.onkeydown = (e) => {
+                    if (e.key === 'Enter' && e.ctrlKey) {
+                        this.send();
+                    }
+                };
+            }
+
+            send() {
+                const message = this.input.value.trim();
+                if (!message || !this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+
+                this.addMessage('user', message);
+                this.ws.send(JSON.stringify({type: 'message', content: message}));
+                
+                this.input.value = '';
+                this.sendBtn.disabled = true;
+                this.input.disabled = true;
+            }
+
+            addMessage(type, content) {
+                const div = document.createElement('div');
+                div.className = `message ${type}`;
+                div.textContent = content;
+                this.messagesDiv.appendChild(div);
+                this.scrollToBottom();
+                return div;
+            }
+
+            scrollToBottom() {
+                this.messagesDiv.scrollTop = this.messagesDiv.scrollHeight;
+            }
+        }
+
+        new AxiomChat();
+    </script>
 </body>
 </html>

@@ -135,7 +135,8 @@ def main():
         uvicorn.run("backend.main:app", host="0.0.0.0", port=target_port, reload=False)
     except KeyboardInterrupt:
         print("\n👋 Axiom Chat stopped")
-    except ImportError:
+    except ImportError as e:
+        print(e)
         print("❌ Dependencies not installed!")
         print("Run: pip install fastapi uvicorn httpx python-dotenv pydantic")
         sys.exit(1)
